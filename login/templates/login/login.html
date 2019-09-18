@@ -1,0 +1,85 @@
+{% extends "login/base.html" %}
+{% block content %}
+
+<head>
+    <style type="text/css">
+        .navbar-inverse{
+            background-color: rgb(70, 125, 156) !important;
+        }
+
+        .navbar-brand{
+            color: white !important;
+        }
+
+        .lg{
+            margin-top: 40px;
+            padding: 60px 40px;
+        }
+
+        #log{
+            border: 1px solid grey;
+            padding: 60px 40px;
+        }
+
+        h1{
+            text-align:center; 
+            padding-bottom:10px; 
+            font-weight: bolder; 
+            margin-top:-10px;
+        }
+
+        .btn-primary{
+            background-color:#467d9c !important;
+        }
+
+        
+
+        .bodybg{
+            background-color:ghostwhite !important;
+        }
+
+    </style>
+</head>
+
+<body class = "bodybg">
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-top dashboardbg">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href=""> HRM <sub>Resource Management Tool</sub></a>
+            </div>
+        </div>
+    </div>
+    <div class="container lg">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" >
+                <form id="log" action="" method="POST">
+                    {% csrf_token %}
+                    <h1>Login</h1>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" id="username" class="form-control"
+                            placeholder="Enter Username" required >
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" id="password" class="form-control"
+                            placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" name="login" class="btn btn-primary btn-block">
+                        Login
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-bottom">
+        <div class="container">
+            <div class="navbar-header" >
+                <a style = "padding-left:10px;color:white;"> &copy2019 Human Resource Management</a>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

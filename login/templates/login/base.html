@@ -1,0 +1,22 @@
+{% load bootstrap3 %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+
+    {% if title %}
+    <title>HRM-{{ title }}</title>
+    {% else %}
+    <title>HRM</title>
+    {% endif %}
+  </head>
+  <body>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    {% bootstrap_javascript %}
+  </body>
+</html>
