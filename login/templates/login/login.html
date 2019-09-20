@@ -1,6 +1,22 @@
-{% extends "login/base.html" %}
-{% block content %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
 
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    {% if title %}
+    <title>HRM-{{ title }}</title>
+    {% else %}
+    <title>HRM</title>
+    {% endif %}
 <head>
     <style type="text/css">
         .navbar-inverse{
@@ -12,11 +28,11 @@
         }
 
         .lg{
-            margin-top: 40px;
+            /*margin-top: 40px;*/
             padding: 60px 40px;
         }
 
-        #log{
+        .log{
             border: 1px solid grey;
             padding: 60px 40px;
         }
@@ -31,8 +47,6 @@
         .btn-primary{
             background-color:#467d9c !important;
         }
-
-        
 
         .bodybg{
             background-color:ghostwhite !important;
@@ -49,11 +63,11 @@
             </div>
         </div>
     </div>
-    <div class="container lg">
+    <div class="container-fluid lg">
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4" >
-                <form id="log" action="" method="POST">
+                <form class = "log" id="login" action="login/" name="login" method="POST">
                     {% csrf_token %}
                     <h1>Login</h1>
                     <div class="form-group">
@@ -66,6 +80,7 @@
                         <input type="password" name="password" id="password" class="form-control"
                             placeholder="Enter password" required>
                     </div>
+
                     <button type="submit" name="login" class="btn btn-primary btn-block">
                         Login
                     </button>
@@ -81,5 +96,9 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
+    {% bootstrap_javascript %}
 </body>
-{% endblock %}
+</html>

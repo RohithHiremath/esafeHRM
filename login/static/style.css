@@ -14,9 +14,10 @@ a:focus{
 	text-decoration: none;
 	transition: all 0.3s;
 }
+
 .navbar{
 	padding: 15px 10px;
-	background: #fff;
+	background: rgb(70, 125, 156);
 	border: none;
 	border-radius: 0;
 	margin-bottom: 40px;
@@ -40,24 +41,27 @@ a:focus{
     width: 100%;
     align-items: stretch;
 }
+
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #7386D5;
+    background: rgb(70, 125, 156);
     color: #fff;
     transition: all 0.3s;
 }
+
 #sidebar.active{
 	margin-left: -250px;
 }
 
 #sidebar .sidebar-header{
 	padding: 20px;
-	background: #6d7fcc;
+	background:rgb(18, 71, 103);
 }
+
 #sidebar ul.components{
-	padding: 20px 0px;
-	border-bottom: 1px solid #47748b;
+	padding: 10px 0px;
+	border-bottom: 1px solid white;
 }
 
 #sidebar ul p{
@@ -71,19 +75,28 @@ a:focus{
 	font-size: 1.1em;
 	display: block;
 }
+
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: orangered;
     background: #fff;
 }
+
+/*#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: orangered;
+}*/
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    background: rgb(18, 71, 103);
 }
+
 a[data-toggle="collapse"] {
     position: relative;
 }
+
 .dropdown-toggle::after {
     display: block;
     position: absolute;
@@ -95,7 +108,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: rgb(67, 112, 112);
 }
 
 ul.CTAs {
@@ -135,7 +148,6 @@ a.article:hover {
 		display: none;
 	}
 }
-
 
 
 
