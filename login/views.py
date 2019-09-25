@@ -16,18 +16,16 @@ def login(request):
             auth.login(request, user)
             # Redirect to Dashboard.
             return  redirect('dashboard')
-            # render(request, 'login/dashboard.html', {'title':'Dashboard'})
         else:
             return redirect('login')
     else:
-        return render(request,'login/login.html',{'title':'Login'})
+        return redirect('/')
 
 def dashboard(request):
-
     return render(request,'login/dashboard.html',{'title':'Login'})
 
 
 def logout(request):
     auth.logout(request)
     # Redirect to a login page.
-    return render(request,'login/login.html',{'title':'Login'})
+    return redirect('/')
