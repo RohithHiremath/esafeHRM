@@ -1,0 +1,91 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobstatus"
+        style="width:5rem;margin-bottom:10px;">
+        Add
+    </button>
+
+    
+    <div class="card" style="margin-top: 10px;">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Employment Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for status in statuses %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ status.employementstatus }}</td>
+                    <td style="text-align: center;">
+                        <a href="#" data-toggle="modal" data-target="#editjobstatus{{ status.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="addjobstatus" tabindex="-1" role="dialog" aria-labelledby="addjobstatusLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addjobstatusLabel">Add Employement Status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" name="addstatus" id="addstatus" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="employementstatus">Employement Status</label><span>*</span>
+                                <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% for status in statuses %}
+    <div class="modal fade" id="editjobstatus{{ status.id }}" tabindex="-1" role="dialog" aria-labelledby="editjobstatusLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editjobstatusLabel">Edit Employement status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/masters/editstatus/{{ status.id }}/" name="editstatus" id="editstatus" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <label for="employementstatus">Employment status</label><span>*</span>
+                                <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="{{ status.employementstatus }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
