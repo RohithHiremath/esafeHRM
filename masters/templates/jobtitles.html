@@ -1,61 +1,17 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<div class="container">
-    <!-- <div class="card" style="width: 5rem;margin-bottom: 10px;">
-        <button type="button" class="btn btn-success" onclick="fnshowaddform()"> Add </button>
-    </div>
-    <div class="card" style="display:none;margin-top: 10px;" id="add">
-        <div class="card-body">
-            <form action="" name="addjob" id="addjob" method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="jobtitle">Job Title</label><span>*</span>
-                        <input type="text" class="form-control" id="jobtitle" name="jobtitle" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="jobdescription" name="jobdescription">
-                    </div>
-                    <div class="col-md-2" style="margin-top:30px;">
-                        <button type="submit" class="btn btn-primary"> Save </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div> -->
+
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle"
         style="width:5rem;margin-bottom:10px;">
         Add
     </button>
-
-    <div class="card" style="display:none;margin-top: 10px;" id="edit">
-        <div class="card-body">
-            <form action="" name="editjob" id="editjob" method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="jobtitle">Job Title</label><span>*</span>
-                        <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="jobdescription" value="" name="jobdescription">
-                    </div>
-                    <div class="col-md-2" style="margin-top:30px;">
-                        <button type="submit" class="btn btn-primary"> Save </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
     <div class="card" style="margin-top: 10px;">
         <table class="table table-bordered">
-            <thead class="thead-light">
+            <thead>
                 <tr>
                     <th>#</th>
                     <th>Job Title</th>
-                    <th>Job Description</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -66,16 +22,33 @@
                     <td>{{ job.jobtitle }}</td>
                     <td>{{ job.jobdescription }}</td>
                     <td style="text-align: center;">
-                        <a href="{% url 'editjobtitle' job.id %}" data-toggle="modal" data-target="#editjobtitle" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
+                        <a href="#" data-toggle="modal" data-target="#editjobtitle{{job.id}}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <!-- <div class="pagination">
+                <span class="step-links">
+                    {% if jobs.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ jobs.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}.
+                    </span>
+            
+                    {% if jobs.has_next %}
+                        <a href="?page={{ jobs.next_page_number }}">next</a>
+                        <a href="?page={{ jobs.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div> -->
     </div>
     <div class="modal fade" id="addjobtitle" tabindex="-1" role="dialog" aria-labelledby="addjobtitleLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addjobtitleLabel">Add Jobtitle</h5>
@@ -83,15 +56,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="" name="addjob" id="addjob" method="POST">
+                <form action="" name="addjob" id="addjob" method="POST"> 
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label for="jobtitle">Job Title</label><span>*</span>
                                 <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <label for="description">Description</label>
                                 <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="">
                             </div>
@@ -105,9 +78,11 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editjobtitle" tabindex="-1" role="dialog" aria-labelledby="editjobtitleLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+
+    {% for job in jobs %}
+    <div class="modal fade" id="editjobtitle{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="editjobtitleLabel"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editjobtitleLabel">Edit Jobtitle</h5>
@@ -115,17 +90,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="" name="editjob" id="editjob" method="POST">
+                <form action="/masters/editjobtitle/{{ job.id }}/" name="editjob" id="editjob" method="POST">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label for="jobtitle">Job Title</label><span>*</span>
-                                <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
+                                <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <label for="description">Description</label>
-                                <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="">
+                                <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="{{ job.jobdescription }}">
                             </div>
                         </div>
                     </div>
@@ -137,15 +112,5 @@
             </div>
         </div>
     </div>
-    
-</div>
-<script>
-
-    function fnshowaddform() {
-        $('#add').toggle();
-    }
-    function fnshowpopup() {
-        alert("am ehre");
-    }
-</script>
+    {% endfor %}
 {% endblock %}
