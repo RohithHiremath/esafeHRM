@@ -9,3 +9,20 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 
+class Jobcategory(models.Model):
+    jobcategory = models.CharField(max_length=50)
+
+class Jobgrade(models.Model):
+    jobgrade = models.CharField(max_length=50)
+
+class Salarycomponent(models.Model):
+    componentname = models.CharField(max_length=50)
+    types = models.CharField(max_length=50)
+
+class Employmentstatus(models.Model):
+    employementstatus = models.CharField(max_length=50)
+
+class Department(models.Model):
+    departmentname = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
+

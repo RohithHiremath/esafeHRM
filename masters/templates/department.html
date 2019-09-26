@@ -1,0 +1,101 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobdepartment"
+        style="width:5rem;margin-bottom:10px;">
+        Add
+    </button>
+
+    
+    <div class="card" style="margin-top: 10px;">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Department Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in departments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ department.departmentname }}</td>
+                    <td>{{ department.description }}</td>
+                    <td style="text-align: center;">
+                        <a href="#" data-toggle="modal" data-target="#editjobdepartment{{ department.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="addjobdepartment" tabindex="-1" role="dialog" aria-labelledby="addjobdepartmentLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addjobdepartmentLabel">Add Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" name="adddepartment" id="adddepartment" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="departmentname">Department Name</label><span>*</span>
+                                <input type="text" class="form-control" id="departmentname" name="departmentname" value="" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" value="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% for department in departments %}
+    <div class="modal fade" id="editjobdepartment{{ department.id }}" tabindex="-1" role="dialog" aria-labelledby="editjobdepartmentLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editjobdepartmentLabel">Edit Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/masters/editdepartment/{{ department.id }}/" name="editdepartment" id="editdepartment" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="departmentname">Department Name</label><span>*</span>
+                                <input type="text" class="form-control" id="departmentname" name="departmentname" value="{{ department.departmentname }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" value="{{ department.description }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

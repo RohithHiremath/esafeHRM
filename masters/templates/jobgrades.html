@@ -1,6 +1,91 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
     <div class="container">
-        job Grades
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobgrade"
+            style="width:5rem;margin-bottom:10px;">
+            Add
+        </button>
+    
+        
+        <div class="card" style="margin-top: 10px;">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Job Grade</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ grade.jobgrade }}</td>
+                        <td style="text-align: center;">
+                            <a href="#" data-toggle="modal" data-target="#editjobgrade{{ grade.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        <div class="modal fade" id="addjobgrade" tabindex="-1" role="dialog" aria-labelledby="addjobgradeLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addjobgradeLabel">Add Job Grade</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="" name="addgrade" id="addgrade" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="jobgrade">Job Grade</label><span>*</span>
+                                    <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" required>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% for grade in grades %}
+        <div class="modal fade" id="editjobgrade{{ grade.id }}" tabindex="-1" role="dialog" aria-labelledby="editjobgradeLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editjobgradeLabel">Edit Job Grade</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/masters/editjobgrade/{{ grade.id }}/" name="editgrade" id="editgrade" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="jobgrade">Job Grade</label><span>*</span>
+                                    <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="{{ grade.jobgrade }}" required>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}
