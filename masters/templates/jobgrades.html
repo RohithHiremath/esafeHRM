@@ -13,7 +13,6 @@
                     <tr>
                         <th>#</th>
                         <th>Job Grade</th>
-                        <th>Currency</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -22,7 +21,6 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ grade.jobgrade }}</td>
-                        <td>{{ grade.currency }}</td>
                         <td style="text-align: center;">
                             <a href="#" data-toggle="modal" data-target="#editjobgrade{{ grade.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
                         </td>
@@ -45,14 +43,10 @@
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label for="jobgrade">Job Grade</label><span>*</span>
                                     <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" required>
-                                </div>
-                                <div class="col-md-4">
-                                        <label for="currency">currency</label><span>*</span>
-                                        <input type="text" class="form-control" id="currency" name="currency" value="" required>
-                                    </div>    
+                                </div>  
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -81,11 +75,7 @@
                                 <div class="col-md-6">
                                     <label for="jobgrade">Job Grade</label><span>*</span>
                                     <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="{{ grade.jobgrade }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                        <label for="currency">Currency</label><span>*</span>
-                                        <input type="text" class="form-control" id="currency" name="currency" value="{{ grade.currency }}" required>
-                                    </div>    
+                                </div>    
                             </div>
                         </div>
                         <div class="modal-footer">

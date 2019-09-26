@@ -44,7 +44,7 @@ def editjobcategories(request, id):
 
 def jobgrade(request):
     if request.method == 'POST':
-        grade = Jobgrade(jobgrade=request.POST['jobgrade'],currency=request.POST['currency'])
+        grade = Jobgrade(jobgrade=request.POST['jobgrade'])
         grade.save()
         return redirect('jobgrade')
     else:
@@ -55,7 +55,6 @@ def editjobgrade(request, id):
     if request.method == 'POST':
         cat = Jobgrade.objects.get(id=id)
         cat.jobgrade = request.POST['jobgrade']
-        cat.currency = request.POST['currency']
         cat.save()
         return redirect('jobgrade')
     else:

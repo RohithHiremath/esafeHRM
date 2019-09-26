@@ -14,7 +14,6 @@ class Jobcategory(models.Model):
 
 class Jobgrade(models.Model):
     jobgrade = models.CharField(max_length=50)
-    currency = models.CharField(max_length=50)
 
 class Salarycomponent(models.Model):
     componentname = models.CharField(max_length=50)
