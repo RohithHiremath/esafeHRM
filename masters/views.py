@@ -12,18 +12,21 @@ def jobtitles(request):
         return redirect('jobtitle')
     else:
         jobs = Job.objects.all()
+        paginator = Paginator(jobs, 2)
+        page = request.GET.get('page')
+        jobs = paginator.get_page(page)
         return render(request,'jobtitles.html',{'title':'Jobtitles List','jobs':jobs})
 
 def editjobtitles(request, id):
     if request.method == 'POST':
-        cat = Job.objects.get(id=id)
-        cat.jobtitle = request.POST['jobtitle']
-        cat.jobdescription = request.POST['jobdescription']
-        cat.save()
+        job = Job.objects.get(id=id)
+        job.jobtitle = request.POST['jobtitle']
+        job.jobdescription = request.POST['jobdescription']
+        job.save()
         return redirect('jobtitle')
     else:
         return redirect('jobtitle')
-        
+
 def jobcategories(request):
     if request.method == 'POST':
         category = Jobcategory(jobcategory=request.POST['jobcategory'])
