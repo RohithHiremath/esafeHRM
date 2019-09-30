@@ -79,7 +79,6 @@ def editcomponent(request, id):
     else:
         return redirect('component')
 
-
 def employementstatus(request):
     if request.method == 'POST':
         status = Employmentstatus(employementstatus=request.POST['employementstatus'])
