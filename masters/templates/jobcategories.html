@@ -1,91 +1,93 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<div class="container">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobcategory"
-        style="width:5rem;margin-bottom:10px;">
+<div class="container-fluid text-right" style="margin:10px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobcategory">
         Add
     </button>
-
-    
-    <div class="card" style="margin-top: 10px;">
-        <table class="table table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th>#</th>
-                    <th>Job Category</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ category.jobcategory }}</td>
-                    <td style="text-align: center;">
-                        <a href="#" data-toggle="modal" data-target="#editjobcategory{{ category.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="modal fade" id="addjobcategory" tabindex="-1" role="dialog" aria-labelledby="addjobcategoryLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addjobcategoryLabel">Add Job Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="" name="addcategory" id="addcategory" method="POST">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="jobcategory">Job Category</label><span>*</span>
-                                <input type="text" class="form-control" id="jobcategory" name="jobcategory" value="" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% for category in categories %}
-    <div class="modal fade" id="editjobcategory{{ category.id }}" tabindex="-1" role="dialog" aria-labelledby="editjobcategoryLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editjobcategoryLabel">Edit Job Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/masters/editjobcategory/{{ category.id }}/" name="editcategory" id="editcategory" method="POST">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <label for="jobcategory">Job Category</label><span>*</span>
-                                <input type="text" class="form-control" id="jobcategory" name="jobcategory" value="{{ category.jobcategory }}" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
 </div>
+<div class="card" style="margin-top:10px;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Job Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ category.jobcategory }}</td>
+                <td>
+                    <a href="#" data-toggle="modal" data-target="#editjobcategory{{ category.id }}">
+                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="addjobcategory" tabindex="-1" role="dialog" aria-labelledby="addjobcategoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addjobcategoryLabel">Add Job Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form action="" name="addcategory" id="addcategory" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label for="jobcategory">Job Category</label><span>*</span>
+                            <input type="text" class="form-control" id="jobcategory" name="jobcategory" value=""
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% for category in categories %}
+<div class="modal fade" id="editjobcategory{{ category.id }}" tabindex="-1" role="dialog"
+    aria-labelledby="editjobcategoryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editjobcategoryLabel">Edit Job Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form action="/masters/editjobcategory/{{ category.id }}/" name="editcategory" id="editcategory"
+                method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label for="jobcategory">Job Category</label><span>*</span>
+                            <input type="text" class="form-control" id="jobcategory" name="jobcategory"
+                                value="{{ category.jobcategory }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

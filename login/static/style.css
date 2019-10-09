@@ -139,6 +139,14 @@ a.article:hover {
     transition: all 0.3s;
 }
 
+.modal {
+    top: 120px !important;
+}
+
+.bg-light {
+    background-color: #e83e8c !important;
+}
+
 @media(maz-width:768px){
 	#sidebar{margin-left: -250px;}
 	#sidebar.active{

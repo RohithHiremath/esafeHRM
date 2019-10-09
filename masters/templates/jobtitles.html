@@ -1,116 +1,102 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle"
-        style="width:5rem;margin-bottom:10px;">
+<div class="container-fluid text-right" style="margin:10px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
         Add
     </button>
-    <div class="card" style="margin-top: 10px;">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Job Title</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for job in jobs %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ job.jobtitle }}</td>
-                    <td>{{ job.jobdescription }}</td>
-                    <td style="text-align: center;">
-                        <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a> 
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <!-- <div class="pagination">
-                <span class="step-links">
-                    {% if jobs.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ jobs.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}.
-                    </span>
-            
-                    {% if jobs.has_next %}
-                        <a href="?page={{ jobs.next_page_number }}">next</a>
-                        <a href="?page={{ jobs.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
-            </div> -->
-    </div>
-    <div class="modal fade" id="addjobtitle" tabindex="-1" role="dialog" aria-labelledby="addjobtitleLabel"
-        aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addjobtitleLabel">Add Jobtitle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="" name="addjob" id="addjob" method="POST"> 
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="jobtitle">Job Title</label><span>*</span>
-                                <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
-                            </div>
-                            <div class="col-md-7">
-                                <label for="description">Description</label>
-                                <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="">
-                            </div>
+</div>
+<div class="card" style="margin-top: 10px;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Job Title</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ job.jobtitle }}</td>
+                <td>{{ job.jobdescription }}</td>
+                <td>
+                    <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}"><i
+                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="addjobtitle" tabindex="-1" role="dialog" aria-labelledby="addjobtitleLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addjobtitleLabel">Add Jobtitle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form action="" name="addjob" id="addjob" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="jobtitle">Job Title</label><span>*</span>
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    {% for job in jobs %}
-    <div class="modal fade" id="editjobtitle{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="editjobtitleLabel"
-        aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editjobtitleLabel">Edit Jobtitle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/masters/editjobtitle/{{ job.id }}/" name="editjob" id="editjob" method="POST">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="jobtitle">Job Title</label><span>*</span>
-                                <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" required>
-                            </div>
-                            <div class="col-md-7">
-                                <label for="description">Description</label>
-                                <input type="text" class="form-control" id="jobdescription" name="jobdescription" value="{{ job.jobdescription }}">
-                            </div>
+{% for job in jobs %}
+<div class="modal fade" id="editjobtitle{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="editjobtitleLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editjobtitleLabel">Edit Jobtitle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form action="/masters/editjobtitle/{{ job.id }}/" name="editjob" id="editjob" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="jobtitle">Job Title</label><span>*</span>
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle"
+                                value="{{ job.jobtitle }}" required>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="jobdescription" name="jobdescription"
+                                value="{{ job.jobdescription }}">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
         </div>
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% endblock %}

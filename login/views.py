@@ -22,7 +22,7 @@ def login(request):
         return redirect('/')
 
 def dashboard(request):
-    return render(request,'login/dashboard.html',{'title':'Login'})
+    return render(request,'login/dashboard.html',{'dashboard':'dashboard'})
 
 
 def logout(request):

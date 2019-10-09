@@ -12,9 +12,9 @@ def jobtitles(request):
         return redirect('jobtitle')
     else:
         jobs = Job.objects.all()
-        paginator = Paginator(jobs, 2)
-        page = request.GET.get('page')
-        jobs = paginator.get_page(page)
+        # paginator = Paginator(jobs, 2)
+        # page = request.GET.get('page')
+        # jobs = paginator.get_page(page)
         return render(request,'jobtitles.html',{'title':'Jobtitles List','jobs':jobs})
 
 def editjobtitles(request, id):

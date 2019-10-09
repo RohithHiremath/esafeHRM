@@ -1,104 +1,108 @@
-{# Load the tag library #}
-{% load bootstrap4 %}
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {# Load CSS and JavaScript #}
-    {% bootstrap_css %}
-
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
-
+    <meta name="description" content="">
+    <meta name="author" content="">
     {% if title %}
     <title>HRM-{{ title }}</title>
     {% else %}
     <title>HRM</title>
     {% endif %}
-
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+    <style>
+        .nav-link {
+            padding: 0px !important;
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <p style="color:ghostwhite;">Resource Management</p>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading"> Resource Management</div>
+            <div class="list-group list-group-flush">
+                <ul class="navbar-nav">
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Masters
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
+                                Job Titles
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobcategory' %}">
+                                Job Categories
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobgrade' %}">
+                                Job Grades
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'component' %}">
+                                Salary Components
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'status' %}">
+                                Employment Status
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
+                                Departments
+                            </a>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            PIM
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
+                                Employee List
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
             </div>
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Master
-                        Set-Up</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="{% url 'jobtitle' %}">Job Titles</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobcategory' %}">Job Categories</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobgrade' %}">Job Grades</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'component' %}">Salary Components</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'status' %}">Employment Status</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'department' %}">Departments</a>
-                        </li>   
-                    </ul>
-                </li>
-                <li>
-                    <a href="#empmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">PIM</a>
-                    <ul class="collapse list-unstyled" id="empmenu">
-                        <li>
-                            <a href="{% url 'jobtitle' %}">Employee List</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobcategory' %}">Job Categories</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobgrade' %}">Job Grades</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="container-fluid" style="min-height:500px;">
-            <nav class="navbar sticky-top navbar-expand-lg navbar-light">
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fa fa-align-justify"></i> <span></span>
-                </button>
-            </nav>
-            {% block content %}{% endblock %}
         </div>
-    </div>
-    {% bootstrap_javascript jquery='full' %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+        <!-- /#sidebar-wrapper -->
 
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle"><i class="fa fa-angle-left"></i> <i
+                        class="fa fa-angle-right"></i></button>
+                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"></button> -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+            </nav>
+            <div class="container-fluid">
+                {% block content  %} {% endblock%}
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Menu Toggle Script -->
     <script>
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });  
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
     </script>
 </body>
 
