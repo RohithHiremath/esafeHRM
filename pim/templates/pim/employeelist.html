@@ -1,0 +1,48 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container">
+
+    {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adddetails"
+        style="width:5rem;margin-bottom:10px;">
+        Add
+    </button> {% endcomment %}
+
+        <p>
+          <a href="/pim/details/" >Add</a>
+        </p>
+
+
+    <div class="card" style="margin-top: 10px;">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Job Title</th>
+                    <th>Employment Status</th>
+                    <th>Location</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for personal in personals %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ personal.employee_id }}</td>
+                    <td>{{ personal.first_name }}</td>
+                    <td>{{ personal.job_title }}</td>
+                    <td>{{ personal.employment_status }}</td>
+                    <td>{{ personal.nationality }}</td>
+                    <td style="text-align: center;">
+                        <a href="/pim/edit/{{ personal.id }}">Edit</a> 
+
+                        {% comment %} <a href="edit/{{ personal.id }}" data-toggle="modal" data-target="#edit{{ personal.id }}" ><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>  {% endcomment %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

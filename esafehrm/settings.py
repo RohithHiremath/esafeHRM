@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR_LOGIN= os.path.join(BASE_DIR,'login/templates')
 TEMPLATE_DIR_MASTERS = os.path.join(BASE_DIR,'masters/templates')
+TEMPLATE_DIR_PIM = os.path.join(BASE_DIR,'pim/templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'login.apps.LoginConfig',
     'masters.apps.MastersConfig',
+    'pim',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'esafehrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR_LOGIN,TEMPLATE_DIR_MASTERS],
+        'DIRS': [TEMPLATE_DIR_LOGIN,TEMPLATE_DIR_MASTERS,TEMPLATE_DIR_PIM],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

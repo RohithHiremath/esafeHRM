@@ -1,0 +1,166 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+
+      <div class="jumbotron">
+         <h2><b>Personal Details</b></h2><br>
+         <form action="" enctype="multipart/form-data" method="POST">
+           {% csrf_token %}
+          
+          <p><label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" value="" required><br>
+          </p> 
+
+          <p><label for="middle_name">Middle Name:</label>
+              <input type="text" name="middle_name" id="middle_name" value="" required>
+          </p>
+
+          <p><label for="last_name">Last Name:</label>
+              <input type="text" name="last_name" id="last_name" value="" required>
+          </p>
+          
+          <p><label for="employee_id">Employee ID:</label>
+            <input type="text" name="employee_id" id="employee_id" value="" required> 
+          </p>
+          <p><label for="date_of_birth">Date Of Birth:</label>
+              <input type="date" name="date_of_birth"  id="date_of_birth" value=""> 
+          </p>
+          <p>
+          <table>
+            <tr>
+              <td>Marital Status:</td>
+              <td>
+                <select name="marital_status">
+                  <option value="">Select</option>
+                  <option value="1">Married</option>
+                  <option value="2">Single</option>
+                  <option value="3">Other</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+          </p>
+          <p>
+          <table>
+            <tr>
+              <td>Gender:</td>
+              <td>
+                  <select name="gender">
+                      <option value="">Select</option>
+                      <option value="1">Male</option>
+                      <option value="2">Female</option>
+                    </select>
+              </td>
+            </tr>
+          </table>
+          </p>
+          <p>
+          <table>
+             <tr>
+                <td>Nationality:</td>
+                <td>
+                    <select name="nationality">
+                        <option value="">Select</option>
+                             <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
+                             <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>USA</option>
+                             <option value="3" {% if personal.nationality == 3 %}selected{% endif %}>UAE</option>
+                            </select>
+                </td>
+              </tr>
+            </table>
+            </p>
+            <p>
+              <label for="nick_name">Nick Name:</label>
+                <input type="text" name="nick_name" id="nick_name" value="">
+            </p>
+          <p><label for="aadhar_card_no">Aadhar Card No:</label>
+            <input type="number" name="aadhar_card_no" id="aadhar_card_no" value="">
+          </p>
+          <p>
+            <input type="button" name="btn btn-primary" value="Next" onclick="somefunction();"></b>
+          </p>
+                <div class="jumbotron" style="display:none;"  id="test">
+                    <h2><b>Employment Details</b></h2><br>
+                     <p><label for="joined_date">Joined Date:</label>
+                         <input type="date" name="joined_date"  value=""> 
+                     </p>
+                     <p><label for="date_of_permanency">Date Of Permanency:</label>
+                       <input type="date" name="date_of_permanency"  value=""> 
+                     </p>
+                     <p>
+                     <table>
+                       <tr>
+                         <td>Job Title:</td>
+                         <td>
+                           <select name="job_title">
+                             <option value="">Select</option>
+                             {% for job in jobtitles %}
+                             <option value="{{ job.id }}">{{ job.jobtitle }}</option>
+                             {% endfor %}
+                                </select>
+                         </td>
+                       </tr>
+                       </table>
+                       </p>
+                         <p>
+                         <table>
+                           <tr>
+                             <td>Employment Status:</td>
+                             <td>
+                               <select name="employment_status">
+                                 <option value="">Select</option>
+                                 {% for job in employmentstatus %}
+                                 <option value="{{ job.id }}">{{ job.employementstatus }}</option>
+                                 {% endfor %}
+                                   </select>
+                             </td>
+                           </tr>
+                         </table>
+                         </p>
+                         <p>
+                     <table>
+                       <tr>
+                         <td>Job Category:</td>
+                         <td>
+                           <select name="job_category">
+                             <option value="">Select</option>
+                             {% for job in jobcategory %}
+                             <option value="{{ job.id }}">{{ job.jobcategory }}</option>
+                             {% endfor %}
+                       </select>
+                         </td>
+                       </tr>
+                       </table>
+                       </p>
+                     <p>
+                     <table>
+                       <tr>
+                         <td>Work Shift:</td>
+                         <td>
+                           <select name="work_shifts">
+                             <option value="">Select</option>
+                             <option value="1">General</option>
+                             <option value="2">Twilight</option>
+                           </select>
+                         </td>
+                       </tr>
+                       </table>
+                       </p>  
+                     <p>
+                     <input type="submit" name="btn btn-primary" value="Save">
+                </div>
+                
+         </form>
+     </div>
+    </div>
+  <script>
+    
+    function somefunction(){
+       if(document.getElementById('first_name').value==''){
+         alert("firstname cannot be empty");
+         return false;
+       }
+      document.getElementById('test').style.display='block';
+    }
+  </script>
+{% endblock %}
+
