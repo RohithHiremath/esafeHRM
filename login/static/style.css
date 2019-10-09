@@ -147,6 +147,10 @@ a.article:hover {
     background-color: #e83e8c !important;
 }
 
+.row {
+    margin-bottom: 15px !important;
+}
+
 @media(maz-width:768px){
 	#sidebar{margin-left: -250px;}
 	#sidebar.active{

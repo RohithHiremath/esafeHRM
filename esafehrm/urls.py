@@ -19,10 +19,8 @@ from masters import views
 from pim import views
 
 urlpatterns = [
-    
     path('admin/', admin.site.urls),
-    path('', include('login.urls')),
     path('masters/', include('masters.urls')),
     path('pim/', include('pim.urls')),
-
+    path('', include('login.urls'))
 ]
