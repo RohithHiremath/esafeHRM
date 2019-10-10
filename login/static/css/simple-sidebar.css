@@ -95,6 +95,9 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
   border-top: 1px solid #6a57b7;
 }
 
+.modal-body {
+  min-height: 130px !important;
+}
 .modal-content {
   position: relative;
   display: -ms-flexbox;
@@ -111,12 +114,12 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
   margin-top: 120px !important;
 }
 .modal-header {
-  background-color: #7f69a9 !important;
+  background-color: #ac9bcc !important;
   padding: 0.5rem;
   color: white;
 }
 .modal-footer {
-  background-color: #7f69a9 !important;
+  background-color: #ac9bcc !important;
   padding: 0.5rem;
   color: white;
 }
