@@ -59,10 +59,10 @@
                 <td>Nationality:</td>
                 <td>
                     <select name="nationality">
-                        <option value="">Select</option>
-                        <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
-                        <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>USA</option>
-                        <option value="3" {% if personal.nationality == 3 %}selected{% endif %}>UAE</option>
+                      <option value="">Select</option>
+                        {% for loc in locations %}
+                          <option value="{{ loc.id }}" {% if personal.nationality ==  loc.id %} selected {% endif %} >{{ loc.location }}</option>
+                        {% endfor %}                        
                  </select>
                 </td>
               </tr>

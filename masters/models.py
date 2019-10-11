@@ -26,3 +26,5 @@ class Department(models.Model):
     departmentname = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
 
+class Location(models.Model):
+    location = models.CharField(max_length=50)
