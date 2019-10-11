@@ -5,6 +5,8 @@
  */
 body {
   overflow-x: hidden;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
 }
 
 #sidebar-wrapper {
@@ -89,6 +91,10 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
   border-bottom: 1px solid #6a57b7;
 }
 
+tr{
+  line-height: 17px;
+}
+
 .table td, .table th {
   padding: .75rem;
   vertical-align: top;
@@ -98,6 +104,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .modal-body {
   min-height: 130px !important;
 }
+
 .modal-content {
   position: relative;
   display: -ms-flexbox;

@@ -1,155 +1,178 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-
-      <div class="jumbotron">
-         <h2><b>Personal Details</b></h2><br>
-         <form action="/pim/update/{{ personal.id }}/" enctype="multipart/form-data" method="POST">
-           {% csrf_token %}
-          
-          <p><label for="first_name">First Name:</label>
-            <input type="text" name="first_name" value="{{ personal.first_name }}" placeholder="{{ personal.first_name }}" required><br>
-          </p> 
-
-          <p><label for="middle_name">Middle Name:</label>
-              <input type="text" name="middle_name" value="{{ personal.middle_name }}" placeholder="{{ personal.middle_name }}" required>
-          </p>
-
-          <p><label for="last_name">Last Name:</label>
-              <input type="text" name="last_name"  value="{{ personal.last_name }}" placeholder="{{ personal.last_name }}" required>
-          </p>
-          
-          <p><label for="employee_id">Employee ID:</label>
-            <input type="text" name="employee_id"  value="{{ personal.employee_id }}" placeholder="{{ personal.employee_id }}" required> 
-          </p>
-          <p><label for="date_of_birth">Date Of Birth:</label>
-              <input type="date" name="date_of_birth"  id="date_of_birth" value="{{ personal.date_of_birth }}" placeholder="{{ personal.date_of_birth }}"> 
-          </p>
-          <p>
-          <table>
-            <tr>
-              <td>Marital Status:</td>
-              <td>
-                <select name="marital_status">
-                  <option value="">Select</option>
-                  <option value="1" {% if personal.marital_status == 1 %}selected{% endif %}>Married</option>
-                  <option value="2" {% if personal.marital_status == 2 %}selected{% endif %}>Single</option>
-                  <option value="3" {% if personal.marital_status == 3 %}selected{% endif %}>Other</option>
-                </select>
-              </td>
-            </tr>
-          </table>
-          </p>
-          <p>
-          <table>
-            <tr>
-              <td>Gender:</td>
-              <td>
-                  <select name="gender">
-                      <option value="">Select</option>
-                      <option value="1" {% if personal.gender == 1 %}selected{% endif %}>Male</option>
-                      <option value="2" {% if personal.gender == 2 %}selected{% endif %}>Female</option>
-                    </select>
-              </td>
-            </tr>
-          </table>
-          </p>
-          <p>
-          <table>
-             <tr>
-                <td>Nationality:</td>
-                <td>
-                    <select name="nationality">
-                        <option value="">Select</option>
-                        <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
-                        <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>USA</option>
-                        <option value="3" {% if personal.nationality == 3 %}selected{% endif %}>UAE</option>
-                 </select>
-                </td>
-              </tr>
-            </table>
-            </p>
-            <p>
-              <label for="nick_name">Nick Name:</label>
-                <input type="text" name="nick_name" id="nick_name" value="{{personal.nick_name}}" placeholder="{{personal.nick_name}}">
-            </p>
-
-          <p><label for="aadhar_card_no">Aadhar Card No:</label>
-            <input type="number" name="aadhar_card_no" id="aadhar_card_no" value="{{personal.aadhar_card_no}}" placeholder="{{personal.aadhar_card_no}}">
-          </p>
-
-                <div class="jumbotron">
-                    <h2><b>Employment Details</b></h2><br>
-                     <p><label for="joined_date">Joined Date:</label>
-                         <input type="date" name="joined_date"  value="{{personal.joined_date}}"> 
-                     </p>
-                     <p><label for="date_of_permanency">Date Of Permanency:</label>
-                       <input type="date" name="date_of_permanency"  value="{{personal.date_of_permanency}}" placeholder="{{personal.date_of_permanency}}"> 
-                     </p>
-                     <p>
-                     <table>
-                       <tr>
-                         <td>Job Title:</td>
-                         <td>
-                           <select name="job_title">
-                              <option value="">Select</option>
-                              {% for job in jobtitles %}
-                             <option value="{{ job.id }}" {% if personal.job_title ==  job.id %} selected {% endif %} >{{ job.jobtitle }}</option>
-                             {% endfor %}
-                            </select>
-                         </td>
-                       </tr>
-                       </table>
-                       </p>
-                         <p>
-                         <table>
-                           <tr>
-                             <td>Employment Status:</td>
-                             <td>
-                               <select name="employment_status">
-                                 <option value="">Select</option>
-                                 {% for job in employmentstatus %}
-                                 <option value="{{ job.id }}" {% if personal.employment_status ==  job.id %} selected {% endif %} >{{ job.employementstatus }}</option>
-                                 {% endfor %}
-                                      </select>
-                             </td>
-                           </tr>
-                         </table>
-                         </p>
-                         <p>
-                     <table>
-                       <tr>
-                         <td>Job Category:</td>
-                         <td>
-                           <select name="job_category">
-                             <option value="">Select</option>
-                             {% for job in jobcategory %}
-                             <option value="{{ job.id }}" {% if personal.job_category ==  job.id %} selected {% endif %} >{{ job.jobcategory }}</option>
-                             {% endfor %}
-                       </select>
-                         </td>
-                       </tr>
-                       </table>
-                       </p>
-                     <p>
-                     <table>
-                       <tr>
-                         <td>Work Shift:</td>
-                         <td>
-                           <select name="work_shifts">
-                             <option value="">Select</option>
-                             <option value="1" {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
-                             <option value="2" {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
-                           </select>
-                         </td>
-                       </tr>
-                       </table>
-                       </p>  
-                     <p>
-                     <input type="submit" name="btn btn-primary" value="Update">
-                    </p> 
-                </div>
-         </form>
-     </div>
+<form action="/pim/update/{{ personal.id }}/" enctype="multipart/form-data" method="POST">
+  {% csrf_token %}
+  <div class="card" style="margin-top: 10px;" id="perdetails">
+    <div class="card-header">
+      <h5 class="card-title" id="editjobtitleLabel">Edit Personal Details</h5>
     </div>
-{% endblock %}
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="employee_id">Employee ID</label><span>*</span>
+          <input type="number" class="form-control" readonly name="employee_id" id="employee_id"
+            value="{{ personal.employee_id }}" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="FirstName">First Name</label><span>*</span>
+          <input type="text" class="form-control" name="first_name" id="first_name" value="{{ personal.first_name }}"
+            required>
+        </div>
+        <div class="col-md-4">
+          <label for="MiddleName">Middle Name</label>
+          <input type="text" class="form-control" name="middle_name" id="middle_name"
+            value="{{ personal.middle_name }}">
+        </div>
+        <div class="col-md-4">
+          <label for="LastName">Last Name</label><span>*</span>
+          <input type="text" class="form-control" name="last_name" id="last_name" value="{{ personal.last_name }}"
+            required>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-md-4">
+          <label for="DateOfBirth">Date Of Birth</label><span>*</span>
+          <input type="date" class="form-control" name="date_of_birth" id="date_of_birth"
+            value="{{ personal.date_of_birth }}" required>
+        </div>
+        <div class="col-md-4">
+          <label for="Gender">Gender</label>
+          <select name="gender" class="form-control">
+            <option value="">Select</option>
+            <option value="1" {% if personal.gender == 1 %}selected{% endif %}>Male</option>
+            <option value="2" {% if personal.gender == 2 %}selected{% endif %}>Female</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="MaritalStatus">Marital Status</label>
+          <select name="marital_status" class="form-control">
+            <option value="">Select</option>
+            <option value="1" {% if personal.marital_status == 1 %}selected{% endif %}>Married</option>
+            <option value="2" {% if personal.marital_status == 2 %}selected{% endif %}>Single</option>
+            <option value="3" {% if personal.marital_status == 3 %}selected{% endif %}>Divorce</option>
+            <option value="4" {% if personal.marital_status == 4 %}selected{% endif %}>Widow</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <label for="nationality">Nationality</label>
+          <select name="nationality" class="form-control">
+            <option value="">Select</option>
+            <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
+            <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>USA</option>
+            <option value="3" {% if personal.nationality == 3 %}selected{% endif %}>UAE</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="MiddleName">Aadhaar Number</label>
+          <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no"
+            value="{{personal.aadhar_card_no}}" required>
+        </div>
+        <div class="col-md-4">
+          <label for="nickname">Nick Name</label><span>*</span>
+          <input type="text" class="form-control" name="nick_name" id="nick_name" value="{{personal.nick_name}}"
+            required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="float:right;">
+          <button type="button" class="btn btn-primary pull-right" onclick="somefunction(1);">
+            Next <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 10px;display:none;" id="empdetails">
+    <div class="card-header">
+      <h5 class="card-title" id="addjobtitleLabel">Edit Employment Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="joined_date">Joined Date:</label><span>*</span>
+          <input type="date" class="form-control" name="joined_date" id="joined_date" required
+            value="{{personal.joined_date}}">
+        </div>
+        <div class="col-md-4">
+          <label for="date_of_permanency">Date Of Permanency:</label>
+          <input type="date" class="form-control" name="date_of_permanency" id="date_of_permanency"
+            value="{{personal.date_of_permanency}}" required>
+        </div>
+        <div class="col-md-4">
+          <label for="JobTitle">Job Title</label>
+          <select name="job_title" class="form-control">
+            <option value="">Select</option>
+            {% for job in jobtitles %}
+            <option value="{{ job.id }}" {% if personal.job_title ==  job.id %} selected {% endif %}>{{ job.jobtitle }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="EmploymentStatus">Employment Status</label><span>*</span>
+          <select name="employment_status" class="form-control">
+            <option value="">Select</option>
+            {% for job in employmentstatus %}
+            <option value="{{ job.id }}" {% if personal.employment_status ==  job.id %} selected {% endif %}>
+              {{ job.employementstatus }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="JobCategory">Job Category</label>
+          <select name="job_category" class="form-control">
+              <option value="">Select</option>
+              {% for job in jobcategory %}
+              <option value="{{ job.id }}" {% if personal.job_category ==  job.id %} selected {% endif %} >{{ job.jobcategory }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="WorkShift">Work Shift</label>
+          <select name="work_shifts" class="form-control">
+              <option value="">Select</option>
+              <option value="1" {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
+              <option value="2" {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="float:right;">
+          <button type="submit" class="btn btn-primary pull-right">
+            Save
+          </button>
+          <button type="button" class="btn btn-primary" onclick="somefunction(2);">
+            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Prev
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
+
+<script>
+  function somefunction(val) {
+    if (val == 1) {
+      if (document.getElementById('first_name').value == '') {
+        alert("Firstname cannot be empty");
+        return false;
+      }
+      document.getElementById('empdetails').style.display = 'block';
+      document.getElementById('perdetails').style.display = 'none';
+    } else {
+      document.getElementById('empdetails').style.display = 'none';
+      document.getElementById('perdetails').style.display = 'block';
+    }
+
+  }
+</script>
+{% endblock %}

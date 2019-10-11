@@ -1,14 +1,16 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
 from masters.models import Job, Jobcategory ,Employmentstatus
+from datetime import datetime
 # Create your views here.
 
 def Personal_details_view(request):
+    emp_id = fngetempid(request)
     if request.method =="POST":
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],
                                 last_name =request.POST['last_name'],
-                                employee_id=request.POST['employee_id'],
+                                employee_id=emp_id,
                                 date_of_birth=request.POST['date_of_birth'],
                                 marital_status=request.POST['marital_status'],
                                 gender=request.POST['gender'],
@@ -33,16 +35,36 @@ def Personal_details_view(request):
                                                     'jobcategory':jobcategory,
                                                     'employmentstatus':employmentstatus})
 
+def fngetempid(request):
+    try:
+        personal = Personal_details.objects.latest('employee_id')
+        if personal.employee_id == None:
+            latestempid = 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+        else:
+            latestempid = personal.employee_id + 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+    except:
+            latestempid = 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+
 def employeelist(request):
     personals = Personal_details.objects.all()
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
     personal = Personal_details.objects.get(id=id)
+    personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
+    personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
+    personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
     jobtitles = Job.objects.all()
     jobcategory = Jobcategory.objects.all()
     employmentstatus = Employmentstatus.objects.all()
-    return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
+    return render(request,'pim/editdetails.html',{'title':'Edit Employee List',
+                                                'personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobcategory':jobcategory,
                                                 'employmentstatus':employmentstatus})                                              
