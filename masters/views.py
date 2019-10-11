@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render,redirect
-from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatus, Department
+from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatus, Department, Location
 
 # Create your views here.
 
@@ -119,3 +119,20 @@ def editdepartment(request, id):
     else:
         return redirect('department')
 
+def location(request):
+    if request.method == 'POST':
+        location = Location(location=request.POST['location'])
+        location.save()
+        return redirect('location')
+    else:
+        locations = Location.objects.all()
+    return render(request,'location.html',{'title':'status List','locations':locations})
+
+def editlocation(request, id):
+    if request.method == 'POST':
+        loc = Location.objects.get(id=id)
+        loc.location = request.POST['location']
+        loc.save()
+        return redirect('location')
+    else:
+        return redirect('location')

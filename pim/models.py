@@ -6,7 +6,7 @@ class Personal_details(models.Model):
    first_name = models.CharField(max_length=150,null = True)
    middle_name = models.CharField(max_length=150,blank = False)
    last_name = models.CharField(max_length=150,blank = False)
-   employee_id = models.IntegerField(blank = False)
+   employee_id = models.CharField(max_length=150,blank = False)
    date_of_birth = models.DateField(blank = False)
    marital_status = models.SmallIntegerField(default=1,blank = False)
    gender = models.SmallIntegerField(default=1,blank = False)

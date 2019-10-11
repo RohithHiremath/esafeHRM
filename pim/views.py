@@ -1,16 +1,17 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
-from masters.models import Job, Jobcategory ,Employmentstatus
 from datetime import datetime
+from masters.models import Job, Jobcategory ,Employmentstatus, Location, Department
 # Create your views here.
 
 def Personal_details_view(request):
     emp_id = fngetempid(request)
     if request.method =="POST":
+        emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],
                                 last_name =request.POST['last_name'],
-                                employee_id=emp_id,
+                                employee_id = emp_id,
                                 date_of_birth=request.POST['date_of_birth'],
                                 marital_status=request.POST['marital_status'],
                                 gender=request.POST['gender'],
@@ -30,10 +31,14 @@ def Personal_details_view(request):
         jobtitles = Job.objects.all()
         jobcategory = Jobcategory.objects.all()
         employmentstatus = Employmentstatus.objects.all()
+        locations = Location.objects.all()
+        departments = Department.objects.all()
         return render(request,'pim/personaldetails.html',{'personals':personals,
                                                     'jobtitles':jobtitles,
                                                     'jobcategory':jobcategory,
-                                                    'employmentstatus':employmentstatus})
+                                                    'employmentstatus':employmentstatus,
+                                                    'locations':locations,
+                                                    'departments':departments})
 
 def fngetempid(request):
     try:
@@ -77,4 +82,25 @@ def update(request, id):
     personal.employment_status = request.POST['employment_status']
     personal.nationality = request.POST['nationality']
     personal.save()
+    return redirect('/pim/employeelist/')
+
+def fngetempid(request):
+    try:
+        personal = Personal_details.objects.latest('employee_id')
+        if personal.employee_id == None:
+            latestempid = 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+        else:
+            latestempid = int(personal.employee_id) + 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+    except:
+        latestempid = 1
+        latestempid = str(latestempid).zfill(5)
+        return latestempid
+
+def delete(request, id):
+    personal = Personal_details.objects.get(id=id)
+    personal.delete()
     return redirect('/pim/employeelist/')
