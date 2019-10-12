@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
-# from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
 from masters.models import Job, Jobcategory ,Employmentstatus, Location, Department
 # Create your views here.
 
 def Personal_details_view(request):
+    emp_id = fngetempid(request)
     if request.method =="POST":
         emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
@@ -40,12 +41,31 @@ def Personal_details_view(request):
                                                     'locations':locations,
                                                     'departments':departments})
 
+def fngetempid(request):
+    try:
+        personal = Personal_details.objects.latest('employee_id')
+        if personal.employee_id == None:
+            latestempid = 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+        else:
+            latestempid = personal.employee_id + 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+    except:
+            latestempid = 1
+            latestempid = str(latestempid).zfill(5)
+            return latestempid
+
 def employeelist(request):
     personals = Personal_details.objects.all()
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
     personal = Personal_details.objects.get(id=id)
+    personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
+    personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
+    personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
     jobtitles = Job.objects.all()
     jobcategory = Jobcategory.objects.all()
     employmentstatus = Employmentstatus.objects.all()
