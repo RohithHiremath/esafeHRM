@@ -7,7 +7,6 @@ from masters.models import Job, Jobcategory ,Employmentstatus, Location, Departm
 def Personal_details_view(request):
     if request.method =="POST":
         emp_id = fngetempid(request)
-        print (emp_id)
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],
                                 last_name =request.POST['last_name'],
@@ -23,7 +22,8 @@ def Personal_details_view(request):
                                 job_title =request.POST['job_title'],
                                 employment_status=request.POST['employment_status'],
                                 job_category=request.POST['job_category'],
-                                work_shifts=request.POST['work_shifts'])
+                                work_shifts=request.POST['work_shifts'],
+                                department=request.POST['department'])
         personal.save()
         return redirect('/pim/employeelist/')
     else:
@@ -49,10 +49,14 @@ def edit(request, id):
     jobtitles = Job.objects.all()
     jobcategory = Jobcategory.objects.all()
     employmentstatus = Employmentstatus.objects.all()
+    locations = Location.objects.all()
+    departments = Department.objects.all()
     return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobcategory':jobcategory,
-                                                'employmentstatus':employmentstatus})                                              
+                                                'employmentstatus':employmentstatus,
+                                                'locations':locations,
+                                                'departments':departments})                                              
 
 def update(request, id):
     personal = Personal_details.objects.get(id=id)
@@ -80,7 +84,4 @@ def fngetempid(request):
         latestempid = str(latestempid).zfill(5)
         return latestempid
 
-def delete(request, id):
-    personal = Personal_details.objects.get(id=id)
-    personal.delete()
-    return redirect('/pim/employeelist/')
+
