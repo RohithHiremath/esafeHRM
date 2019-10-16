@@ -23,8 +23,8 @@ def Personal_details_view(request):
                                 job_title =request.POST['job_title'],
                                 employment_status=request.POST['employment_status'],
                                 job_category=request.POST['job_category'],
-                                work_shifts=request.POST['work_shifts'])
-        personal.save()
+                                work_shifts=request.POST['work_shifts'],
+                                department=request.POST['department'])
         return redirect('/pim/employeelist/')
     else:
         personals = Personal_details.objects.all()
@@ -40,24 +40,12 @@ def Personal_details_view(request):
                                                     'locations':locations,
                                                     'departments':departments})
 
-def fngetempid(request):
-    try:
-        personal = Personal_details.objects.latest('employee_id')
-        if personal.employee_id == None:
-            latestempid = 1
-            latestempid = str(latestempid).zfill(5)
-            return latestempid
-        else:
-            latestempid = personal.employee_id + 1
-            latestempid = str(latestempid).zfill(5)
-            return latestempid
-    except:
-            latestempid = 1
-            latestempid = str(latestempid).zfill(5)
-            return latestempid
-
 def employeelist(request):
     personals = Personal_details.objects.all()
+    jobs = Job.objects.all()
+    status = Employmentstatus.objects.all()
+    locations = Location.objects.all()
+
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
@@ -68,19 +56,35 @@ def edit(request, id):
     jobtitles = Job.objects.all()
     jobcategory = Jobcategory.objects.all()
     employmentstatus = Employmentstatus.objects.all()
-    return render(request,'pim/editdetails.html',{'title':'Edit Employee List',
-                                                'personal':personal,
+    locations = Location.objects.all()
+    departments = Department.objects.all()
+    return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobcategory':jobcategory,
-                                                'employmentstatus':employmentstatus})                                              
+                                                'employmentstatus':employmentstatus,
+                                                'locations':locations,
+                                                'departments':departments})                                              
 
 def update(request, id):
     personal = Personal_details.objects.get(id=id)
     personal.employee_id = request.POST['employee_id']
     personal.first_name = request.POST['first_name']
+    personal.middle_name = request.POST['middle_name']
+    personal.last_name = request.POST['last_name']
     personal.job_title = request.POST['job_title']
     personal.employment_status = request.POST['employment_status']
     personal.nationality = request.POST['nationality']
+    personal.date_of_birth = request.POST['date_of_birth']
+    personal.joined_date = request.POST['joined_date']
+    personal.date_of_permanency = request.POST['date_of_permanency']
+    personal.marital_status = request.POST['marital_status']
+    personal.gender = request.POST['gender']
+    personal.nick_name = request.POST['nick_name']
+    personal.work_shifts = request.POST['work_shifts']
+    personal.aadhar_card_no = request.POST['aadhar_card_no']
+    personal.employment_status = request.POST['employment_status']
+    personal.job_category = request.POST['job_category']
+    personal.department = request.POST['department']
     personal.save()
     return redirect('/pim/employeelist/')
 
@@ -100,7 +104,3 @@ def fngetempid(request):
         latestempid = str(latestempid).zfill(5)
         return latestempid
 
-def delete(request, id):
-    personal = Personal_details.objects.get(id=id)
-    personal.delete()
-    return redirect('/pim/employeelist/')

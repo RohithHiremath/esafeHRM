@@ -62,9 +62,9 @@
           <label for="nationality">Nationality</label>
           <select name="nationality" class="form-control">
             <option value="">Select</option>
-            <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
-            <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>USA</option>
-            <option value="3" {% if personal.nationality == 3 %}selected{% endif %}>UAE</option>
+            {% for job in locations%}
+            <option value="{{ job.id }}" {% if personal.nationality ==  job.id %} selected {% endif %}>{{ job.location }}             
+            {% endfor %}
           </select>
         </div>
         <div class="col-md-4">
@@ -113,6 +113,17 @@
             {% endfor %}
           </select>
         </div>
+      </div>
+      <div class="row">
+      <div class="col-md-4">
+        <label for="Department">Department</label>
+        <select name="department" class="form-control">
+          <option value="">Select</option>
+          {% for job in departments %}
+          <option value="{{ job.id }}" {% if personal.department ==  job.id %} selected {% endif %}>{{ job.departmentname }}</option>
+          {% endfor %}
+        </select>
+      </div>
       </div>
       <div class="row">
         <div class="col-md-4">
