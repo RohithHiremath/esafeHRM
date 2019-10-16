@@ -25,6 +25,7 @@ def Personal_details_view(request):
                                 job_category=request.POST['job_category'],
                                 work_shifts=request.POST['work_shifts'],
                                 department=request.POST['department'])
+        personal.save()
         return redirect('/pim/employeelist/')
     else:
         personals = Personal_details.objects.all()
