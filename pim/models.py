@@ -1,6 +1,8 @@
 from django.db import models
+from masters.models import Job , Location ,Employmentstatus
 
 # Create your models here.
+
 class Personal_details(models.Model):
 
    first_name = models.CharField(max_length=150,null = True)
@@ -10,13 +12,13 @@ class Personal_details(models.Model):
    date_of_birth = models.DateField(blank = False)
    marital_status = models.SmallIntegerField(default=1,blank = False)
    gender = models.SmallIntegerField(default=1,blank = False)
-   nationality = models.SmallIntegerField(default=1,blank = False)
+   nationality = models.ForeignKey(Location,on_delete=models.CASCADE)
    nick_name = models.CharField(max_length=150,blank = True)
    aadhar_card_no = models.BigIntegerField(blank = False)
    joined_date = models.DateField(blank = False)
    date_of_permanency = models.DateField(blank = False) 
-   job_title = models.BigIntegerField(default=1,blank = False)
-   employment_status = models.BigIntegerField(default=1,blank = False)
+   job_title = models.ForeignKey(Job, on_delete=models.CASCADE)
+   employment_status = models.ForeignKey(Employmentstatus,on_delete=models.CASCADE)
    job_category = models.BigIntegerField(default=1,blank = False)
    work_shifts = models.IntegerField(default=1,blank = False)
    department = models.BigIntegerField(default=1,blank = False)
