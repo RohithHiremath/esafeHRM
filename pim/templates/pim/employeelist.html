@@ -1,6 +1,5 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-
 <div class="container-fluid text-right" style="margin:10px;">
     <a href="/pim/details/">
         <button type="button" class="btn btn-primary">
@@ -8,16 +7,17 @@
         </button>
     </a>
 </div>
-<div class="card" style="margin-top: 10px;">
-    <table class="table table-striped">
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Employee ID</th>
                 <th>Name</th>
+                <th>Department</th>
                 <th>Job Title</th>
                 <th>Employment Status</th>
-                <th>Location</th>
+                <th>Work Location</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,9 +27,10 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ personal.employee_id }}</td>
                 <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
+                <td>{{ personal.department }}</td>
                 <td>{{ personal.job_title }}</td>
                 <td>{{ personal.employment_status }}</td>
-                <td>{{ personal.nationality }}</td>
+                <td>{{ personal.worklocation }}</td>
                 <td style="text-align: center;">
                     <a href="/pim/edit/{{ personal.id }}">
                         <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
@@ -39,5 +40,5 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
+
 {% endblock %}
