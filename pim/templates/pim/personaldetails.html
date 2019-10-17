@@ -48,15 +48,15 @@
       </div>
 
       <div class="row">
-        <div class="col-md-4">
-          <label for="Location">Nationality</label>
-          <select name="nationality" class="form-control">
-            <option value="">Select</option>
-            {% for loc in locations %}
-            <option value="{{ loc.id }}">{{ loc.location }}</option>
-            {% endfor %}
-          </select>
-        </div>
+          <div class="col-md-4">
+              <label for="Location">Nationality</label>
+              <select name="nationality" class="form-control">
+                <option value="">Select</option>
+                <option value="1">Indian</option>
+                <option value="2">US</option>
+              </select>
+            </div>
+      
         <div class="col-md-4">
           <label for="MiddleName">Aadhaar Number</label>
           <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no" value="" required>
@@ -108,6 +108,15 @@
             {% endfor %}
           </select>
         </div>
+        <div class="col-md-4">
+            <label for="Location">Location</label>
+            <select name="location" class="form-control">
+              <option value="">Select</option>
+              {% for loc in locations %}
+              <option value="{{ loc.id }}">{{ loc.location }}</option>
+              {% endfor %}
+            </select>
+          </div>
       </div>
       <div class="row">
         <div class="col-md-4">

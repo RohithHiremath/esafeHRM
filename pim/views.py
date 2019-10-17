@@ -5,7 +5,6 @@ from masters.models import Job, Jobcategory ,Employmentstatus, Location, Departm
 # Create your views here.
 
 def Personal_details_view(request):
-    emp_id = fngetempid(request)
     if request.method =="POST":
         emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
@@ -20,11 +19,13 @@ def Personal_details_view(request):
                                 aadhar_card_no=request.POST['aadhar_card_no'],
                                 joined_date=request.POST['joined_date'],
                                 date_of_permanency=request.POST['date_of_permanency'],
-                                job_title =request.POST['job_title'],
-                                employment_status=request.POST['employment_status'],
-                                job_category=request.POST['job_category'],
+                                job_title_id =request.POST['job_title'],
+                                employment_status_id=request.POST['employment_status'],
+                                job_category_id=request.POST['job_category'],
                                 work_shifts=request.POST['work_shifts'],
-                                department=request.POST['department'])
+                                department_id=request.POST['department'],
+                                worklocation_id=request.POST['location'])
+        personal.save()                      
         return redirect('/pim/employeelist/')
     else:
         personals = Personal_details.objects.all()
@@ -39,7 +40,7 @@ def Personal_details_view(request):
                                                     'employmentstatus':employmentstatus,
                                                     'locations':locations,
                                                     'departments':departments})
-
+   
 def employeelist(request):
     personals = Personal_details.objects.all()
     jobs = Job.objects.all()
@@ -71,8 +72,8 @@ def update(request, id):
     personal.first_name = request.POST['first_name']
     personal.middle_name = request.POST['middle_name']
     personal.last_name = request.POST['last_name']
-    personal.job_title = request.POST['job_title']
-    personal.employment_status = request.POST['employment_status']
+    personal.job_title_id = request.POST['job_title_id']
+    personal.employment_status_id = request.POST['employment_status_id']
     personal.nationality = request.POST['nationality']
     personal.date_of_birth = request.POST['date_of_birth']
     personal.joined_date = request.POST['joined_date']
@@ -82,9 +83,9 @@ def update(request, id):
     personal.nick_name = request.POST['nick_name']
     personal.work_shifts = request.POST['work_shifts']
     personal.aadhar_card_no = request.POST['aadhar_card_no']
-    personal.employment_status = request.POST['employment_status']
-    personal.job_category = request.POST['job_category']
-    personal.department = request.POST['department']
+    personal.job_category_id = request.POST['job_category_id']
+    personal.department_id = request.POST['department_id']
+    personal.worklocation_id = request.POST['worklocation_id']
     personal.save()
     return redirect('/pim/employeelist/')
 

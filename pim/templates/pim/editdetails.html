@@ -11,7 +11,7 @@
         <div class="col-md-4">
           <label for="employee_id">Employee ID</label><span>*</span>
           <input type="number" class="form-control" readonly name="employee_id" id="employee_id"
-            value="{{ personal.employee_id }}" >
+            value="{{ personal.employee_id }}">
         </div>
       </div>
       <div class="row">
@@ -62,9 +62,9 @@
           <label for="nationality">Nationality</label>
           <select name="nationality" class="form-control">
             <option value="">Select</option>
-            {% for job in locations%}
-            <option value="{{ job.id }}" {% if personal.nationality ==  job.id %} selected {% endif %}>{{ job.location }}             
-            {% endfor %}
+            <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
+            <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>US</option>
+           
           </select>
         </div>
         <div class="col-md-4">
@@ -105,52 +105,65 @@
         </div>
         <div class="col-md-4">
           <label for="JobTitle">Job Title</label>
-          <select name="job_title" class="form-control">
+          <select name="job_title_id" class="form-control">
             <option value="">Select</option>
             {% for job in jobtitles %}
-            <option value="{{ job.id }}" {% if personal.job_title ==  job.id %} selected {% endif %}>{{ job.jobtitle }}
+            <option value="{{ job.id }}" {% if personal.job_title_id ==  job.id %} selected {% endif %}>
+              {{ job.jobtitle }}
             </option>
             {% endfor %}
           </select>
         </div>
       </div>
       <div class="row">
-      <div class="col-md-4">
-        <label for="Department">Department</label>
-        <select name="department" class="form-control">
-          <option value="">Select</option>
-          {% for job in departments %}
-          <option value="{{ job.id }}" {% if personal.department ==  job.id %} selected {% endif %}>{{ job.departmentname }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      </div>
-      <div class="row">
         <div class="col-md-4">
-          <label for="EmploymentStatus">Employment Status</label><span>*</span>
-          <select name="employment_status" class="form-control">
+          <label for="JobCategory">Job Category</label>
+          <select name="job_category_id" class="form-control">
             <option value="">Select</option>
-            {% for job in employmentstatus %}
-            <option value="{{ job.id }}" {% if personal.employment_status ==  job.id %} selected {% endif %}>
-              {{ job.employementstatus }}</option>
+            {% for job in jobcategory %}
+            <option value="{{ job.id }}" {% if personal.job_category_id ==  job.id %} selected {% endif %}>
+              {{ job.jobcategory }}</option>
             {% endfor %}
           </select>
         </div>
         <div class="col-md-4">
-          <label for="JobCategory">Job Category</label>
-          <select name="job_category" class="form-control">
-              <option value="">Select</option>
-              {% for job in jobcategory %}
-              <option value="{{ job.id }}" {% if personal.job_category ==  job.id %} selected {% endif %} >{{ job.jobcategory }}</option>
-              {% endfor %}
+          <label for="Department">Department</label>
+          <select name="department_id" class="form-control">
+            <option value="">Select</option>
+            {% for job in departments %}
+            <option value="{{ job.id }}" {% if personal.department_id ==  job.id %} selected {% endif %}>
+              {{ job.departmentname }}</option>
+            {% endfor %}
           </select>
         </div>
         <div class="col-md-4">
+            <label for="worklocation">Work Location</label>
+            <select name="worklocation_id" class="form-control">
+              <option value="">Select</option>
+               {% for job in locations %}
+            <option value="{{ job.id }}" {% if personal.nationality ==  job.id %} selected {% endif %}>{{ job.location }}             
+            {% endfor %}
+            </select>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="EmploymentStatus">Employment Status</label><span>*</span>
+          <select name="employment_status_id" class="form-control">
+            <option value="">Select</option>
+            {% for job in employmentstatus %}
+            <option value="{{ job.id }}" {% if personal.employment_status_id ==  job.id %} selected {% endif %}>
+              {{ job.employementstatus }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4">
           <label for="WorkShift">Work Shift</label>
           <select name="work_shifts" class="form-control">
-              <option value="">Select</option>
-              <option value="1" {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
-              <option value="2" {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
+            <option value="">Select</option>
+            <option value="1" {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
+            <option value="2" {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
           </select>
         </div>
       </div>

@@ -14,6 +14,7 @@ def login(request):
         if user is not None and user.is_active:
              # Correct password, and the user is marked "active"
             auth.login(request, user)
+            print(request.user.is_authenticated)
             # Redirect to Dashboard.
             return  redirect('dashboard')
         else:
@@ -22,8 +23,8 @@ def login(request):
         return redirect('/')
 
 def dashboard(request):
-    return render(request,'login/dashboard.html',{'dashboard':'dashboard'})
-
+    print(request.user.is_authenticated)
+    return render(request,'login/dashboard.html',{'title':'dashboard'})
 
 def logout(request):
     auth.logout(request)

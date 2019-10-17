@@ -42,6 +42,7 @@ body {
 
 .bg-light {
   background-color: #343a40!important;
+  background-image: linear-gradient(to right, rgba(108,117,125,1),rgba(255,0,0,0)) !important;
 }
 
 .nav-link {
@@ -50,7 +51,8 @@ body {
 }
 
 a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover {
-  background-color: #6c757d!important;
+  background-color: linear-gradient(#007bff, #6c757d) !important;
+  
 }
 
 .list-group-item {
@@ -101,6 +103,11 @@ tr{
   border-top: 1px solid #343a40;
 }
 
+.card {
+  border: 1px solid rgba(52,58,64,1) !important;
+  border-radius: .25rem;
+}
+
 .modal-body {
   min-height: 130px !important;
 }
@@ -131,7 +138,7 @@ tr{
   color: white;
 }
 .card-header {
-  background-color: #6a57b7 !important;
+  background-color: #4e555d !important;
   padding: 0.5rem;
   color: white;
 }
@@ -145,6 +152,16 @@ tr{
 }
 .col-md-4{
   padding-bottom: 10px !important;
+}
+
+
+.navbar-light .navbar-toggler {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.userli{
+  color: #fff;
 }
 
 @media (min-width: 768px) {
