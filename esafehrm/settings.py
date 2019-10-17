@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'esafedatabase',
         'USER': 'root',
-        'PASSWORD':'admin',
+        'PASSWORD':'Admin@123',
         'HOST':'127.0.0.1',
         'PORT':'3306'
     }
@@ -139,4 +139,4 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets') 
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True

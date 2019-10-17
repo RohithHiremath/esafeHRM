@@ -24,15 +24,17 @@ def Personal_details_view(request):
                                 employment_status=request.POST['employment_status'],
                                 job_category=request.POST['job_category'],
                                 work_shifts=request.POST['work_shifts'],
-                                department=request.POST['department'])
+                                department=request.POST['department'],
+                                worklocation=request.POST['worklocation'])
+        personal.save()                        
         return redirect('/pim/employeelist/')
     else:
         personals = Personal_details.objects.all()
-        jobtitles = Job.objects.all()
-        jobcategory = Jobcategory.objects.all()
-        employmentstatus = Employmentstatus.objects.all()
-        locations = Location.objects.all()
-        departments = Department.objects.all()
+        jobtitles = Job.objects.all().order_by('jobtitle')
+        jobcategory = Jobcategory.objects.all().order_by('jobcategory')
+        employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')
+        locations = Location.objects.all().order_by('location')
+        departments = Department.objects.all().order_by('departmentname')
         return render(request,'pim/personaldetails.html',{'personals':personals,
                                                     'jobtitles':jobtitles,
                                                     'jobcategory':jobcategory,
@@ -42,10 +44,6 @@ def Personal_details_view(request):
 
 def employeelist(request):
     personals = Personal_details.objects.all()
-    jobs = Job.objects.all()
-    status = Employmentstatus.objects.all()
-    locations = Location.objects.all()
-
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
@@ -53,11 +51,11 @@ def edit(request, id):
     personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
     personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
     personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
-    jobtitles = Job.objects.all()
-    jobcategory = Jobcategory.objects.all()
-    employmentstatus = Employmentstatus.objects.all()
-    locations = Location.objects.all()
-    departments = Department.objects.all()
+    jobtitles = Job.objects.all().order_by('jobtitle')
+    jobcategory = Jobcategory.objects.all().order_by('jobcategory')
+    employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')
+    locations = Location.objects.all().order_by('location')
+    departments = Department.objects.all().order_by('departmentname')
     return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobcategory':jobcategory,
@@ -72,8 +70,8 @@ def update(request, id):
     personal.middle_name = request.POST['middle_name']
     personal.last_name = request.POST['last_name']
     personal.job_title = request.POST['job_title']
-    personal.employment_status = request.POST['employment_status']
     personal.nationality = request.POST['nationality']
+    personal.worklocation = request.POST['worklocation']
     personal.date_of_birth = request.POST['date_of_birth']
     personal.joined_date = request.POST['joined_date']
     personal.date_of_permanency = request.POST['date_of_permanency']

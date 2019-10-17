@@ -49,12 +49,11 @@
 
       <div class="row">
         <div class="col-md-4">
-          <label for="Location">Nationality</label>
+          <label for="nationality">Nationality</label>
           <select name="nationality" class="form-control">
             <option value="">Select</option>
-            {% for loc in locations %}
-            <option value="{{ loc.id }}">{{ loc.location }}</option>
-            {% endfor %}
+            <option value="1">Indian</option>
+            <option value="2">US</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -105,6 +104,15 @@
             <option value="">Select</option>
             {% for dept in departments %}
             <option value="{{ dept.id }}">{{ dept.departmentname }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="Location">Work Location</label>
+          <select name="worklocation" class="form-control">
+            <option value="">Select</option>
+            {% for loc in locations %}
+            <option value="{{ loc.id }}">{{ loc.location }}</option>
             {% endfor %}
           </select>
         </div>
@@ -165,7 +173,17 @@
       document.getElementById('empdetails').style.display = 'none';
       document.getElementById('perdetails').style.display = 'block';
     }
-
   }
 </script>
+<script>
+    window.onbeforeunload = function() {
+        confirm("Are you sure you want change page!");
+        var Ans = confirm("Are you sure you want change page!");
+        if(Ans==true){
+            return true;
+        }else{
+            return false;
+        }
+    };   
+    </script> 
 {% endblock %}
