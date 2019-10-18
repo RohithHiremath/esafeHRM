@@ -8,23 +8,23 @@
     </a>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-    <table id="example" class="table table-striped" style="width:100%">
+    <table id="example" class="table table-striped nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>#</th>
+                <!-- <th>#</th> -->
                 <th>Employee ID</th>
                 <th>Name</th>
                 <th>Department</th>
                 <th>Job Title</th>
                 <th>Employment Status</th>
                 <th>Work Location</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for personal in personals %}
             <tr>
-                <td>{{ forloop.counter }}</td>
+                <!-- <td>{{ forloop.counter }}</td> -->
                 <td>{{ personal.employee_id }}</td>
                 <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
                 <td>{{ personal.department }}</td>
