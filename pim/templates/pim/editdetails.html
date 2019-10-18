@@ -83,6 +83,11 @@
           <button type="button" class="btn btn-primary pull-right" onclick="somefunction(1);">
             Next <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
           </button>
+          <a href="{% url 'pim:employeelist' %}">
+              <button type="button" class="btn btn-primary">
+                  <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Back
+              </button>
+            </a>
         </div>
       </div>
     </div>
@@ -197,5 +202,14 @@
     }
 
   }
+  window.onbeforeunload = function () {
+    confirm("Are you sure you want change page!");
+    var Ans = confirm("Are you sure you want change page!");
+    if (Ans == true) {
+      return true;
+    } else {
+      return false;
+    }
+  };   
 </script>
 {% endblock %}

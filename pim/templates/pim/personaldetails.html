@@ -11,10 +11,11 @@
         <div class="col-md-4">
           <label for="FirstName">First Name</label><span>*</span>
           <input type="text" class="form-control" name="first_name" id="first_name" value="" required>
+          <span id="firstname" style="color:red;"></span>
         </div>
         <div class="col-md-4">
           <label for="MiddleName">Middle Name</label>
-          <input type="text" class="form-control" name="middle_name" id="middle_name" value="" >
+          <input type="text" class="form-control" name="middle_name" id="middle_name" value="">
         </div>
         <div class="col-md-4">
           <label for="LastName">Last Name</label><span>*</span>
@@ -48,15 +49,15 @@
       </div>
 
       <div class="row">
-          <div class="col-md-4">
-              <label for="Location">Nationality</label>
-              <select name="nationality" class="form-control">
-                <option value="">Select</option>
-                <option value="1">Indian</option>
-                <option value="2">US</option>
-              </select>
-            </div>
-      
+        <div class="col-md-4">
+          <label for="Location">Nationality</label>
+          <select name="nationality" class="form-control">
+            <option value="">Select</option>
+            <option value="1">Indian</option>
+            <option value="2">US</option>
+          </select>
+        </div>
+
         <div class="col-md-4">
           <label for="MiddleName">Aadhaar Number</label>
           <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no" value="" required>
@@ -67,10 +68,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12" style="float:right;">
+        <div class="col-md-12">
           <button type="button" class="btn btn-primary pull-right" onclick="somefunction(1);">
             Next <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
           </button>
+          <a href="{% url 'pim:employeelist' %}">
+            <button type="button" class="btn btn-primary">
+                <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Back
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -109,14 +115,14 @@
           </select>
         </div>
         <div class="col-md-4">
-            <label for="Location">Location</label>
-            <select name="location" class="form-control">
-              <option value="">Select</option>
-              {% for loc in locations %}
-              <option value="{{ loc.id }}">{{ loc.location }}</option>
-              {% endfor %}
-            </select>
-          </div>
+          <label for="Location">Location</label>
+          <select name="location" class="form-control">
+            <option value="">Select</option>
+            {% for loc in locations %}
+            <option value="{{ loc.id }}">{{ loc.location }}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -164,8 +170,8 @@
 <script>
   function somefunction(val) {
     if (val == 1) {
-      if (document.getElementById('first_name').value == '') {
-        alert("firstname cannot be empty");
+      if (document.getElementById('first_name').value == ''){
+        document.getElementById('firstname').innerHTML = 'First name cannot be empty'
         return false;
       }
       document.getElementById('empdetails').style.display = 'block';
@@ -177,14 +183,14 @@
   }
 </script>
 <script>
-    window.onbeforeunload = function() {
-        confirm("Are you sure you want change page!");
-        var Ans = confirm("Are you sure you want change page!");
-        if(Ans==true){
-            return true;
-        }else{
-            return false;
-        }
-    };   
-    </script> 
+  window.onbeforeunload = function () {
+    confirm("Are you sure you want change page!");
+    var Ans = confirm("Are you sure you want change page!");
+    if (Ans == true) {
+      return true;
+    } else {
+      return false;
+    }
+  };   
+</script>
 {% endblock %}
