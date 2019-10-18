@@ -11,7 +11,7 @@ def jobtitles(request):
         job.save()
         return redirect('jobtitle')
     else:
-        jobs = Job.objects.all()
+        jobs = Job.objects.all().order_by('jobtitle')
         # paginator = Paginator(jobs, 2)
         # page = request.GET.get('page')
         # jobs = paginator.get_page(page)
@@ -33,7 +33,7 @@ def jobcategories(request):
         category.save()
         return redirect('jobcategory')
     else:
-        categories = Jobcategory.objects.all()
+        categories = Jobcategory.objects.all().order_by('jobcategory')
     return render(request,'jobcategories.html',{'title':'Jobcategories List','categories':categories})
 
 def editjobcategories(request, id):
@@ -51,7 +51,7 @@ def jobgrade(request):
         grade.save()
         return redirect('jobgrade')
     else:
-        grades = Jobgrade.objects.all()
+        grades = Jobgrade.objects.all().order_by('jobgrade')
     return render(request,'jobgrades.html',{'title':'jobgrades List','grades':grades})
 
 def editjobgrade(request, id):
@@ -69,7 +69,7 @@ def component(request):
         component.save()
         return redirect('component')
     else:
-        components = Salarycomponent.objects.all()
+        components = Salarycomponent.objects.all().order_by('componentname','types')
     return render(request,'salarycomponents.html',{'title':'component List','components':components})
 
 def editcomponent(request, id):
@@ -88,7 +88,7 @@ def employementstatus(request):
         status.save()
         return redirect('status')
     else:
-        statuses = Employmentstatus.objects.all()
+        statuses = Employmentstatus.objects.all().order_by('employementstatus')
     return render(request,'employmentstatus.html',{'title':'status List','statuses':statuses})
 
 def editemployementstatus(request, id):
@@ -106,7 +106,7 @@ def department(request):
         department.save()
         return redirect('department')
     else:
-        departments = Department.objects.all()
+        departments = Department.objects.all().order_by('departmentname')
     return render(request,'department.html',{'title':'status List','departments':departments})
 
 def editdepartment(request, id):
@@ -125,7 +125,7 @@ def location(request):
         location.save()
         return redirect('location')
     else:
-        locations = Location.objects.all()
+        locations = Location.objects.all().order_by('location')
     return render(request,'location.html',{'title':'status List','locations':locations})
 
 def editlocation(request, id):

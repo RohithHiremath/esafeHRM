@@ -174,7 +174,17 @@
       document.getElementById('empdetails').style.display = 'none';
       document.getElementById('perdetails').style.display = 'block';
     }
-
   }
 </script>
+<script>
+    window.onbeforeunload = function() {
+        confirm("Are you sure you want change page!");
+        var Ans = confirm("Are you sure you want change page!");
+        if(Ans==true){
+            return true;
+        }else{
+            return false;
+        }
+    };   
+    </script> 
 {% endblock %}
