@@ -137,11 +137,11 @@
           </select>
         </div>
         <div class="col-md-4">
-            <label for="worklocation">Work Location</label>
+            <label for="worklocation">Location</label>
             <select name="worklocation_id" class="form-control">
               <option value="">Select</option>
                {% for job in locations %}
-            <option value="{{ job.id }}" {% if personal.nationality ==  job.id %} selected {% endif %}>{{ job.location }}             
+            <option value="{{ job.id }}" {% if personal.worklocation_id ==  job.id %} selected {% endif %}>{{ job.location }}</option>            
             {% endfor %}
             </select>
           </div>

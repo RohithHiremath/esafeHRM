@@ -110,7 +110,7 @@
         </div>
         <div class="col-md-4">
             <label for="Location">Location</label>
-            <select name="location" class="form-control">
+            <select name="worklocation" class="form-control">
               <option value="">Select</option>
               {% for loc in locations %}
               <option value="{{ loc.id }}">{{ loc.location }}</option>
@@ -176,7 +176,7 @@
     }
   }
 </script>
-<script>
+{% comment %} <script>
     window.onbeforeunload = function() {
         confirm("Are you sure you want change page!");
         var Ans = confirm("Are you sure you want change page!");
@@ -186,5 +186,5 @@
             return false;
         }
     };   
-    </script> 
+    </script>  {% endcomment %}
 {% endblock %}

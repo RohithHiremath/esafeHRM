@@ -24,7 +24,7 @@ def Personal_details_view(request):
                                 job_category_id=request.POST['job_category'],
                                 work_shifts=request.POST['work_shifts'],
                                 department_id=request.POST['department'],
-                                worklocation_id=request.POST['location'])
+                                worklocation_id=request.POST['worklocation'])
         personal.save()                      
         return redirect('/pim/employeelist/')
     else:
@@ -68,10 +68,10 @@ def update(request, id):
     personal.first_name = request.POST['first_name']
     personal.middle_name = request.POST['middle_name']
     personal.last_name = request.POST['last_name']
-    personal.job_title_id = request.POST['job_title_id']
+    personal.job_title_id= request.POST['job_title_id']
     personal.employment_status_id = request.POST['employment_status_id']
     personal.nationality = request.POST['nationality']
-    personal.worklocation = request.POST['worklocation']
+    personal.worklocation_id = request.POST['worklocation_id']
     personal.date_of_birth = request.POST['date_of_birth']
     personal.joined_date = request.POST['joined_date']
     personal.date_of_permanency = request.POST['date_of_permanency']
@@ -82,7 +82,6 @@ def update(request, id):
     personal.aadhar_card_no = request.POST['aadhar_card_no']
     personal.job_category_id = request.POST['job_category_id']
     personal.department_id = request.POST['department_id']
-    personal.worklocation_id = request.POST['worklocation_id']
     personal.save()
     return redirect('/pim/employeelist/')
 
