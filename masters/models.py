@@ -5,7 +5,7 @@ from django.db import models
 class Job(models.Model):
     jobtitle = models.CharField(max_length=50)
     jobdescription = models.CharField(max_length=100)
-    status = models.SmallIntegerField(default=1)
+    # status = models.SmallIntegerField(default=1)
     
     def __str__(self):
        return self.jobtitle
