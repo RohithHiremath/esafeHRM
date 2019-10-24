@@ -8,73 +8,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+     
+    <link rel="stylesheet" href="{% static 'css/style1/font-awesome.min.css' %}">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style1/login.css' %}" rel="stylesheet">
     {% if title %}
     <title>HRM-{{ title }}</title>
     {% else %}
     <title>HRM</title>
     {% endif %}
 <head>
-    <style type="text/css">
-        .navbar-inverse{
-            background-color: #343a40 !important;
-            background-image: linear-gradient(to right, rgba(108,117,125,1),rgba(255,0,0,0)) !important;
-        }
-
-        .navbar-brand{
-            color: white !important;
-        }
-
-        .lg{
-            /*margin-top: 40px;*/
-            padding: 30px 30px;
-        }
-
-        .log{
-            border: 1px solid grey;
-            padding: 60px 40px;
-        }
-
-        h1{
-            text-align:center; 
-            padding-bottom:10px; 
-            font-weight: bolder; 
-            margin-top:-10px;
-        }
-
-        .btn-primary{
-            background-color:#343a40 !important;
-            border-color:#343a40 !important;
-        }
-
-        .bodybg{
-            background-color:ghostwhite !important;
-        }
-
-    </style>
 </head>
 
 <body class = "bodybg">
     <div class="navbar navbar-default navbar-inverse navbar-fixed-top dashboardbg">
         <div class="container">
             <div class="navbar-header">
-                <img style="border-radius: 8px;" src = "{% static 'images/esafe_logo.jpeg' %}" width="auto" height="50px" />
-                <!-- <a class="navbar-brand" href=""> HRM <sub>Resource Management Tool</sub></a> -->
+                <img class="imgclass"  src = "{% static 'images/esafe_logo.jpeg' %}" width="auto" height="50px" />
             </div>
         </div>
     </div>
-    <div class="container lg">
+    <div class="container" >
         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4" >
+            
+            <div class="col-md-4 col-sm-4 col-xs-12" >
                 <form class = "log" id="login" action="login/" name="login" method="POST">
                     {# Display django.contrib.messages as Bootstrap alerts #}
-                    
                     {% bootstrap_messages %}
                     {% csrf_token %}
                     <h1>
-                        
                         <i class="fa fa-user-o" aria-hidden="true"></i><br>Login
                     </h1>
                     <div class="form-group">
@@ -92,16 +54,11 @@
                     </button>
                 </form>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"></div>
         </div>
     </div>
-    <div class="navbar navbar-default navbar-inverse navbar-fixed-bottom">
-        <div class="container">
-            <div class="navbar-header" >
-                <a style = "padding-left:10px;color:white;"> &copy2019 Human Resource Management</a>
-            </div>
-        </div>
-    </div>
+
+    {% bootstrap_javascript jquery='full' %}   
     {% bootstrap_javascript %}
 </body>
 </html>

@@ -7,6 +7,7 @@ body {
   overflow-x: hidden;
   font-family: "Times New Roman", Times, serif;
   font-size: 16px;
+  color:#343a40;
 }
 
 #sidebar-wrapper {
@@ -42,12 +43,12 @@ body {
 
 .bg-light {
   background-color: #343a40!important;
-  background-image: linear-gradient(to right, rgba(108,117,125,1),rgba(255,0,0,0)) !important;
+  background-image: linear-gradient(to right, #fd7e14,#ffc107) !important;
 }
 
 .nav-link {
   padding: 0px !important;
-  color:  #ffffff !important;
+  color:  #343a40 !important;
 }
 
 a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover {
@@ -66,13 +67,13 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 
 .list-group-item-action {
   width: 100%;
-  color: #ffffff !important;
+  color: #343a40 !important;
   text-align: inherit;
 }
 
 .btn-primary {
   color: #343a40;
-  background-color: #ffffff;
+  background-color: #ffc107;
   border-color: #343a40;
 }
 
@@ -85,7 +86,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #212529;
+  color: #6c757d;
 }
 
 .table thead th {
@@ -128,17 +129,17 @@ tr{
   margin-top: 120px !important;
 }
 .modal-header {
-  background-color: #6c757d !important;
+  background-color: #fd7e14 !important;
   padding: 0.5rem;
-  color: white;
+  color: #343a40;
 }
 .modal-footer {
-  background-color: #6c757d !important;
+  background-color: #fd7e14 !important;
   padding: 0.5rem;
-  color: white;
+  color: #343a40;
 }
 .card-header {
-  background-color: #4e555d !important;
+  background-color: #fdba3b !important;
   padding: 0.5rem;
   color: white;
 }
@@ -161,7 +162,11 @@ tr{
 }
 
 .userli{
-  color: #fff;
+  color: #343a40;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: var(--white) !important;
 }
 
 @media (min-width: 768px) {
