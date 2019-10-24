@@ -25,7 +25,8 @@ def Personal_details_view(request):
                                 work_shifts=request.POST['work_shifts'],
                                 department_id=request.POST['department'],
                                 worklocation_id=request.POST['worklocation'])
-        personal.save()                      
+        personal.save()
+        # print(personal.date_of_permanency)                      
         return redirect('/pim/employeelist/')
     else:
         personals = Personal_details.objects.all()

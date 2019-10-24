@@ -1,6 +1,6 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<form action="" enctype="multipart/form-data" method="POST">
+<form action="" name="emplist" id="emplist"  enctype="multipart/form-data" method="POST"  novalidate>
   {% csrf_token %}
   <div class="card" style="margin-top: 10px;" id="perdetails">
     <div class="card-header">
@@ -9,68 +9,86 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-4">
-          <label for="FirstName">First Name</label><span>*</span>
-          <input type="text" class="form-control" name="first_name" id="first_name" value="" required>
+          <label for="FirstName">First Name<font color=red>*</font></label>
+          <input type="text" class="form-control" name="first_name" id="first_name" value="" placeholder="Enter First Name"  required>
+          <div class="error" id="firstnameErr"></div>
         </div>
         <div class="col-md-4">
           <label for="MiddleName">Middle Name</label>
-          <input type="text" class="form-control" name="middle_name" id="middle_name" value="" >
+          <input type="text" class="form-control" name="middle_name" id="middle_name" value="" placeholder="Enter Middle Name">
+          <div class="error" id="midnameErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="LastName">Last Name</label><span>*</span>
-          <input type="text" class="form-control" name="last_name" id="last_name" value="" required>
+          <label for="LastName">Last Name<font color=red>*</font></label>
+          <input type="text" class="form-control" name="last_name" id="last_name" value="" placeholder="Enter Last Name" required>
+          <div class="error" id="lastnameErr"></div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
-          <label for="DateOfBirth">Date Of Birth</label><span>*</span>
+          <label for="DateOfBirth">Date Of Birth<font color=red>*</font></label>
           <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" value="" required>
+          <div class="error" id="dobErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Gender">Gender</label>
-          <select name="gender" class="form-control">
+          <label for="Gender">Gender<font color=red>*</font></label>
+          <select name="gender" id="gender" class="form-control" required>
+            <option value="" disabled selected hidden>Select Gender</option>
             <option value="">Select</option>
             <option value="1">Male</option>
             <option value="2">Female</option>
           </select>
+          <div class="error" id="genderErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="MaritalStatus">Marital Status</label>
-          <select name="marital_status" class="form-control">
+          <label for="MaritalStatus">Marital Status<font color=red>*</font></label>
+          <select name="marital_status" id="marital_status" class="form-control" required>
+            <option value="" disabled selected hidden>Select Marital Status</option>
             <option value="">Select</option>
             <option value="1">Married</option>
             <option value="2">Single</option>
             <option value="3">Divorce</option>
             <option value="4">Widow</option>
           </select>
+          <div class="error" id="maritalstatusErr"></div>
         </div>
       </div>
 
       <div class="row">
-          <div class="col-md-4">
-              <label for="Location">Nationality</label>
-              <select name="nationality" class="form-control">
-                <option value="">Select</option>
-                <option value="1">Indian</option>
-                <option value="2">US</option>
-              </select>
-            </div>
-      
         <div class="col-md-4">
-          <label for="MiddleName">Aadhaar Number</label>
-          <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no" value="" required>
+          <label for="Location">Nationality<font color=red>*</font></label>
+          <select name="nationality" id="nationality" class="form-control" required>
+            <option value="" disabled selected hidden>Select Nationality</option>
+            <option value="">Select</option>
+            <option value="1">Indian</option>
+            <option value="2">US</option>
+          </select>
+          <div class="error" id="nationalityErr"></div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="MiddleName">Aadhaar Number<font color=red>*</font></label>
+          <input type="number" class="form-control" name="aadhar_card_no"  id="aadhar_card_no" value="" placeholder="Enter Aadhar Number" required>
+          <div class="error" id="aadharErr"></div>
+          <span id="aadharcardno" style="color:red;"></span>
         </div>
         <div class="col-md-4">
-          <label for="nickname">Nick Name</label><span>*</span>
-          <input type="text" class="form-control" name="nick_name" id="nick_name" value="" required>
+          <label for="nickname">Nick Name<font color=red>*</font></label>
+          <input type="text" class="form-control" name="nick_name" id="nick_name" value="" placeholder="Enter Nick Name" required>
+          <div class="error" id="nicknameErr"></div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12" style="float:right;">
+        <div class="col-md-12">
           <button type="button" class="btn btn-primary pull-right" onclick="somefunction(1);">
             Next <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
           </button>
+          <a href="{% url 'pim:employeelist' %}">
+            <button type="button" class="btn btn-primary">
+                <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>  Back
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -83,108 +101,320 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-4">
-          <label for="joined_date">Joined Date:</label><span>*</span>
+          <label for="joined_date">Joined Date:<font color=red>*</font></label>
           <input type="date" class="form-control" name="joined_date" id="joined_date" required>
+          <div class="error" id="joineddateErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="date_of_permanency">Date Of Permanency:</label>
+          <label for="date_of_permanency">Date Of Permanency:<font color=red>*</font></label>
           <input type="date" class="form-control" name="date_of_permanency" id="date_of_permanency" value="" required>
+          <div class="error" id="dopErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="JobTitle">Job Title</label>
-          <select name="job_title" class="form-control">
+          <label for="JobTitle">Job Title<font color=red>*</font></label>
+          <select name="job_title" id="job_title" class="form-control" required>
+            <option value="" disabled selected hidden>Select Job Title</option>
             <option value="">Select</option>
             {% for job in jobtitles %}
             <option value="{{ job.id }}">{{ job.jobtitle }}</option>
             {% endfor %}
           </select>
+          <div class="error" id="jobtitleErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Department">Department</label>
-          <select name="department" class="form-control">
+          <label for="Department">Department<font color=red>*</font></label>
+          <select name="department" id="department" class="form-control" required>
+            <option value="" disabled selected hidden>Select Department</option>
             <option value="">Select</option>
             {% for dept in departments %}
             <option value="{{ dept.id }}">{{ dept.departmentname }}</option>
             {% endfor %}
           </select>
+          <div class="error" id="departmentErr"></div>
         </div>
         <div class="col-md-4">
-            <label for="Location">Location</label>
-            <select name="worklocation" class="form-control">
-              <option value="">Select</option>
-              {% for loc in locations %}
-              <option value="{{ loc.id }}">{{ loc.location }}</option>
-              {% endfor %}
-            </select>
-          </div>
+          <label for="Location">Location<font color=red>*</font></label>
+          <select name="worklocation" id="worklocation"  class="form-control" required>
+            <option value="" disabled selected hidden>Select Work Location</option>
+            <option value="">Select</option>
+            {% for loc in locations %}
+            <option value="{{ loc.id }}">{{ loc.location }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="worklocationErr"></div>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-4">
-          <label for="EmploymentStatus">Employment Status</label><span>*</span>
-          <select name="employment_status" class="form-control">
+          <label for="EmploymentStatus">Employment Status<font color=red>*</font></label>
+          <select name="employment_status" id="employment_status" class="form-control" required>
+            <option value="" disabled selected hidden>Select Employment Status</option>
             <option value="">Select</option>
             {% for job in employmentstatus %}
             <option value="{{ job.id }}">{{ job.employementstatus }}</option>
             {% endfor %}
           </select>
+          <div class="error" id="employmentstatusErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="JobCategory">Job Category</label>
-          <select name="job_category" class="form-control">
+          <label for="JobCategory">Job Category<font color=red>*</font></label>
+          <select name="job_category" id="job_category" class="form-control" required>
+            <option value="" disabled selected hidden>Select Job Category</option>
             <option value="">Select</option>
             {% for job in jobcategory %}
             <option value="{{ job.id }}">{{ job.jobcategory }}</option>
             {% endfor %}
           </select>
+          <div class="error" id="jobcategoryErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="WorkShift">Work Shift</label>
-          <select name="work_shifts" class="form-control">
+          <label for="WorkShift">Work Shift<font color=red>*</font></label>
+          <select  name="work_shifts" id="work_shifts" class="form-control" placeholder="Select Work Shift" required>
+            <option value="" disabled selected hidden>Select Work Shift</option>
             <option value="">Select</option>
             <option value="1">General</option>
             <option value="2">Twilight</option>
           </select>
+          <div class="error" id="workshiftErr"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12" style="float:right;">
-          <button type="submit" class="btn btn-primary pull-right">
+          <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
             Save
           </button>
-          <button type="button" class="btn btn-primary" onclick="somefunction(2);">
-            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Prev
+          <button type="button" class="btn btn-primary" onclick="somefunction(3);">
+            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left" ></i> Prev
           </button>
         </div>
       </div>
-
     </div>
   </div>
 </form>
 
 <script>
   function somefunction(val) {
-    if (val == 1) {
-      if (document.getElementById('first_name').value == '') {
-        alert("firstname cannot be empty");
+    if (val == 1){
+      flag = false;
+      var firstname = document.getElementById('first_name').value
+      if(firstname == "") {
+        printError("firstnameErr", "First Name Cannot Be Empty");
         return false;
+      }else {
+          var regex = /^[a-zA-Z\s]+$/; 
+          if(regex.test(firstname) === false) {
+          printError("firstnameErr", "Only Characters");
+          return false;
+          } else {
+          printError("firstnameErr", "");
+          firstnameErr = false;
+          flag = true;
+          }
       }
-      document.getElementById('empdetails').style.display = 'block';
-      document.getElementById('perdetails').style.display = 'none';
-    } else {
-      document.getElementById('empdetails').style.display = 'none';
-      document.getElementById('perdetails').style.display = 'block';
+      var midname = document.getElementById('middle_name').value
+      if(midname != "") {
+          var regex = /^[a-zA-Z\s]+$/; 
+          if(regex.test(midname) === false) {
+          printError("midnameErr", "Only Characters");
+          return false;
+          } else {
+          printError("midnameErr", "");
+          midnameErr = false;
+          }
+      }
+      var lastname = document.getElementById('last_name').value
+      if(lastname == "") {
+        printError("lastnameErr", "Last Name Cannot Be Empty");
+        return false;
+      }else {
+          var regex = /^[a-zA-Z\s]+$/; 
+          if(regex.test(lastname) === false) {
+          printError("lastnameErr", "Only Characters");
+          return false;
+          } else {
+          printError("lastnameErr", "");
+          lastnameErr = false;
+          flag = true;
+          }
+      }
+      var dob = document.getElementById('date_of_birth').value
+      if(dob == "") {
+        printError("dobErr", "Please fill DOB");
+        return false;
+      } else {
+          printError("dobErr", "");
+          dobErr = false;
+          flag = true;
+      }
+      var gen = document.getElementById('gender').value
+      if(gen == "") {
+        printError("genderErr", "Please select an item in the Gender");
+        return false;
+      } else {
+          printError("genderErr", "");
+          genderErr = false;
+          flag = true;
+      }
+      var maritalstatus = document.getElementById('marital_status').value
+      if(maritalstatus == "") {
+        printError("maritalstatusErr", "Please select an item in the Marital Status");
+        return false;
+      } else {
+          printError("maritalstatusErr", "");
+          maritalstatusErr = false;
+          flag = true;
+      }
+      var nation = document.getElementById('nationality').value
+      if(nation == "") {
+        printError("nationalityErr", "Please select an item in the Nationality");
+        return false;
+      } else {
+          printError("nationalityErr", "");
+          nationalityErr = false;
+          flag = true;
+      }
+      var aadhar = document.getElementById('aadhar_card_no').value
+      if(aadhar == "") {
+      printError("aadharErr", "Aadhar number Cannot Be Empty");
+      return false;
+      }else{
+          var aadhar = document.getElementById('aadhar_card_no').value;
+          var adharcardTwelveDigit = /^\d{12}$/;
+          var adharSixteenDigit = /^\d{16}$/;
+          if (aadhar != '') {
+                if (aadhar.match(adharcardTwelveDigit)) {
+                    printError("aadharErr", "");
+                }
+                else if (aadhar.match(adharSixteenDigit)) {
+                    printError("aadharErr", "");
+                }
+                else{
+                    printError("aadharErr", "Enter valid Aadhar number");
+                    return false;
+                }
+              }
+          flag = true;
+      }
+      var nickname = document.getElementById('nick_name').value
+      if(nickname == "") {
+        printError("nicknameErr", "Nick Name Cannot Be Empty");
+        return false;
+      }else {
+          var regex = /^[a-zA-Z\s]+$/; 
+          if(regex.test(nickname) === false) {
+          printError("nicknameErr", "Only Characters");
+          return false;
+          } else {
+          printError("nicknameErr", "");
+          nicknameErr = false;
+          flag = true;
+          }
+      }
+      if (flag == true ){
+          document.getElementById('empdetails').style.display = 'block';
+          document.getElementById('perdetails').style.display = 'none';
+      }else{
+          document.getElementById('empdetails').style.display = 'none';
+          document.getElementById('perdetails').style.display = 'block';        
+      }
+
+    }else if(val==3){
+          document.getElementById('empdetails').style.display = 'none';
+          document.getElementById('perdetails').style.display = 'block'; 
+    }else{
+      flag = false;
+      var jd = document.getElementById('joined_date').value
+      if(jd == "") {
+        printError("joineddateErr", "Please fill joined date");
+        return false;
+      } else {
+          printError("joineddateErr", "");
+          joineddateErr = false;
+          flag = true;
+      }
+      var dop = document.getElementById('date_of_permanency').value
+      if(dop == "") {
+        printError("dopErr", "Please fill date of permanency");
+        return false;
+      } else {
+          printError("dopErr", "");
+          dopErr = false;
+          flag = true;
+      }
+      var jobtitle = document.getElementById('job_title').value
+      if(jobtitle == "") {
+        printError("jobtitleErr", "Please select an item in the job title");
+        return false;
+      } else {
+          printError("jobtitleErr", "");
+          jobtitleErr = false;
+          flag = true;
+      }
+      var dept = document.getElementById('department').value
+      if(dept == "") {
+        printError("departmentErr", "Please select an item in the department");
+        return false;
+      } else {
+          printError("departmentErr", "");
+          departmentErr = false;
+          flag = true;
+      }
+      var wrkloc = document.getElementById('worklocation').value
+      if(wrkloc == "") {
+        printError("worklocationErr", "Please select an item in the work location");
+        return false;
+      } else {
+          printError("worklocationErr", "");
+          worklocationErr = false;
+          flag = true;
+      }
+      var empstatus = document.getElementById('employment_status').value
+      if(empstatus == "") {
+        printError("employmentstatusErr", "Please select an item in the employment status");
+        return false;
+      } else {
+          printError("employmentstatusErr", "");
+          employmentstatusErr = false;
+          flag = true;
+      }
+      var jobcat = document.getElementById('job_category').value
+      if(jobcat == "") {
+        printError("jobcategoryErr", "Please select an item in the job category");
+        return false;
+      } else {
+          printError("jobcategoryErr", "");
+          jobcategoryErr = false;
+          flag = true;
+      }
+      var wrkshift = document.getElementById('work_shifts').value
+      if(wrkshift == "") {
+        printError("workshiftErr", "Please select an item in the work shifts");
+        return false;
+      } else {
+          printError("workshiftErr", "");
+          workshiftErr = false;
+          flag = true;
+      }        
+      if (flag == false ){
+          document.getElementById('empdetails').style.display = 'block';
+          document.getElementById('perdetails').style.display = 'none';
+      }else{
+          document.getElementById('emplist').submit();
+      }
+      }
     }
-  }
+function printError(elemId, hintMsg) {
+    var Msg = hintMsg.fontcolor("red");
+    document.getElementById(elemId).innerHTML = Msg;
+}
+{% comment %} window.onbeforeunload = function () {
+    confirm("Are you sure you want change page!");
+    var Ans = confirm("Are you sure you want change page!");
+    if (Ans == true) {
+      return true;
+    } else {
+      return false;
+    }
+  };    {% endcomment %}
 </script>
-{% comment %} <script>
-    window.onbeforeunload = function() {
-        confirm("Are you sure you want change page!");
-        var Ans = confirm("Are you sure you want change page!");
-        if(Ans==true){
-            return true;
-        }else{
-            return false;
-        }
-    };   
-    </script>  {% endcomment %}
 {% endblock %}
