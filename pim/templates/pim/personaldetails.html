@@ -280,15 +280,10 @@
       }else{
           var aadhar = document.getElementById('aadhar_card_no').value;
           var adharcardTwelveDigit = /^\d{12}$/;
-          var adharSixteenDigit = /^\d{16}$/;
           if (aadhar != '') {
                 if (aadhar.match(adharcardTwelveDigit)) {
                     printError("aadharErr", "");
-                }
-                else if (aadhar.match(adharSixteenDigit)) {
-                    printError("aadharErr", "");
-                }
-                else{
+                }else{
                     printError("aadharErr", "Enter valid Aadhar number");
                     return false;
                 }
@@ -415,6 +410,6 @@ function printError(elemId, hintMsg) {
     } else {
       return false;
     }
-  };    {% endcomment %}
+  };     {% endcomment %}
 </script>
 {% endblock %}
