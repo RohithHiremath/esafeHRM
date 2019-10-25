@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Job Titles </h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
         Add
     </button>
@@ -12,7 +13,7 @@
                 <th>#</th>
                 <th>Job Title</th>
                 <th>Description</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +22,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ job.jobtitle }}</td>
                 <td>{{ job.jobdescription }}</td>
-                <td>
+                <td data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>
@@ -36,9 +37,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addjobtitleLabel">Add Jobtitle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="" name="addjob" id="addjob" method="POST">
                 {% csrf_token %}
@@ -70,9 +68,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editjobtitleLabel">Edit Jobtitle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="/masters/editjobtitle/{{ job.id }}/" name="editjob" id="editjob" method="POST">
                 {% csrf_token %}

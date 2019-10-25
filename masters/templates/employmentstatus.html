@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Employment Type</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobstatus">
         Add
     </button>
@@ -10,8 +11,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Employment Status</th>
-                <th></th>
+                <th>Employment Type</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ status.employementstatus }}</td>
-                <td style="text-align: center;">
+                <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjobstatus{{ status.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>
@@ -33,17 +34,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addjobstatusLabel">Add Employement Status</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
+                <h5 class="modal-title" id="addjobstatusLabel">Add Employment Type</h5>
             </div>
             <form action="" name="addstatus" id="addstatus" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <label for="employementstatus">Employement Status</label><span>*</span>
+                            <label for="employementstatus">Employment Type</label><span>*</span>
                             <input type="text" class="form-control" id="employementstatus" name="employementstatus"
                                 value="" required>
                         </div>
@@ -63,17 +61,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editjobstatusLabel">Edit Employement status</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
+                <h5 class="modal-title" id="editjobstatusLabel">Edit Employment Type</h5>
             </div>
             <form action="/masters/editstatus/{{ status.id }}/" name="editstatus" id="editstatus" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-9">
-                            <label for="employementstatus">Employment status</label><span>*</span>
+                            <label for="employementstatus">Employment Type</label><span>*</span>
                             <input type="text" class="form-control" id="employementstatus" name="employementstatus"
                                 value="{{ status.employementstatus }}" required>
                         </div>

@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+    <h3 style="float: left;margin-left: -22px;">Job Grades</h3>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobgrade">
         Add
     </button>
@@ -11,7 +12,7 @@
             <tr>
                 <th>#</th>
                 <th>Job Grade</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ grade.jobgrade }}</td>
-                <td>
+                <td data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjobgrade{{ grade.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>

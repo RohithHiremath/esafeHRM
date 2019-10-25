@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
     <div class="container-fluid text-right" style="margin:10px;">
+        <h4 style="float: left;margin-left: -22px;">Salary Components</h4>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addcomponent">
             Add
         </button>
@@ -12,7 +13,7 @@
                     <th>#</th>
                     <th>Component Name</th>
                     <th>Type</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +22,7 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ component.componentname }}</td>
                     <td>{{ component.types }}</td>
-                    <td style="text-align: center;">
+                    <td  data-toggle="tooltip" title="Click to edit">
                         <a href="#" data-toggle="modal" data-target="#editcomponent{{ component.id }}"><i
                                 class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                     </td>
@@ -36,9 +37,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addcomponentLabel">Add Salary Component</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                    </button>
                 </div>
                 <form action="" name="addsalary" id="addsalary" method="POST">
                     {% csrf_token %}
@@ -70,9 +68,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editcomponentLabel">Edit Salary Component</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                    </button>
                 </div>
                 <form action="/masters/editcomponent/{{ component.id }}/" name="editsalary" id="editsalary"
                     method="POST">

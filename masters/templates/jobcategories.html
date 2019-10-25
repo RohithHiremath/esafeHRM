@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+        <h4 style="float: left;margin-left: -22px;">Job Categories</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobcategory">
         Add
     </button>
@@ -11,7 +12,7 @@
             <tr>
                 <th>#</th>
                 <th>Job Category</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ category.jobcategory }}</td>
-                <td>
+                <td data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjobcategory{{ category.id }}">
                         <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                     </a>
@@ -35,9 +36,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addjobcategoryLabel">Add Job Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="" name="addcategory" id="addcategory" method="POST">
                 {% csrf_token %}
@@ -65,9 +63,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editjobcategoryLabel">Edit Job Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="/masters/editjobcategory/{{ category.id }}/" name="editcategory" id="editcategory"
                 method="POST">

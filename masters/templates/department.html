@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Departments</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobdepartment">
         Add
     </button>
@@ -12,7 +13,7 @@
                 <th>#</th>
                 <th>Department Name</th>
                 <th>Description</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +22,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ department.departmentname }}</td>
                 <td>{{ department.description }}</td>
-                <td style="text-align: center;">
+                <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjobdepartment{{ department.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>
@@ -36,9 +37,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addjobdepartmentLabel">Add Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="" name="adddepartment" id="adddepartment" method="POST">
                 {% csrf_token %}
@@ -71,9 +69,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editjobdepartmentLabel">Edit Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
             </div>
             <form action="/masters/editdepartment/{{ department.id }}/" name="editdepartment" id="editdepartment"
                 method="POST">

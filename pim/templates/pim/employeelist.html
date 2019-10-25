@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
     <a href="/pim/details/">
+        <h4 style="float: left;margin-left: -22px;color:black;">Employees List </h4>
         <button type="button" class="btn btn-primary">
             Add
         </button>
@@ -12,12 +13,12 @@
         <thead>
             <tr>
                 <!-- <th>#</th> -->
-                <th>Employee ID</th>
+                <th>Emp ID</th>
                 <th>Name</th>
                 <th>Department</th>
                 <th>Job Title</th>
-                <th>Employment Status</th>
                 <th>Work Location</th>
+                <th>Emp Type</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -25,14 +26,14 @@
             {% for personal in personals %}
             <tr>
                 <!-- <td>{{ forloop.counter }}</td> -->
-                <td>{{ personal.employee_id }}</td>
+                <td>{{ personal.employee_id }} </td>
                 <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
                 <td>{{ personal.department }}</td>
                 <td>{{ personal.job_title }}</td>
-                <td>{{ personal.employment_status }}</td>
                 <td>{{ personal.worklocation }}</td>
-                <td style="text-align: center;">
-                    <a href="/pim/edit/{{ personal.id }}">
+                <td>{{ personal.employment_status }}</td>
+                <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
+                    <a href="/pim/edit/{{ personal.id }}" >
                         <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                     </a>
                 </td>

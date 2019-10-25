@@ -86,7 +86,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #343a40;
+  color: #6c757d;
 }
 
 .table thead th {
@@ -101,7 +101,7 @@ tr{
 .table td, .table th {
   padding: .75rem;
   vertical-align: top;
-  border-top: 1px solid #343a40;
+  
 }
 
 .card {
@@ -129,14 +129,19 @@ tr{
   margin-top: 120px !important;
 }
 .modal-header {
-  background-color: #6c757d !important;
+  background-color: #fff !important;
   padding: 0.5rem;
-  color: white;
+  color: #fff;
+  border-bottom: 1px solid #111 !important;
 }
 .modal-footer {
-  background-color: #6c757d !important;
+  background-color: #fff !important;
   padding: 0.5rem;
-  color: white;
+  color: #fff;
+  border-top: 1px solid #111 !important;
+}
+.modal-title{
+  color:#111 !important
 }
 .card-header {
   background-color: #4e555d !important;
@@ -146,6 +151,10 @@ tr{
 
 .card-title {
   margin-bottom: -0.25rem !important;
+}
+
+.card-body {
+  padding: 0.5rem !important;
 }
 
 .h5, h5 {

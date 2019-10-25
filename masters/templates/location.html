@@ -1,6 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
+        <h4 style="float: left;margin-left: -22px;">Work Locations </h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjoblocation">
         Add
     </button>
@@ -10,8 +11,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Location</th>
-                <th></th>
+                <th>Work Location</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ location.location }}</td>
-                <td style="text-align: center;">
+                <td  data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjoblocation{{ location.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>
@@ -33,10 +34,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addjoblocationLabel">Add Location</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
+                <h5 class="modal-title" id="addjoblocationLabel">Add Work Location</h5>
             </div>
             <form action="" name="addlocation" id="addlocation" method="POST">
                 {% csrf_token %}
@@ -63,10 +61,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editjoblocationLabel">Edit Location</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
+                <h5 class="modal-title" id="editjoblocationLabel">Edit Work Location</h5>
             </div>
             <form action="/masters/editlocation/{{ location.id }}/" name="editlocation" id="editlocation"
                 method="POST">
