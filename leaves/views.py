@@ -41,19 +41,6 @@ def editleavetype(request, id):
         return redirect('/leaves/leavetype/')
     else:
         return redirect('/leaves/leavetype/')
-
-# def linktoleavetype(request):
-    
-#     if request.method =="POST":
-#         link = Linktoleavetype(leave_structure_id =request.POST['leave_structure'],
-#                                leave_type_id=request.POST['leave_type'])
-#         link.save()
-#         return redirect('/leaves/linkleavetype/')
-#     else:
-#         links = Linktoleavetype.objects.all()
-#         leaves = Leavestructure.objects.all()
-#         leavetype = Leavetype.objects.all()
-#         return render(request,'leaves/linkleaves.html',{'links':links, 'leaves':leaves,'leavetype':leavetype})
                                                                                                        
 def relationwithleave(request, id):
     if request.method =="POST":
