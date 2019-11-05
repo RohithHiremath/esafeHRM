@@ -75,6 +75,22 @@
                             </a>
                         </div>
                     </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Leaves
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavestructure'  %}">
+                                Leave Structure
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavetype' %}">
+                                Leave Type
+                            </a>
+                        </div>
+                    </li>
                     <li>
                         <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">Logout</a>
                     </li>

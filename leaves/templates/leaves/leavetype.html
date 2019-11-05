@@ -1,0 +1,100 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container-fluid text-right" style="margin:10px;">
+        <h4 style="float: left;margin-left: -22px;">Leave Type</h4>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
+        Add
+    </button>
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+        <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Leave Type</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in leavetype %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ leave.leavetype }}</td>
+                <td>{{ leave.leavedescription }}</td>
+                <td data-toggle="tooltip" title="Click to edit">
+                    <a href="#" data-toggle="modal" data-target="#editleavetype{{ leave.id }}">
+                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="addleavetype" tabindex="-1" role="dialog" aria-labelledby="addleavetypeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addleavetypeLabel">Add Leave Type</h5>
+            </div>
+            <form action="" name="addtype" id="addtype" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="leavetype">Leave Type</label><span>*</span>
+                            <input type="text" class="form-control" id="leavetype" name="leavetype" value=""
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="leavedescription">Description</label><span>*</span>
+                            <input type="text" class="form-control" id="leavedescription" name="leavedescription" value=""
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% for leave in leavetype %}
+<div class="modal fade" id="editleavetype{{ leave.id }}" tabindex="-1" role="dialog"
+    aria-labelledby="editleavetypeLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editleavetypeLabel">Edit Leave Type</h5>
+            </div>
+            <form action="/leaves/editleavetype/{{ leave.id }}/" name="edittype" id="edittype"
+                method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="leavetype">Leave Type</label><span>*</span>
+                            <input type="text" class="form-control" id="leavetype" name="leavetype"
+                                value="{{ leave.leavetype }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="leavedescription">Description</label><span>*</span>
+                            <input type="text" class="form-control" id="leavedescription" name="leavedescription"
+                                value="{{ leave.leavedescription }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

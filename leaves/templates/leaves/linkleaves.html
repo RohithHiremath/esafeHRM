@@ -1,0 +1,71 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container-fluid text-right" style="margin:10px;float:right;">
+    <h4 style="float:left;">Link Leave Structure To Leave Type </h4>
+    <br/>
+</div>
+
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<form action="" name="linkleave" id="linkleave" method="POST">
+  {% csrf_token %}
+        <div class="row">
+        <div class="col-md-4">
+        <label for="leavestructure">Leave structure :</label>
+            <b>{{leavestructurename.leavestructure}}</b>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-4">
+          <label for="leave_type">Leave Type<font color=red>*</font></label>
+          <select name="leave_type" id="leave_type" class="form-control" value="{{ link.id }}" required>
+            <option value="" disabled selected hidden>Select Leave Type</option>
+            <option value="">Select</option>
+            {% for type in leavetypes %}
+            <option value="{{ type.id }}">{{ type.leavetype }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4" style="margin-top:30px;">
+        <button type="Submit" class="btn btn-primary" data-toggle="modal" data-target="#addlinkleave">
+        Add
+        </button>
+        </div>
+        </div>
+       
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <table id="example" class="table table-striped nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Leave Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in linkeddetails %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ link.leave_type }}</td>
+                <td style="text-align: center;" data-toggle="tooltip" title="Delete">
+                    <a href="/leaves/delete/{{ link.id }}/{{ leavestructurename.id }}" >
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <div class="row">
+        <div class="col-md-12">
+    <a href="/leaves/leavestructure/" >
+        <button type="button" class="btn btn-primary pull-right" >
+            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
+        </button>
+    </a>
+        {% comment %} <button type="submit" class="btn btn-primary pull-right">Save</button> {% endcomment %}
+    </div>
+    </div>
+</form>  
+{% endblock %}
+

@@ -1,0 +1,103 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container-fluid text-right" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Leave Structure </h4>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavestructure">
+        Add
+    </button>
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+        <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Leave Structure</th>
+                <th>Description</th>
+                <th>Action</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in leaves %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ leave.leavestructure }}</td>
+                <td>{{ leave.leavedescription }}</td>
+                <td data-toggle="tooltip" title="Click to edit">
+                    <a href="#" data-toggle="modal" data-target="#editleavestructure{{ leave.id }}"><i
+                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                </td>
+                <td data-toggle="tooltip" title="Link Leave Types">
+                    <a href="/leaves/relationwithleave/{{ leave.id }}"><i 
+                        class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="addleavestructure" tabindex="-1" role="dialog" aria-labelledby="addleavestructureLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addleavestructureLabel">Add Leave Structure</h5>
+            </div>
+            <form action="" name="addstructure" id="addstructure" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="leavestructure">Leave Structure Name</label><span>*</span>
+                            <input type="text" class="form-control" id="leavestructure" name="leavestructure" value="" required>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="leavedescription">Description</label>
+                            <input type="text" class="form-control" id="leavedescription" name="leavedescription" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% for leave in leaves %}
+<div class="modal fade" id="editleavestructure{{leave.id}}" tabindex="-1" role="dialog" aria-labelledby="editleavestructureLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editleavestructureLabel">Edit Leave Structure</h5>
+            </div>
+            <form action="/leaves/editleavestructure/{{ leave.id }}/" name="editstructure" id="editstructure" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="leave
+                            structure">Leave Structure Name</label><span>*</span>
+                            <input type="text" class="form-control" id="leavestructure" name="leavestructure"
+                                value="{{ leave.leavestructure }}" required>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="leavedescription">Description</label>
+                            <input type="text" class="form-control" id="leavedescription" name="leavedescription"
+                                value="{{ leave.leavedescription }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
