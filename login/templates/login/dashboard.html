@@ -35,9 +35,14 @@
             <div class="list-group list-group-flush">
                 <ul class="navbar-nav">
                     <li class="list-group-item bg-light">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link" href="{% url 'dashboard' %}" >
+                                <i class="fa fa-tachometer" aria-hidden="true">  Dashboard</i>  
+                        </a>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Masters
+                            <i class="fa fa-bars" aria-hidden="true"> Masters</i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
@@ -64,19 +69,21 @@
                         </div>
                     </li>
                     <li class="list-group-item bg-light">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            PIM
+                            <i class="fa fa-address-card-o" aria-hidden="true"> PIM</i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'pim:employeelist' %}">
-                                Employee List
+                                <i class="fa fa-users" aria-hidden="true"> Employee List</i>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">Logout</a>
+                        <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"> Logout</i>
+                        </a>
                     </li>
                 </ul>
             </div>
