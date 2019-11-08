@@ -6,7 +6,7 @@
 body {
   overflow-x: hidden;
   font-family: "Times New Roman", Times, serif;
-  font-size: 16px;
+  font-size: 15px;
   color:#343a40;
 }
 
@@ -42,8 +42,8 @@ body {
 }
 
 .bg-light {
-  background-color: #343a40!important;
-  background-image: linear-gradient(to right, #fd7e14,#ffc107) !important;
+  background-color: #fd7e14!important;
+  /* background-image: linear-gradient(to right, #fd7e14,#fd7e14) !important; */
 }
 
 .nav-link {
@@ -73,7 +73,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 
 .btn-primary {
   color: #343a40;
-  background-color: #ffc107;
+  background-color: #fd7e14;
   border-color: #343a40;
 }
 
@@ -86,7 +86,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #6c757d;
+  color: #343a40;
 }
 
 .table thead th {
@@ -128,12 +128,12 @@ tr{
   margin-top: 120px !important;
 }
 .modal-header {
-  background-color: #fd7e14 !important;
+  background-color: #ffffff !important;
   padding: 0.5rem;
   color: #343a40;
 }
 .modal-footer {
-  background-color: #fd7e14 !important;
+  background-color: #ffffff !important;
   padding: 0.5rem;
   color: #343a40;
 }
@@ -142,18 +142,18 @@ tr{
   color:#111 !important
 }
 .card-header {
-  background-color: #fdba3b !important;
+  background-color: #fc803c !important;
   padding: 0.5rem;
-  color: white;
+  color: #495057;
 }
 
 .card-title {
   margin-bottom: -0.25rem !important;
 }
 
-.card-body {
+/*.card-body {
   padding: 1.0rem !important;
-}
+}*/
 
 .h5, h5 {
   font-size: 1.0rem;

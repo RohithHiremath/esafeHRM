@@ -14,7 +14,6 @@
                 <th>Leave Structure</th>
                 <th>Description</th>
                 <th>Action</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -24,12 +23,12 @@
                 <td>{{ leave.leavestructure }}</td>
                 <td>{{ leave.leavedescription }}</td>
                 <td data-toggle="tooltip" title="Click to edit">
-                    <a href="#" data-toggle="modal" data-target="#editleavestructure{{ leave.id }}"><i
-                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                </td>
-                <td data-toggle="tooltip" title="Link Leave Types">
-                    <a href="/leaves/relationwithleave/{{ leave.id }}"><i 
-                        class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a style="padding-left: 20px;" href="#" data-toggle="modal" data-target="#editleavestructure{{ leave.id }}">
+                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                    </a>
+                    <a style="padding-left: 20px;" data-toggle="tooltip" title="Link Leave Types" href="/leaves/relationwithleave/{{ leave.id }}">
+                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

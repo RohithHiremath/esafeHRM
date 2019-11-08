@@ -1,112 +1,180 @@
-{# Load the tag library #}
-{% load bootstrap4 %}
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {# Load CSS and JavaScript #}
-    {% bootstrap_css %}
-
-    {# Display django.contrib.messages as Bootstrap alerts #}
-    {% bootstrap_messages %}
-
+    <meta name="description" content="">
+    <meta name="author" content="">
     {% if title %}
     <title>HRM-{{ title }}</title>
     {% else %}
     <title>HRM</title>
     {% endif %}
-
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/style2/jquery.dataTables.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style2/rowReorder.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style2/responsive.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+    <link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style2/simple-sidebar.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </head>
-<body>
-    <div class="wrapper">
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <p style="color:ghostwhite;">Resource Management</p>
-            </div>
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Master
-                        Set-Up</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="{% url 'jobtitle' %}">Job Titles</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobcategory' %}">Job Categories</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'jobgrade' %}">Job Grades</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'component' %}">Salary Components</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'status' %}">Employment Status</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'department' %}">Departments</a>
-                        </li>   
-                    </ul>
-                </li>
-                <li>
-                    <a href="#empmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">PIM</a>
-                    <ul class="collapse list-unstyled" id="empmenu">
-                        <li>
-                            <a href="{% url 'jobtitle' %}">Employee List</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
-        </nav>
 
-        <div class="container-fluid" style="min-height:500px;">
-            <nav class="navbar sticky-top navbar-expand-lg navbar-light">
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fa fa-align-justify"></i> <span></span>
-                </button>
-            </nav>
-            {% block content %}{% endblock %}
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div> <img src="{% static 'images/esafe_logo.jpeg' %}" width="240px" height="53px" /></div>
+            <div class="list-group list-group-flush">
+                <ul class="navbar-nav">
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="{% url 'dashboard' %}" >
+                                <i class="fa fa-tachometer" aria-hidden="true">  Dashboard</i>  
+                        </a>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-university" aria-hidden="true"> Organization <i class="fa fa-angle-down" aria-hidden="true"></i></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
+                                Job Titles
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobcategory' %}">
+                                Job Categories
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobgrade' %}">
+                                Job Grades
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'component' %}">
+                                Salary Components
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'status' %}">
+                                Employment Status
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
+                                Departments
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'location' %}">
+                                Work Location
+                            </a>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-address-card-o" aria-hidden="true"> Employee Management <i class="fa fa-angle-down" aria-hidden="true"></i></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'pim:employeelist' %}">
+                                <i class="fa fa-users" aria-hidden="true"> Employee List</i>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bars" aria-hidden="true"> Leaves  <i class="fa fa-angle-down" aria-hidden="true"></i></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavetype' %}">
+                                Leave Type
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavestructure'  %}">
+                                Leave Structure
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:assignleavestructure'  %}">
+                                Assign Leave Structure
+                            </a>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-money" aria-hidden="true"></i> Payroll  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavetype' %}">
+                                Salary Structure
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'leaves:leavestructure'  %}">
+                                Salary Heads
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">
+                                <i class="fa fa-sign-out" aria-hidden="true"> Logout</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+                <ul class="navbar-nav">
+                    <li class="userli">
+                        Welcome {{ user.first_name }} {{ user.last_name }}, &nbsp;&nbsp;
+                    </li>
+                    <li class="userli">
+                        Last login : {{ user.last_login }}
+                    </li>
+                </ul>
+            </nav>
+            <div class="container-fluid">
+                <div class="card" style="margin-top:5px;">
+                    <div class="card-body">
+                        {% block content  %} {% endblock%}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
     </div>
-    {% bootstrap_javascript jquery='full' %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-    
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <!-- Menu Toggle Script -->
     <script>
         $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
+            var table = $('#example').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true,
+                fixedHeader: true
             });
-        });  
-
-        var table = $('#example').DataTable( {
-        responsive: true
-        } );
-  
-        new $.fn.dataTable.FixedHeader( table );
+        });
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
     </script>
+    
 </body>
+
 </html>

@@ -1,161 +1,183 @@
+{% extends 'login/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block content  %}
+<style>
+    .card {
+        border: 1px solid #6c757d40 !important;
+        border-radius: .25rem;
+    }
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    {% if title %}
-    <title>HRM-{{ title }}</title>
-    {% else %}
-    <title>HRM</title>
-    {% endif %}
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/style2/jquery.dataTables.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style2/rowReorder.dataTables.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style2/responsive.dataTables.min.css' %}" rel="stylesheet">
+    .card-local {
+        padding: 1.25em !important;
+    }
 
+    .card-footer {
+    padding: 0.5rem 1.25rem;
+    background-color: rgba(0,0,0,.03);
+    border-top: 1px solid rgba(0,0,0,.125);
+}
 
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/style2/simple-sidebar.css' %}" rel="stylesheet">
-
-</head>
-
-<body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div> <img src="{% static 'images/esafe_logo.jpeg' %}" width="240px" height="53px" /></div>
-            <div class="list-group list-group-flush">
-                <ul class="navbar-nav">
-                    <li class="list-group-item bg-light">
-                        <a class="nav-link" href="{% url 'dashboard' %}" >
-                                <i class="fa fa-tachometer" aria-hidden="true">  Dashboard</i>  
-                        </a>
-                    </li>
-                    <li class="list-group-item bg-light">
-                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-bars" aria-hidden="true"> Masters</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
-                                Job Titles
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobcategory' %}">
-                                Job Categories
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobgrade' %}">
-                                Job Grades
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'component' %}">
-                                Salary Components
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'status' %}">
-                                Employment Status
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
-                                Departments
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'location' %}">
-                                Location
-                            </a>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-light">
-                        <a class="nav-link" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-address-card-o" aria-hidden="true"> PIM</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="list-group-item list-group-item-action bg-light"
-                                href="{% url 'pim:employeelist' %}">
-                                <i class="fa fa-users" aria-hidden="true"> Employee List</i>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-light">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Leaves
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="list-group-item list-group-item-action bg-light"
-                                href="{% url 'leaves:leavestructure'  %}">
-                                Leave Structure
-                            </a>
-                            <a class="list-group-item list-group-item-action bg-light"
-                                href="{% url 'leaves:leavetype' %}">
-                                Leave Type
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <a class="list-group-item list-group-item-action bg-light" href="{% url 'logout' %}">
-                                <i class="fa fa-sign-out" aria-hidden="true"> Logout</i>
-                        </a>
-                    </li>
-                </ul>
+    .chart-container {
+        position: relative;
+        margin: auto;
+        height: 80vh;
+        width: 80vw;
+    }
+</style>
+<script src="{% static 'js/chart.js' %}"></script>
+<div class="row">
+    <div class="col-sm-3" style="padding-bottom:25px;">
+        <div class="card text-white bg-primary">
+            <div class="card-body card-local">
+                <div class="mr-5"> 26 Leave Requests</div>
             </div>
+            <a class="card-footer text-white clearfix" href="#">
+                <span class="float-left"> View Details </span>
+                <span class="float-right"> <i class="fa fa-angle-right" aria-hidden="true"></i> </span>
+            </a>
         </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle"><i class="fa fa-angle-left"></i> <i
-                        class="fa fa-angle-right"></i></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
-                <ul class="navbar-nav">
-                    <li class="userli">
-                        Welcome {{ user.first_name }} {{ user.last_name }}, &nbsp;&nbsp;
-                    </li>
-                    <li class="userli">
-                        Last login : {{ user.last_login }}
-                    </li>
-                </ul>
-            </nav>
-            <div class="container-fluid">
-                <div class="card" style="margin-top:5px;">
-                    <div class="card-body">
-                        {% block content  %} {% endblock%}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
     </div>
-    <!-- /#wrapper -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'js/dataTables.rowReorder.min.js' %}"></script>
-    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <div class="col-sm-3" style="padding-bottom:25px;">
+        <div class="card  text-white bg-info">
+            <div class="card-body card-local">
+                <div class="mr-5"> 26 Leave Requests</div>
+            </div>
+            <a class="card-footer text-white clearfix" href="#">
+                <span class="float-left"> View Details </span>
+                <span class="float-right"> <i class="fa fa-angle-right" aria-hidden="true"></i> </span>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-3" style="padding-bottom:25px;">
+        <div class="card  text-white bg-success">
+            <div class="card-body card-local">
+                <div class="mr-5"> 26 Leave Requests</div>
+            </div>
+            <a class="card-footer text-white clearfix" href="#">
+                <span class="float-left"> View Details </span>
+                <span class="float-right"> <i class="fa fa-angle-right" aria-hidden="true"></i> </span>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-3" style="padding-bottom:25px;">
+        <div class="card  text-white bg-danger">
+            <div class="card-body card-local">
+                <div class="mr-5"> 26 Leave Requests</div>
+            </div>
+            <a class="card-footer text-white clearfix" href="#">
+                <span class="float-left"> View Details </span>
+                <span class="float-right"> <i class="fa fa-angle-right" aria-hidden="true"></i> </span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6" style="padding-bottom:20px;">
+        <div class="card">
+            <div class="card-body" class="">
+                <canvas id="piech"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
 
-    <!-- Menu Toggle Script -->
-    <script>
-        $(document).ready(function () {
-            var table = $('#example').DataTable({
-                rowReorder: {
-                    selector: 'td:nth-child(2)'
-                },
-                responsive: true,
-                fixedHeader: true
-            });
-        });
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
-</body>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="barcht"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var piechctx = document.getElementById('piech');
+    var chart = new Chart(piechctx, {
+        // The type of chart we want to create
+        type: 'pie',
+        // The data for our dataset
+        data: {
+            labels: ['Finance and Accounting', 'Management', 'Technical'],
+            datasets: [{
+                data: [10, 10, 50],
+                backgroundColor: [
+                    'red',
+                    'yellow',
+                    'orange',
+                    'purple',
+                    'blue',
+                    'green'
+                ],
+                borderColor: [
+                    'white',
+                    'white',
+                    'white',
+                    'white',
+                    'white',
+                    'white'
+                ],
+                borderWidth: 1
+            }],
+        },
 
-</html>
+
+        // Configuration options go here
+        options: {
+            legend: {
+                display: true,
+                position: 'bottom'
+            },
+            title: {
+                display: true,
+                text: 'Employee Distribution by Department'
+            },
+        }
+    });
+
+    var barchtctx = document.getElementById('barcht');
+    var chart = new Chart(barchtctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: ['Finance and Accounting', 'Management', 'Technical'],
+            datasets: [{
+                data: [10, 20, 30],
+                backgroundColor: [
+                    'red',
+                    'yellow',
+                    'orange',
+                    'purple',
+                    'blue',
+                    'green'
+                ],
+                borderColor: [
+                    'red',
+                    'yellow',
+                    'orange',
+                    'purple',
+                    'blue',
+                    'green'
+                ],
+                borderWidth: 1
+            }],
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+                text: 'Leave Taken by Departments in this Year',
+            }
+        }
+    });
+</script>
+{% endblock%}

@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from masters.models import Job
-from leaves.models import Leavestructure, Leavetype, Linktoleavetype
-
+from masters.models import Job, Jobcategory, Department, Location
+from leaves.models import Leavestructure, Leavetype, Linktoleavetype,AssignLeaveStructure
+from pim.models import Personal_details
+from django.http import HttpResponse
+from datetime import datetime
+import datetime
 # Create your views here.
 def leavestructure(request):
     if request.method == 'POST':
@@ -57,3 +60,26 @@ def delete(request, id, idleave):
     job = Linktoleavetype.objects.get(id=id)
     job.delete()
     return redirect('/leaves/relationwithleave/'+str(idleave)+'/')
+
+def assignleavestructure(request):
+    
+    if request.method == 'POST':
+        selList = request.POST.getlist('empids')
+        for val in range(len(selList)):
+            dt_obj = datetime.datetime.strptime(request.POST['effectivedate'],"%d-%m-%Y")
+            effectivedate = datetime.datetime.strftime(dt_obj, "%Y-%m-%d")
+            assignedleavedata = AssignLeaveStructure(
+                fromDate = effectivedate,
+                toDate = '2099-12-31',
+                updatedDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                status = True,
+                empid_id = selList[val],
+                leave_structure_id = request.POST['leavestructure']
+            )
+            assignedleavedata.save()
+
+        return redirect('/leaves/assignleavestructure/')
+    else:
+        personals = Personal_details.objects.all()
+        leavestructures = Leavestructure.objects.all()
+        return render(request,'leaves/assignleavestructure.html',{'personals':personals,'leavestructures':leavestructures})

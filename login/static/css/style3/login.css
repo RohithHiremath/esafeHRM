@@ -1,0 +1,42 @@
+.imgclass{
+    -webkit-box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+     box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+ }
+
+.navbar-brand{
+    color: black !important;
+}
+
+.lg{
+    /*margin-top: 40px;*/
+    padding: 30px 30px;
+}
+
+.log{
+    padding: 60px 40px;
+    margin-top: 20px;
+    -webkit-box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+    box-shadow: 0px 0px 31px 0px rgba(255,255,255,1);
+}
+
+h1{
+    text-align:center; 
+    padding-bottom:10px; 
+    font-weight: bolder; 
+    margin-top:-10px;
+}
+
+.btn-primary{
+    background-color:#343a40 !important;
+    border-color:#ffffff !important;
+}
+
+.bodybg{
+    background-color:ghostwhite !important;
+    background: url('../../images/bg7.jpg') no-repeat;
+    min-height: 100%;
+    background-size: cover;
+    color:white;
+}

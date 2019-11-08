@@ -1,0 +1,67 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<form action="" name="emplist" id="emplist"  method="POST" >
+    {% csrf_token %}
+    <div class="container-fluid text-right" style="margin:10px;float:right;">
+        <h4 style="float: left;">Assign Leave Structure to Employees </h4>
+    </div>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <table id="example" class="table table-striped nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Emp Id</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Job Title</th>
+                <th>Work Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for personal in personals %}
+            <tr>
+                <td><input type="checkbox" name="empids" id="{{ personal.id }}" value="{{ personal.id }}" />
+                </td>
+                <td>{{ personal.employee_id }}</td>
+                <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
+                <td>{{ personal.department }}</td>
+                <td>{{ personal.job_title }}</td>
+                <td>{{ personal.worklocation }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="LeaveStructure">Leave Structure<span style="color:red;">*</span></label>
+            <select name="leavestructure" id="leavestructure" required class="form-control" required >
+                <option value="">Select Leave Structure</option>
+                {% for leavestructure in leavestructures %}
+                <option value="{{ leavestructure.id }}">{{ leavestructure.leavestructure }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="EffectiveDate">Effective Date<span style="color:red;">*</span></label>
+            <input type="text" class="form-control" name="effectivedate" id="effectivedate" placeholder="Select Date" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="float:right;">
+            <button type="submit" class="btn btn-primary pull-right">
+                Assign
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#effectivedate").datepicker({
+            minDate: 0,
+            dateFormat: 'dd-mm-yy'
+        });
+    });
+</script>
+{% endblock %}
