@@ -12,6 +12,7 @@
             <tr>
                 <th>#</th>
                 <th>Leave Type</th>
+                <th>Short Name</th>
                 <th>Description</th>
                 <th>Action</th>
             </tr>
@@ -21,6 +22,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ leave.leavetype }}</td>
+                <td>{{ leave.shortname }}</td>
                 <td>{{ leave.leavedescription }}</td>
                 <td data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editleavetype{{ leave.id }}">
@@ -34,7 +36,7 @@
 </div>
 <div class="modal fade" id="addleavetype" tabindex="-1" role="dialog" aria-labelledby="addleavetypeLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addleavetypeLabel">Add Leave Type</h5>
@@ -43,12 +45,17 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label for="leavetype">Leave Type</label><span>*</span>
                             <input type="text" class="form-control" id="leavetype" name="leavetype" value=""
                                 required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2">
+                            <label for="leavetype">Short Name</label><span>*</span>
+                            <input type="text" class="form-control" id="shortname" name="shortname" value="" maxlength='3'
+                                required>
+                        </div>
+                        <div class="col-md-5">
                             <label for="leavedescription">Description</label><span>*</span>
                             <input type="text" class="form-control" id="leavedescription" name="leavedescription" value=""
                                 required>
@@ -66,7 +73,7 @@
 {% for leave in leavetype %}
 <div class="modal fade" id="editleavetype{{ leave.id }}" tabindex="-1" role="dialog"
     aria-labelledby="editleavetypeLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editleavetypeLabel">Edit Leave Type</h5>
@@ -76,12 +83,17 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label for="leavetype">Leave Type</label><span>*</span>
                             <input type="text" class="form-control" id="leavetype" name="leavetype"
                                 value="{{ leave.leavetype }}" required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2">
+                            <label for="leavetype">Short Name</label><span>*</span>
+                            <input type="text" class="form-control" id="shortname" name="shortname" value="{{ leave.shortname }}" maxlength='3'
+                                required>
+                        </div>
+                        <div class="col-md-5">
                             <label for="leavedescription">Description</label><span>*</span>
                             <input type="text" class="form-control" id="leavedescription" name="leavedescription"
                                 value="{{ leave.leavedescription }}" required>

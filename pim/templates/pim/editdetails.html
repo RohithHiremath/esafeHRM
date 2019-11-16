@@ -416,15 +416,5 @@ function printError(elemId, hintMsg) {
     document.getElementById(elemId).innerHTML = Msg;
 }
 </script>
-<script>
-  {% comment %} window.onbeforeunload = function () {
-    confirm("Are you sure you want change page!");
-    var Ans = confirm("Are you sure you want change page!");
-    if (Ans == true) {
-      return true;
-    } else {
-      return false;
-    }
-  };    {% endcomment %}
-</script>
+
 {% endblock %}
