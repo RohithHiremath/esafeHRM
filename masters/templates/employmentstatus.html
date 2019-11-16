@@ -42,13 +42,18 @@
                     <div class="row">
                         <div class="col-md-8">
                             <label for="employementstatus">Employment Type</label><span>*</span>
-                            <input type="text" class="form-control" id="employementstatus" name="employementstatus"
-                                value="" required>
+                            <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" onblur="statusvalidate(this);return false;" data-url="{% url 'status' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -70,12 +75,18 @@
                         <div class="col-md-9">
                             <label for="employementstatus">Employment Type</label><span>*</span>
                             <input type="text" class="form-control" id="employementstatus" name="employementstatus"
-                                value="{{ status.employementstatus }}" required>
+                                value="{{ status.employementstatus }}" onblur="statusedit(this,{{ status.id }});" data-url="{% url 'status' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ status.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ status.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="editsave{{ status.id }}">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -83,4 +94,60 @@
     </div>
 </div>
 {% endfor %}
+<script>
+function statusvalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+    document.getElementById("save").disabled = false;
+	employementstatus = $(element).val();
+	if (employementstatus == "") {
+		return;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "employementstatus":employementstatus,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				$("#login_ok").show();
+                document.getElementById("save").disabled = false;
+			}else {
+				$("#login_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function statusedit(element,id) {
+    $("#edit_ok"+id).hide();
+	$("#edit_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	employementstatusvalue = $(element).val();
+	if (employementstatusvalue == "") {
+		return false;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "employementstatus":employementstatusvalue,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#edit_ok"+id).show();
+                document.getElementById("editsave"+id).disabled = false;
+			}else {
+				$("#edit_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+</script>
 {% endblock %}

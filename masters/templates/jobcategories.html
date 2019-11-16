@@ -44,12 +44,18 @@
                         <div class="col-md-9">
                             <label for="jobcategory">Job Category</label><span>*</span>
                             <input type="text" class="form-control" id="jobcategory" name="jobcategory" value=""
-                                required>
+                            onblur="catedit(this);return false;" data-url="{% url 'jobcategory' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -72,12 +78,18 @@
                         <div class="col-md-9">
                             <label for="jobcategory">Job Category</label><span>*</span>
                             <input type="text" class="form-control" id="jobcategory" name="jobcategory"
-                                value="{{ category.jobcategory }}" required>
+                                value="{{ category.jobcategory }}" onblur="catedit(this,{{ category.id }});" data-url="{% url 'jobcategory' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ category.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ category.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="editsave{{ category.id }}">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -85,4 +97,60 @@
     </div>
 </div>
 {% endfor %}
+<script>
+function catvalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+    document.getElementById("save").disabled = false;
+	jobcategory = $(element).val();
+	if (jobcategory == "") {
+		return;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobcategory":jobcategory,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				{% comment %} $("#login_ok").show(); {% endcomment %}
+                {% comment %} document.getElementById("save").disabled = false; {% endcomment %}
+			}else {
+				$("#login_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function catedit(element,id) {
+    $("#edit_ok"+id).hide();
+	$("#edit_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	jobcategoryvalue = $(element).val();
+	if (jobcategoryvalue == "") {
+		return false;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobcategory":jobcategoryvalue,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#edit_ok"+id).show();
+                document.getElementById("editsave"+id).disabled = false;
+			}else {
+				$("#edit_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+} 
+</script>
 {% endblock %}

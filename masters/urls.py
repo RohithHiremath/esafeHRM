@@ -17,5 +17,4 @@ urlpatterns = [
     path('editdepartment/<int:id>/', views.editdepartment, name='editdepartment'),
     path('location/', views.location, name = 'location'),
     path('editlocation/<int:id>/', views.editlocation, name='editlocation'),
-
 ]

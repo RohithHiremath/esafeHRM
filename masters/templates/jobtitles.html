@@ -1,4 +1,4 @@
-{% extends 'login/dashboard.html' %}
+{% extends 'login/base.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Job Titles </h4>
@@ -44,7 +44,13 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
-                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" required>
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" onblur="jobvalidate(this);return false;" data-url="{% url 'jobtitle' %}" required/>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <label for="description">Description</label>
@@ -53,14 +59,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 {% for job in jobs %}
 <div class="modal fade" id="editjobtitle{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="editjobtitleLabel"
     aria-hidden="true" data-backdrop="static">
@@ -75,8 +80,13 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
-                            <input type="text" class="form-control" id="jobtitle" name="jobtitle"
-                                value="{{ job.jobtitle }}" required>
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});" data-url="{% url 'jobtitle' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ job.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ job.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <label for="description">Description</label>
@@ -86,7 +96,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="editsave{{ job.id }}">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -94,4 +104,61 @@
     </div>
 </div>
 {% endfor %}
+<script>
+function jobvalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+    document.getElementById("save").disabled = false;
+	jobtitle = $(element).val();
+	if (jobtitle == "") {
+		return;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobtitle":jobtitle,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				{% comment %} $("#login_ok").show(); {% endcomment %}
+                {% comment %} document.getElementById("save").disabled = false; {% endcomment %}
+			}else {
+				$("#login_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function jobedit(element,id) {
+    $("#edit_ok"+id).hide();
+	$("#edit_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	jobtitlevalue = $(element).val();
+	if (jobtitlevalue == "") {
+		return false;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobtitle":jobtitlevalue,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#edit_ok"+id).show();
+                document.getElementById("editsave"+id).disabled = false;
+			}else {
+				$("#edit_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+</script>
 {% endblock %}
+

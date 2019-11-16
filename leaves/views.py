@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from masters.models import Job, Jobcategory, Department, Location
-from leaves.models import Leavestructure, Leavetype, Linktoleavetype,AssignLeaveStructure
+from django.http import HttpResponseRedirect
+from masters.models import Job
 from pim.models import Personal_details
-from django.http import HttpResponse
-from datetime import datetime
+from leaves.models import Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure
+from django.contrib import messages
 import datetime
+
 # Create your views here.
 def leavestructure(request):
     if request.method == 'POST':
@@ -62,7 +62,6 @@ def delete(request, id, idleave):
     return redirect('/leaves/relationwithleave/'+str(idleave)+'/')
 
 def assignleavestructure(request):
-    
     if request.method == 'POST':
         selList = request.POST.getlist('empids')
         for val in range(len(selList)):
@@ -77,7 +76,6 @@ def assignleavestructure(request):
                 leave_structure_id = request.POST['leavestructure']
             )
             assignedleavedata.save()
-
         return redirect('/leaves/assignleavestructure/')
     else:
         personals = Personal_details.objects.all()

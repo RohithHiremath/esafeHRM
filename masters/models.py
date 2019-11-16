@@ -43,7 +43,7 @@ class Department(models.Model):
        return self.departmentname
 
 class Location(models.Model):
-    location = models.CharField(max_length=50)
+    locationname = models.CharField(max_length=50)
 
     def __str__(self):
-       return self.location
+       return self.locationname

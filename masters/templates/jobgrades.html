@@ -45,12 +45,18 @@
                     <div class="row">
                         <div class="col-md-8">
                             <label for="jobgrade">Job Grade</label><span>*</span>
-                            <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" required>
+                            <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" onblur="gradevalidate(this);return false;" data-url="{% url 'jobgrade' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -75,12 +81,18 @@
                         <div class="col-md-8">
                             <label for="jobgrade">Job Grade</label><span>*</span>
                             <input type="text" class="form-control" id="jobgrade" name="jobgrade"
-                                value="{{ grade.jobgrade }}" required>
+                                value="{{ grade.jobgrade }}" onblur="gradeedit(this,{{ grade.id }});return false;" data-url="{% url 'jobgrade' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ grade.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ grade.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="editsave{{ grade.id }}">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -88,4 +100,60 @@
     </div>
 </div>
 {% endfor %}
+<script>
+function gradevalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+    document.getElementById("save").disabled = false;
+	jobgrade = $(element).val();
+	if (jobgrade == "") {
+		return;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobgrade":jobgrade,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				$("#login_ok").show();
+                document.getElementById("save").disabled = false;
+			}else {
+				$("#login_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function gradeedit(element,id) {
+    $("#edit_ok"+id).hide();
+	$("#edit_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	jobgradevalue = $(element).val();
+	if (jobgradevalue == "") {
+		return false;
+	}
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "jobgrade":jobgradevalue,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#edit_ok"+id).show();
+                document.getElementById("editsave"+id).disabled = false;
+			}else {
+				$("#edit_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+</script>
 {% endblock %}

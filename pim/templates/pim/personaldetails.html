@@ -241,7 +241,23 @@
       if(dob == "") {
         printError("dobErr", "Please fill DOB");
         return false;
-      } else {
+      } else{
+          var today = new Date();
+          var nowyear = today.getFullYear();
+          var nowmonth = today.getMonth();
+          var nowday = today.getDate();
+          var b = document.getElementById('date_of_birth').value;
+          var birth = new Date(b);
+          var birthyear = birth.getFullYear();
+          var birthmonth = birth.getMonth();
+          var birthday = birth.getDate();
+          var age = nowyear - birthyear;
+          var age_month = nowmonth - birthmonth;
+          var age_day = nowday - birthday;
+          if ((age == 18 && age_month <= 0 && age_day <= 0) || age < 18) {
+              printError("dobErr", "Age should be minimum 18 years.");
+              return false;
+          }
           printError("dobErr", "");
           dobErr = false;
           flag = true;
@@ -402,14 +418,5 @@ function printError(elemId, hintMsg) {
     var Msg = hintMsg.fontcolor("red");
     document.getElementById(elemId).innerHTML = Msg;
 }
-{% comment %} window.onbeforeunload = function () {
-    confirm("Are you sure you want change page!");
-    var Ans = confirm("Are you sure you want change page!");
-    if (Ans == true) {
-      return true;
-    } else {
-      return false;
-    }
-  };     {% endcomment %}
 </script>
 {% endblock %}
