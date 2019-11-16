@@ -4,14 +4,18 @@ from pim.models import Personal_details
 # Create your models here.
 class Leavestructure(models.Model):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    shortname = models.CharField(max_length=3,validators=[alphanumeric])
     leavestructure = models.CharField(max_length=50,validators=[alphanumeric])
     leavedescription = models.CharField(max_length=100)
+    experincefrom = models.IntegerField()
+    experienceto = models.IntegerField()
     
     def __str__(self):
        return str(self.leavestructure)
 
 class Leavetype(models.Model):
     leavetype = models.CharField(max_length=50)
+    shortname = models.CharField(max_length=3)
     leavedescription = models.CharField(max_length=100)
     
     def __str__(self):

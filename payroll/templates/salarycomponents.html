@@ -1,0 +1,98 @@
+{% extends 'login/base.html' %}
+{% block content %}
+    <div class="container-fluid text-right" style="margin:10px;">
+        <h4 style="float: left;margin-left: -22px;">Salary Components</h4>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addcomponent">
+            Add
+        </button>
+    </div>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+        <table id="example" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Component Name</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for component in components %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ component.componentname }}</td>
+                    <td>{{ component.types }}</td>
+                    <td  data-toggle="tooltip" title="Click to edit">
+                        <a href="#" data-toggle="modal" data-target="#editcomponent{{ component.id }}"><i
+                                class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="addcomponent" tabindex="-1" role="dialog" aria-labelledby="addcomponentLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addcomponentLabel">Add Salary Component</h5>
+                </div>
+                <form action="" name="addsalary" id="addsalary" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="componentname">Component Name</label><span>*</span>
+                                <input type="text" class="form-control" id="componentname" name="componentname" value=""
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="types">Type</label>
+                                <input type="text" class="form-control" id="types" name="types" value="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% for component in components %}
+    <div class="modal fade" id="editcomponent{{ component.id }}" tabindex="-1" role="dialog"
+        aria-labelledby="editcomponentLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editcomponentLabel">Edit Salary Component</h5>
+                </div>
+                <form action="/masters/editcomponent/{{ component.id }}/" name="editsalary" id="editsalary"
+                    method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="componentname">Component Name</label><span>*</span>
+                                <input type="text" class="form-control" id="componentname" name="componentname"
+                                    value="{{ component.componentname }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="types">Type</label>
+                                <input type="text" class="form-control" id="types" name="types"
+                                    value="{{ component.types }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

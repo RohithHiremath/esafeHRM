@@ -9,18 +9,33 @@ import datetime
 # Create your views here.
 def leavestructure(request):
     if request.method == 'POST':
-        leave = Leavestructure(leavestructure=request.POST['leavestructure'],leavedescription=request.POST['leavedescription'])
+        leave = Leavestructure(leavestructure=request.POST['leavestructure'],
+                               shortname=request.POST['shortname'],
+                               leavedescription=request.POST['leavedescription'],
+                               experincefrom=request.POST['experincefrom'],
+                               experienceto=request.POST['experienceto']
+                               )
         leave.save()
         return redirect('/leaves/leavestructure/')
     else:
         leaves = Leavestructure.objects.all()
+        for leavesww in leaves:
+            assignedleaves = ''
+            linkeddetails = Linktoleavetype.objects.filter(leave_structure=leavesww.id).select_related('leave_type')
+            for linkeddetailswww in linkeddetails:
+                assignedleaves = assignedleaves+' , '+linkeddetailswww.leave_type.shortname
+            assignedleavetypes = assignedleaves.lstrip(' ,')
+            leavesww.assignedleavetypes = assignedleavetypes
         return render(request,'leaves/leavestructure.html',{'title':'Leavestructure List','leaves':leaves})
 
 def editleavestructure(request, id):
     if request.method == 'POST':
         leave = Leavestructure.objects.get(id=id)
         leave.leavestructure = request.POST['leavestructure']
+        leave.shortname = request.POST['shortname']
         leave.leavedescription = request.POST['leavedescription']
+        leave.experincefrom=request.POST['experincefrom']
+        leave.experienceto=request.POST['experienceto']
         leave.save()
         return redirect('/leaves/leavestructure/')
     else:
@@ -28,7 +43,7 @@ def editleavestructure(request, id):
 
 def leavetype(request):
     if request.method == 'POST':
-        leave = Leavetype(leavetype=request.POST['leavetype'],leavedescription=request.POST['leavedescription'])
+        leave = Leavetype(leavetype=request.POST['leavetype'],shortname=request.POST['shortname'],leavedescription=request.POST['leavedescription'])
         leave.save()
         return redirect('/leaves/leavetype/')
     else:
@@ -39,6 +54,7 @@ def editleavetype(request, id):
     if request.method == 'POST':
         leave = Leavetype.objects.get(id=id)
         leave.leavetype = request.POST['leavetype']
+        leave.shortname = request.POST['shortname']
         leave.leavedescription = request.POST['leavedescription']
         leave.save()
         return redirect('/leaves/leavetype/')
@@ -53,7 +69,8 @@ def relationwithleave(request, id):
     else:
         leavestructurename = Leavestructure.objects.get(id=id)
         leavetypes = Leavetype.objects.all()
-        linkeddetails = Linktoleavetype.objects.filter(leave_structure=id)
+        linkeddetails = Linktoleavetype.objects.filter(leave_structure=id).select_related('leave_type')
+        print(linkeddetails)
         return render(request,'leaves/linkleaves.html',{'linkeddetails':linkeddetails, 'leavetypes':leavetypes,'leavestructurename':leavestructurename})
                                          
 def delete(request, id, idleave):

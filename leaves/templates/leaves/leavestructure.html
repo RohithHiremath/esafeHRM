@@ -7,33 +7,40 @@
     </button>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-        <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Leave Structure</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for leave in leaves %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ leave.leavestructure }}</td>
-                <td>{{ leave.leavedescription }}</td>
-                <td data-toggle="tooltip" title="Click to edit">
-                    <a style="padding-left: 20px;" href="#" data-toggle="modal" data-target="#editleavestructure{{ leave.id }}">
-                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
-                    </a>
-                    <a style="padding-left: 20px;" data-toggle="tooltip" title="Link Leave Types" href="/leaves/relationwithleave/{{ leave.id }}">
-                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Leave Structure</th>
+            <th>Description</th>
+            <th>Short Name</th>
+            <th>Entitled Leave Types</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ leave.leavestructure }}</td>
+            <td style="width:300px;">Experience level between {{ leave.experincefrom }} months and {{ leave.experienceto }} months</td>
+            <td>{{ leave.shortname }}</td>
+            <td>{{ leave.assignedleavetypes }}</td>
+
+            <td data-toggle="tooltip" title="Click to edit">
+                <a style="padding-left: 20px;" href="#" data-toggle="modal"
+                    data-target="#editleavestructure{{ leave.id }}">
+                    <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                </a>
+                <a style="padding-left: 20px;" data-toggle="tooltip" title="Link / Unlink Leave Types"
+                    href="/leaves/relationwithleave/{{ leave.id }}">
+                    <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 <div class="modal fade" id="addleavestructure" tabindex="-1" role="dialog" aria-labelledby="addleavestructureLabel"
     aria-hidden="true" data-backdrop="static">
@@ -48,11 +55,58 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="leavestructure">Leave Structure Name</label><span>*</span>
-                            <input type="text" class="form-control" id="leavestructure" name="leavestructure" value="" required>
+                            <input type="text" class="form-control" id="leavestructure" name="leavestructure" value=""
+                                required>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-2">
+                            <label for="leavetype">Short Name</label><span>*</span>
+                            <input type="text" class="form-control" id="shortname" name="shortname" value=""
+                                maxlength='3' required>
+                        </div>
+                        <div class="col-md-5">
                             <label for="leavedescription">Description</label>
-                            <input type="text" class="form-control" id="leavedescription" name="leavedescription" value="">
+                            <input type="text" class="form-control" id="leavedescription" name="leavedescription"
+                                value="">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="expfrom">Experience From</label><span>*</span>
+                            <select name="experincefrom" id="experincefrom" class="form-control" value=""
+                                required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="0">0 months</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                                <option value="18">18 months</option>
+                                <option value="24">24 months</option>
+                                <option value="30">30 months</option>
+                                <option value="36">36 months</option>
+                                <option value="42">42 months</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-4">
+                            <label for="expto">Experience To</label><span>*</span>
+                            <select name="experienceto" id="experienceto" class="form-control" value=""
+                                required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                                <option value="18">18 months</option>
+                                <option value="24">24 months</option>
+                                <option value="30">30 months</option>
+                                <option value="36">36 months</option>
+                                <option value="42">42 months</option>
+                                <option value="48">48 months</option>
+                                <option value="54">54 months</option>
+                                <option value="60">60 months</option>
+                                <option value="66">66 months</option>
+                                <option value="72">72 months</option>
+                                <option value="78">78 months</option>
+                                <option value="84">84 months</option>
+                                <option value="90">90 months</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -66,14 +120,15 @@
 </div>
 
 {% for leave in leaves %}
-<div class="modal fade" id="editleavestructure{{leave.id}}" tabindex="-1" role="dialog" aria-labelledby="editleavestructureLabel"
-    aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="editleavestructure{{leave.id}}" tabindex="-1" role="dialog"
+    aria-labelledby="editleavestructureLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editleavestructureLabel">Edit Leave Structure</h5>
             </div>
-            <form action="/leaves/editleavestructure/{{ leave.id }}/" name="editstructure" id="editstructure" method="POST">
+            <form action="/leaves/editleavestructure/{{ leave.id }}/" name="editstructure" id="editstructure"
+                method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
@@ -83,10 +138,54 @@
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure"
                                 value="{{ leave.leavestructure }}" required>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-2">
+                            <label for="leavetype">Short Name</label><span>*</span>
+                            <input type="text" class="form-control" id="shortname" name="shortname"
+                                value="{{ leave.shortname }}" maxlength='3' required>
+                        </div>
+                        <div class="col-md-5">
                             <label for="leavedescription">Description</label>
                             <input type="text" class="form-control" id="leavedescription" name="leavedescription"
                                 value="{{ leave.leavedescription }}">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- <h5 class="modal-title" id="addleavestructureLabel">Applies for Employees with</h5> -->
+                            <label for="expfrom">Experience From</label><span>*</span>
+                            <select name="experincefrom" id="experincefrom" class="form-control" required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="0" {% if leave.experincefrom == 0 %}selected{% endif %}>0 months</option>
+                                <option value="6" {% if leave.experincefrom == 6 %}selected{% endif %}>6 months</option>
+                                <option value="12" {% if leave.experincefrom == 12 %}selected{% endif %}>12 months</option>
+                                <option value="18" {% if leave.experincefrom == 18 %}selected{% endif %}>18 months</option>
+                                <option value="24" {% if leave.experincefrom == 24 %}selected{% endif %}>24 months</option>
+                                <option value="30" {% if leave.experincefrom == 30 %}selected{% endif %}>30 months</option>
+                                <option value="36" {% if leave.experincefrom == 36 %}selected{% endif %}>36 months</option>
+                                <option value="42" {% if leave.experincefrom == 42 %}selected{% endif %}>42 months</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-4">
+                            <label for="expto">Experience To {{ leave.experienceto }}</label><span>*</span> 
+                            <select name="experienceto" id="experienceto" class="form-control" required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="6" {% if leave.experienceto == 6 %}selected{% endif %}>6 months</option>
+                                <option value="12" {% if leave.experienceto == 12 %}selected{% endif %}>12 months</option>
+                                <option value="18" {% if leave.experienceto == 18 %}selected{% endif %}>18 months</option>
+                                <option value="24" {% if leave.experienceto == 24 %}selected{% endif %}>24 months</option>
+                                <option value="30" {% if leave.experienceto == 30 %}selected{% endif %}>30 months</option>
+                                <option value="36" {% if leave.experienceto == 36 %}selected{% endif %}>36 months</option>
+                                <option value="42" {% if leave.experienceto == 42 %}selected{% endif %}>42 months</option>
+                                <option value="48" {% if leave.experienceto == 48 %}selected{% endif %}>48 months</option>
+                                <option value="54" {% if leave.experienceto == 54 %}selected{% endif %}>54 months</option>
+                                <option value="60" {% if leave.experienceto == 60 %}selected{% endif %}>60 months</option>
+                                <option value="66" {% if leave.experienceto == 66 %}selected{% endif %}>66 months</option>
+                                <option value="72" {% if leave.experienceto == 72 %}selected{% endif %}>72 months</option>
+                                <option value="78" {% if leave.experienceto == 78 %}selected{% endif %}>78 months</option>
+                                <option value="84" {% if leave.experienceto == 84 %}selected{% endif %}>84 months</option>
+                                <option value="90" {% if leave.experienceto == 90 %}selected{% endif %}>90 months</option>
+                            </select>
                         </div>
                     </div>
                 </div>

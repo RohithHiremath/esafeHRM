@@ -31,6 +31,7 @@
             <tr>
                 <th class="table-th" >#</th>
                 <th class="table-th" >Leave Type</th>
+                <th class="table-th" >Short Name</th>
                 <th class="table-th" >Action</th>
             </tr>
         </thead>
@@ -39,6 +40,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ link.leave_type }}</td>
+                <td>{{ link.leave_type.shortname }}</td>
                 <td style="padding-left: 30px;" data-toggle="tooltip" title="Delete">
                     <a href="/leaves/delete/{{ link.id }}/{{ leavestructurename.id }}" >
                         <i class="fa fa-trash" aria-hidden="true"></i>
