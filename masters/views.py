@@ -232,10 +232,10 @@ def location(request):
         else:
             response_data = {}
             loc = None
-            loc = Location.objects.filter(locationname = request.POST['locationname'])
+            loc = Location.objects.filter(location = request.POST['locationname'])
             if not loc:
                 response_data["is_success"] = True
-                location = Location(locationname = request.POST['locationname'])
+                location = Location(location = request.POST['locationname'])
                 location.save()
                 return redirect('location')
             else:
@@ -249,11 +249,11 @@ def editlocation(request, id):
     if request.method == 'POST':
         response_data = {}
         dept = None
-        dept = Location.objects.filter(locationname = request.POST['locationname'])
+        dept = Location.objects.filter(location = request.POST['locationname'])
         if not dept:
             # response_data["is_success"] = True
             loc = Location.objects.get(id=id)
-            loc.locationname = request.POST['locationname']
+            loc.location = request.POST['locationname']
             loc.save()
             return redirect('location')
         else:

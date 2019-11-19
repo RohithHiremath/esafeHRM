@@ -63,14 +63,13 @@ def editleavetype(request, id):
                                                                                                        
 def relationwithleave(request, id):
     if request.method =="POST":
-        link = Linktoleavetype(leave_structure_id = id,leave_type_id=request.POST['leave_type'])
+        link = Linktoleavetype(leave_structure_id = id,leave_type_id=request.POST['leave_type'],numberOfLeaves=request.POST['numberofleaves'])
         link.save()
         return redirect('/leaves/relationwithleave/'+str(id)+'/')
     else:
         leavestructurename = Leavestructure.objects.get(id=id)
         leavetypes = Leavetype.objects.all()
         linkeddetails = Linktoleavetype.objects.filter(leave_structure=id).select_related('leave_type')
-        print(linkeddetails)
         return render(request,'leaves/linkleaves.html',{'linkeddetails':linkeddetails, 'leavetypes':leavetypes,'leavestructurename':leavestructurename})
                                          
 def delete(request, id, idleave):

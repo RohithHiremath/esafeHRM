@@ -53,20 +53,20 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label for="leavestructure">Leave Structure Name</label><span>*</span>
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure" value=""
-                                required>
+                                required placeholder="Enter Leave Structure Name">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname" value=""
-                                maxlength='3' required>
+                                maxlength='3' required placeholder="Enter Short Name">
                         </div>
                         <div class="col-md-5">
                             <label for="leavedescription">Description</label>
                             <input type="text" class="form-control" id="leavedescription" name="leavedescription"
-                                value="">
+                                value="" placeholder="Enter Description">
                         </div>
                     </div>
                     <br>
@@ -132,13 +132,13 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label for="leave
                             structure">Leave Structure Name</label><span>*</span>
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure"
                                 value="{{ leave.leavestructure }}" required>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname"
                                 value="{{ leave.shortname }}" maxlength='3' required>
