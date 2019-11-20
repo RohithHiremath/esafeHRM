@@ -8,10 +8,14 @@ from organisation.models import Leveldefinition
 def Personal_details_view(request):
     if request.method =="POST":
         ishod = request.POST.get('ishod', False)
+        reportingid = request.POST.get('department', False)
         if not ishod:
             ishod=0
+            reportingmanager = fnGetReportingId(reportingid)
+            print(reportingmanager)
         else:
             ishod=request.POST['ishod']
+            reportingmanager=0
         emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],
@@ -33,7 +37,8 @@ def Personal_details_view(request):
                                 work_shifts=request.POST['work_shifts'],
                                 worklocation_id=request.POST['worklocation'],
                                 department_id=request.POST['department'],
-                                isHOD = ishod
+                                isHOD=ishod,
+                                reportingTo_id = reportingmanager
                                 )
         personal.save()
         return redirect('/pim/employeelist/')
@@ -53,8 +58,15 @@ def Personal_details_view(request):
                                                     'departments':departments,
                                                     'levels': levels})
    
+
+def fnGetReportingId(idval):
+    personals = Personal_details.objects.get(department_id=idval, isHOD=1)
+    return personals.id
+
+
 def employeelist(request):
-    personals = Personal_details.objects.all()
+    personals = Personal_details.objects.all().select_related('reportingTo_id')
+    print(personals)
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
@@ -78,11 +90,13 @@ def edit(request, id):
 
 def update(request, id):
     ishod = request.POST.get('ishod', False)
+    reportingid = request.POST.get('department_id', False)
     if not ishod:
         ishod=0
+        reportingmanager = fnGetReportingId(reportingid)
     else:
         ishod=request.POST['ishod']
-   
+        reportingmanager = 0
     personal = Personal_details.objects.get(id=id)
     personal.employee_id = request.POST['employee_id']
     personal.first_name = request.POST['first_name']
@@ -105,6 +119,7 @@ def update(request, id):
     personal.worklocation_id = request.POST['worklocation_id']
     personal.work_shifts = request.POST['work_shifts']
     personal.isHOD = ishod
+    personal.reportingTo_id = reportingmanager
     personal.save()
     return redirect('/pim/employeelist/')
 
