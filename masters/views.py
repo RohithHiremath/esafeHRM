@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render,redirect
-from django.http import Http404,JsonResponse
+from django.http import HttpResponse,Http404,JsonResponse
 from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatus, Department, Location
 # Create your views here.
 
 def jobtitles(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        job = None
+        job = Job.objects.filter(jobtitle = request.POST['jobtitle'])
+        if not job:
+            response_data["is_success"] = True
+            job = Job(jobtitle=request.POST['jobtitle'],jobdescription=request.POST['jobdescription'])
+            job.save()
+            return redirect('jobtitle')
         else:
-            response_data = {}
-            job = None
-            job = Job.objects.filter(jobtitle = request.POST['jobtitle'])
-            if not job:
-                response_data["is_success"] = True
-                job = Job(jobtitle=request.POST['jobtitle'],jobdescription=request.POST['jobdescription'])
-                job.save()
-                return redirect('jobtitle')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         jobs = Job.objects.all().order_by('jobtitle')
         return render(request,'jobtitles.html',{'title':'Jobtitles List','jobs':jobs})
@@ -66,8 +63,8 @@ def editjobcategories(request, id):
     if request.method == 'POST':
         response_data = {}
         cat = None
-        cat = jobcategory.objects.filter(jobcategory = request.POST['jobcategory'])
-        if not cat:
+        cat = Jobcategory.objects.filter(jobcategory = request.POST['jobcategory'])
+        if cat is not None:
             cats = Jobcategory.objects.get(id=id)
             cats.jobcategory = request.POST['jobcategory']
             cats.save()
@@ -232,10 +229,10 @@ def location(request):
         else:
             response_data = {}
             loc = None
-            loc = Location.objects.filter(locationname = request.POST['locationname'])
+            loc = Location.objects.filter(location = request.POST['location'])
             if not loc:
                 response_data["is_success"] = True
-                location = Location(locationname = request.POST['locationname'])
+                location = Location(location = request.POST['location'])
                 location.save()
                 return redirect('location')
             else:
@@ -249,11 +246,11 @@ def editlocation(request, id):
     if request.method == 'POST':
         response_data = {}
         dept = None
-        dept = Location.objects.filter(locationname = request.POST['locationname'])
+        dept = Location.objects.filter(location = request.POST['location'])
         if not dept:
             # response_data["is_success"] = True
             loc = Location.objects.get(id=id)
-            loc.locationname = request.POST['locationname']
+            loc.location = request.POST['location']
             loc.save()
             return redirect('location')
         else:

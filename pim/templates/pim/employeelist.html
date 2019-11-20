@@ -12,7 +12,6 @@
     <table id="example" class="table table-striped nowrap" style="width:100%">
         <thead>
             <tr>
-                <!-- <th>#</th> -->
                 <th>Emp ID</th>
                 <th>Name</th>
                 <th>Department</th>
@@ -25,7 +24,6 @@
         <tbody>
             {% for personal in personals %}
             <tr>
-                <!-- <td>{{ forloop.counter }}</td> -->
                 <td>{{ personal.employee_id }} </td>
                 <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
                 <td>{{ personal.department }}</td>

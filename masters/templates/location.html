@@ -19,7 +19,7 @@
             {% for location in locations %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ location.locationname }}</td>
+                <td>{{ location.location }}</td>
                 <td  data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjoblocation{{ location.id }}"><i
                             class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
@@ -75,7 +75,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="locationname">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="locationname" name="locationname" value="{{ location.locationname }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'location' %}" required>
+                            <input type="text" class="form-control" id="locationname" name="locationname" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'location' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ location.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>

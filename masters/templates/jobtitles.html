@@ -80,7 +80,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
-                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});" data-url="{% url 'jobtitle' %}" required>
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});" data-url="{% url 'editjobtitle'  job.id  %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ job.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -110,9 +110,6 @@ function jobvalidate(element) {
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
 	jobtitle = $(element).val();
-	if (jobtitle == "") {
-		return;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
@@ -150,8 +147,8 @@ function jobedit(element,id) {
 		dataType : "json",
 		success : function (data) {
 			if (data.is_success) {
-				 $("#edit_ok"+id).show();
-                document.getElementById("editsave"+id).disabled = false;
+				 {% comment %} $("#edit_ok"+id).show(); {% endcomment %}
+                document.getElementById("editsave"+id).disabled = true;
 			}else {
 				$("#edit_not"+id).show();
                 document.getElementById("editsave"+id).disabled = true;

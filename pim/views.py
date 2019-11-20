@@ -100,4 +100,3 @@ def fngetempid(request):
         latestempid = 1
         latestempid = str(latestempid).zfill(5)
         return latestempid
-

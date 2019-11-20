@@ -55,13 +55,18 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="leavestructure">Leave Structure Name</label><span>*</span>
-                            <input type="text" class="form-control" id="leavestructure" name="leavestructure" value=""
-                                required>
+                            <input type="text" class="form-control" id="leavestructure" name="leavestructure" value="" onblur="structurevalidate(this);" data-url="{% url 'leaves:leavestructure' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname" value=""
-                                maxlength='3' required>
+                                maxlength='3' onblur="shortvalidate(this);" data-url="{% url 'leaves:validateleavestructure' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <label for="leavedescription">Description</label>
@@ -111,7 +116,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -136,12 +141,18 @@
                             <label for="leave
                             structure">Leave Structure Name</label><span>*</span>
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure"
-                                value="{{ leave.leavestructure }}" required>
+                                value="{{ leave.leavestructure }}" onblur="editstructurevalidate(this,{{ leave.id }});" data-url="{% url 'leaves:editleavestructure' leave.id %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="log_not{{ leave.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname"
-                                value="{{ leave.shortname }}" maxlength='3' required>
+                                value="{{ leave.shortname }}" maxlength='3' onblur="editshortvalidate(this,{{ leave.id }});" data-url="{% url 'leaves:validateeditleavestructure' leave.id %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="log{{ leave.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <label for="leavedescription">Description</label>
@@ -168,7 +179,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="expto">Experience To {{ leave.experienceto }}</label><span>*</span> 
-                            <select name="experienceto" id="experienceto" class="form-control" required>
+                            <select name="experienceto" id="experienceto" class="form-control" required onchange="fngetsomething();">
                                 <option value="" disabled selected hidden>Select Experience Level</option>
                                 <option value="6" {% if leave.experienceto == 6 %}selected{% endif %}>6 months</option>
                                 <option value="12" {% if leave.experienceto == 12 %}selected{% endif %}>12 months</option>
@@ -190,7 +201,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" id="editsave{{ leave.id }}">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -198,4 +209,107 @@
     </div>
 </div>
 {% endfor %}
+<script>
+
+function fngetsomething(){
+    var val = document.getElementById("experincefrom").value;
+    alert(val);
+}
+function structurevalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+    document.getElementById("save").disabled = false;
+	leavestructure = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "leavestructure":leavestructure,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				{% comment %} $("#login_ok").show(); {% endcomment %}
+                {% comment %} document.getElementById("save").disabled = false; {% endcomment %}
+			}else {
+				$("#login_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function shortvalidate(element) {
+	$("#login_ok").hide();
+	$("#login").hide();
+    document.getElementById("save").disabled = false;
+	shortname = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "shortname":shortname,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				{% comment %} $("#login_ok").show(); {% endcomment %}
+                {% comment %} document.getElementById("save").disabled = false; {% endcomment %}
+			}else {
+				$("#login").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
+function editstructurevalidate(element,id) {
+	$("#login_ok").hide();
+	$("#log_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	leavestructure = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "leavestructure":leavestructure,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#login_ok"+id).show(); 
+                 document.getElementById("editsave"+id).disabled = false; 
+			}else {
+				$("#log_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+function editshortvalidate(element,id) {
+	$("#login_ok").hide();
+	$("#log"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	shortname = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "shortname":shortname,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#login_ok"+id).show(); 
+                 document.getElementById("editsave"+id).disabled = false; 
+			}else {
+				$("#log"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+</script>
 {% endblock %}
