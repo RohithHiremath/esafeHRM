@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from masters.models import Job
 from pim.models import Personal_details
-from leaves.models import Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure
 from django.contrib import messages
 import datetime
 
@@ -209,3 +209,19 @@ def assignleavestructure(request):
         personals = Personal_details.objects.all()
         leavestructures = Leavestructure.objects.all()
         return render(request,'leaves/assignleavestructure.html',{'personals':personals,'leavestructures':leavestructures})
+
+def holidays(request):
+    if request.method == 'POST':
+        response_data = {}
+        holyname =None
+        holyname =Holidays.objects.filter(holidayname=request.POST['holidayname'])
+        if not holyname:
+            holy = Holidays(holidayname=request.POST['holidayname'],holidayDate=request.POST['holidayDate'])
+            holy.save()
+            return redirect('/leaves/holidays/')
+        else:
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
+    else:
+        holiday = Holidays.objects.all()
+        return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})

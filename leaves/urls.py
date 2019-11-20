@@ -16,4 +16,5 @@ urlpatterns = [
     path('editvalidateleavetype/<int:id>/', views.editvalidateleavetype, name='editvalidateleavetype'),
     path('relationwithleave/<int:id>/', views.relationwithleave, name='relationwithleave'),
     path('delete/<int:id>/<int:idleave>',views.delete,name='delete'),
+    path('holidays/', views.holidays, name='holidays'),
 ]

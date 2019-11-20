@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pim', '0002_auto_20191119_1041'),
+        ('pim', '0001_initial'),
     ]
 
     operations = [
