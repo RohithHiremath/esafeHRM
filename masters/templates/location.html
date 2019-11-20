@@ -41,8 +41,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="locationname">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="locationname" name="locationname" value="" onblur="locationvalidate(this);return false;" data-url="{% url 'location' %}" required>
+                            <label for="location">Location</label><span>*</span>
+                            <input type="text" class="form-control" id="location" name="location" value="" onblur="locationvalidate(this);return false;" data-url="{% url 'location' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -74,8 +74,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="locationname">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="locationname" name="locationname" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'location' %}" required>
+                            <label for="location">Location</label><span>*</span>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'location' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ location.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -99,15 +99,15 @@ function locationvalidate(element) {
 	$("#login_ok").hide();
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
-	locationname = $(element).val();
-	if (locationname == "") {
+	location = $(element).val();
+	if (location == "") {
 		return;
 	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
 			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-            "locationname":locationname,
+            "location":location,
 		},
 		method: "POST",
 		dataType : "json",

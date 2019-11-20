@@ -33,4 +33,10 @@ class AssignLeaveStructure(models.Model):
     toDate = models.DateField(blank = False)
     updatedDate = models.DateTimeField(blank = False)
     status = models.BooleanField(default=True)
-   
+
+class Holidays(models.Model):
+    holidayname = models.CharField(max_length=50)
+    holidayDate = models.DateField(blank = False)
+
+    def __str__(self):
+       return self.holidayname

@@ -229,10 +229,10 @@ def location(request):
         else:
             response_data = {}
             loc = None
-            loc = Location.objects.filter(location = request.POST['locationname'])
+            loc = Location.objects.filter(location = request.POST['location'])
             if not loc:
                 response_data["is_success"] = True
-                location = Location(location = request.POST['locationname'])
+                location = Location(location = request.POST['location'])
                 location.save()
                 return redirect('location')
             else:
@@ -250,7 +250,7 @@ def editlocation(request, id):
         if not dept:
             # response_data["is_success"] = True
             loc = Location.objects.get(id=id)
-            loc.location = request.POST['locationname']
+            loc.location = request.POST['location']
             loc.save()
             return redirect('location')
         else:
