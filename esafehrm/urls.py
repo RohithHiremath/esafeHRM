@@ -18,11 +18,13 @@ from django.urls import path, include
 from masters import views
 from pim import views
 from leaves import views
+from organisation import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('masters/', include('masters.urls')),
     path('pim/', include('pim.urls')),
     path('leaves/', include('leaves.urls')),
+    path('organisation/', include('organisation.urls')),
     path('', include('login.urls'))
 ]

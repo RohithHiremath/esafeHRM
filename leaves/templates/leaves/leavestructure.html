@@ -53,14 +53,14 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label for="leavestructure">Leave Structure Name</label><span>*</span>
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure" value="" onblur="structurevalidate(this);" data-url="{% url 'leaves:leavestructure' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname" value=""
                                 maxlength='3' onblur="shortvalidate(this);" data-url="{% url 'leaves:validateleavestructure' %}" required>
@@ -71,7 +71,7 @@
                         <div class="col-md-5">
                             <label for="leavedescription">Description</label>
                             <input type="text" class="form-control" id="leavedescription" name="leavedescription"
-                                value="">
+                                value="" placeholder="Enter Description">
                         </div>
                     </div>
                     <br>
@@ -137,7 +137,7 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label for="leave
                             structure">Leave Structure Name</label><span>*</span>
                             <input type="text" class="form-control" id="leavestructure" name="leavestructure"
@@ -146,7 +146,7 @@
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname"
                                 value="{{ leave.shortname }}" maxlength='3' onblur="editshortvalidate(this,{{ leave.id }});" data-url="{% url 'leaves:validateeditleavestructure' leave.id %}" required>

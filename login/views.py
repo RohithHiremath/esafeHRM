@@ -15,9 +15,8 @@ def login(request):
         if user is not None and user.is_active:
              # Correct password, and the user is marked "active"
             auth.login(request, user)
-            print(request.user.is_authenticated)
             # Redirect to Dashboard.
-            return  redirect('dashboard')
+            return  redirect('login:dashboard')
         else:
             messages.error(request,'Invalid Username or Password')
             return redirect('login')

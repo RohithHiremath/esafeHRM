@@ -24,6 +24,7 @@ class Leavetype(models.Model):
 class Linktoleavetype(models.Model):
     leave_structure = models.ForeignKey(Leavestructure,on_delete = models.CASCADE)
     leave_type = models.ForeignKey(Leavetype,on_delete = models.CASCADE)
+    numberOfLeaves = models.SmallIntegerField(default=1,blank = False)
 
 class AssignLeaveStructure(models.Model):
     empid = models.ForeignKey(Personal_details,on_delete = models.CASCADE)

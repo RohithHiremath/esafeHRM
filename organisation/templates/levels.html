@@ -1,0 +1,91 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<form action="" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
+    {% csrf_token %}
+    <div class="card" style="margin-top: 10px;" id="perdetails">
+        <div class="card-header">
+            <h5 class="card-title" id="addLevel">Add Organisation Level Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="levelname">Name<font color=red>*</font></label>
+                    <input type="text" class="form-control" name="levelName" id="levelName" value=""
+                        placeholder="Enter Name" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="parent">Parent Level<font color=red>*</font></label>
+                    <select class="form-control" name="parent" id="parent" placeholder="Select Parent Level">
+                        <option value="" disabled selected hidden>Select Parent Level</option>
+                        <option value="0">Root</option>
+                        {% for level in levels %}
+                        <option value="{{level.id}}">{{level.levelName}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="shortname">Short Name<font color=red>*</font></label>
+                    <input type="text" class="form-control" name="shortname" id="shortname" value=""
+                        placeholder="Enter Short Name" required maxlength="3">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="levelname">Job Titles at this Level<font color=red>*</font></label>
+                    <br />
+                    <select name="designations" id="designations" multiple="multiple" class="form-control">
+                        {% for designations in alldesignations %}
+                        <option value="{{designations.id}}">{{designations.jobtitle}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="shortname">Job Grades at this Level<font color=red>*</font></label>
+                    <br />
+                    <select name="grades" class="form-control" id="grades" multiple="multiple">
+                        {% for grades in allgrades %}
+                        <option value="{{grades.id}}">{{grades.jobgrade}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="save">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+<style>
+    .btn-group .btn {
+        display: block;
+        min-width: 260px;
+        width: auto;
+        height: calc(2.25rem + 2px);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#designations').multiselect();
+        $('#grades').multiselect();
+    });
+
+</script>
+{% endblock %}

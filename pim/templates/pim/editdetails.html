@@ -1,4 +1,4 @@
-{% extends 'login/dashboard.html' %}
+{% extends 'login/base.html' %}
 {% block content %}
 <form action="/pim/update/{{ personal.id }}/" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
   {% csrf_token %}
@@ -42,6 +42,16 @@
           <div class="error" id="dobErr"></div>
         </div>
         <div class="col-md-4">
+          <label for="email">Email ID<font color=red>*</font></label>
+          <input type="email" class="form-control" name="emailid" id="emailid" value="" required>
+        </div>
+        <div class="col-md-4">
+          <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
+          <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
           <label for="Gender">Gender<font color=red>*</font></label>
           <select name="gender" class="form-control" id="gender">
             <option value="">Select</option>
@@ -61,9 +71,6 @@
           </select>
           <div class="error" id="maritalstatusErr"></div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-md-4">
           <label for="nationality">Nationality<font color=red>*</font></label>
           <select name="nationality" id="nationality" class="form-control">
@@ -73,17 +80,13 @@
           </select>
           <div class="error" id="nationalityErr"></div>
         </div>
+      </div>
+      <div class="row">
         <div class="col-md-4">
           <label for="MiddleName">Aadhaar Number<font color=red>*</font></label>
           <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no"
             value="{{personal.aadhar_card_no}}" required>
           <div class="error" id="aadharErr"></div>
-        </div>
-        <div class="col-md-4">
-          <label for="nickname">Nick Name<font color=red>*</font></label>
-          <input type="text" class="form-control" name="nick_name" id="nick_name" value="{{personal.nick_name}}"
-            required>
-          <div class="error" id="nicknameErr"></div>
         </div>
       </div>
       <div class="row">
@@ -119,6 +122,17 @@
           <div class="error" id="dopErr"></div>
         </div>
         <div class="col-md-4">
+          <label for="empllevel">Employment Level:<font color=red>*</font></label>
+          <select name="empllevel" id="empllevel" class="form-control" required>
+            <option value="" disabled selected hidden>Select Employment Level</option>
+            {% for level in levels %}
+            <option value="{{ level.id }}" {% if personal.employmentLevel_id ==  level.id %} selected {% endif %}>
+              {{ level.levelName }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
           <label for="JobTitle">Job Title<font color=red>*</font></label>
           <select name="job_title_id" id = "job_title" class="form-control">
             <option value="">Select</option>
@@ -130,15 +144,14 @@
           </select>
           <div class="error" id="jobtitleErr"></div>
         </div>
-      </div>
-      <div class="row">
+      
         <div class="col-md-4">
-          <label for="JobCategory">Job Category<font color=red>*</font></label>
-          <select name="job_category_id" id= "job_category" class="form-control">
+          <label for="Jobgrade">Job Grade<font color=red>*</font></label>
+          <select name="job_grade_id" id= "job_grade_id" class="form-control">
             <option value="">Select</option>
-            {% for job in jobcategory %}
-            <option value="{{ job.id }}" {% if personal.job_category_id ==  job.id %} selected {% endif %}>
-              {{ job.jobcategory }}</option>
+            {% for job in jobgrades %}
+            <option value="{{ job.id }}" {% if personal.job_grade_id ==  job.id %} selected {% endif %}>
+              {{ job.jobgrade }}</option>
             {% endfor %}
           </select>
           <div class="error" id="jobcategoryErr"></div>
@@ -154,6 +167,8 @@
           </select>
           <div class="error" id="departmentErr"></div>
         </div>
+      </div>
+      <div class="row">
         <div class="col-md-4">
             <label for="worklocation">Location<font color=red>*</font></label>
             <select name="worklocation_id" id="worklocation" class="form-control">
@@ -164,8 +179,7 @@
             </select>
           <div class="error" id="worklocationErr"></div>
           </div>
-      </div>
-      <div class="row">
+     
         <div class="col-md-4">
           <label for="EmploymentStatus">Employment Status<font color=red>*</font></label>
           <select name="employment_status_id" id="employment_status" class="form-control">
@@ -189,6 +203,15 @@
         </div>
       </div>
       <div class="row">
+        <div class=col-md-4>
+            Is HOD?
+            <label class="switch" title="click to Enable or Disable"> 
+              <input type="checkbox" id="ishod" name="ishod" value='1'  {% if personal.isHOD == 1 %}checked{% endif %}>
+              <span class="slider round"></span>
+            </label>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12" style="float:right;">
           <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
             Save
@@ -201,6 +224,67 @@
     </div>
   </div>
 </form>
+<style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    </style>
 <script>
 function somefunction(val) {
   
@@ -320,21 +404,7 @@ function somefunction(val) {
           }
         flag = true;
       }
-      var nickname = document.getElementById('nick_name').value;
-      if(nickname == "") {
-        printError("nicknameErr", "Nick Name Cannot Be Empty");
-        return false;
-      }else {
-          var regex = /^[a-zA-Z\s]+$/; 
-          if(regex.test(nickname) === false) {
-          printError("nicknameErr", "Only Characters");
-          return false;
-          } else {
-          printError("nicknameErr", "");
-          nicknameErr = false;
-          flag = true;
-          }
-      }
+      
       if (flag == true ) {
           document.getElementById('perdetails').style.display = 'none';
           document.getElementById('empdetails').style.display = 'block';
@@ -401,9 +471,10 @@ function somefunction(val) {
           employmentstatusErr = false;
           flag = true;
       }
-      var jobcat = document.getElementById('job_category').value;
+
+      var jobcat = document.getElementById('job_grade_id').value;
       if(jobcat == "") {
-        printError("jobcategoryErr", "Please select job category");
+        printError("jobcategoryErr", "Please select job grade");
         return false;
       } else {
           printError("jobcategoryErr", "");
