@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pim', '0003_personal_details_ishod'),
+        ('pim', '0001_initial'),
     ]
 
     operations = [

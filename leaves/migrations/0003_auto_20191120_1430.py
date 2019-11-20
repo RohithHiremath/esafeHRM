@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='holidays',
             name='holidayDate',
-            field=models.DateField(blank=True, null=True),
+            field=models.DateField(blank=False),
         ),
     ]

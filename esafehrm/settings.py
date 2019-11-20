@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'esafedatabase',
         'USER': 'root',
-        'PASSWORD':'Admin@123',
+        'PASSWORD':'admin',
         'HOST':'127.0.0.1',
         'PORT':'3306'
     },
