@@ -16,6 +16,7 @@
                 <th>Name</th>
                 <th>Department</th>
                 <th>Job Title</th>
+                <th>Reporting To</th>
                 <th>Work Location</th>
                 <th>Emp Type</th>
                 <th>Action</th>
@@ -28,6 +29,11 @@
                 <td>{{ personal.first_name }} {{ personal.middle_name }} {{ personal.last_name }}</td>
                 <td>{{ personal.department }}</td>
                 <td>{{ personal.job_title }}</td>
+                {% if  personal.reportingTo_id  == 99999%}
+                <td>Self</td>
+                {% else %}
+                <td>{{ personal.reportingTo_id.first_name }} {{ personal.reportingTo_id.middle_name }} {{ personal.reportingTo_id.last_name }}</td>
+                {% endif %}
                 <td>{{ personal.worklocation }}</td>
                 <td>{{ personal.employment_status }}</td>
                 <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">

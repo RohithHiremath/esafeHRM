@@ -26,6 +26,6 @@ class Personal_details(models.Model):
    employment_status = models.ForeignKey(Employmentstatus,on_delete=models.CASCADE)
    work_shifts = models.IntegerField(default=1)
    isHOD = models.SmallIntegerField(default=0,blank = False)
-   
+   reportingTo_id = models.ForeignKey('self',on_delete=models.CASCADE)
    def __str__(self):
        return self.first_name
