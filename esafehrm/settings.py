@@ -20,7 +20,6 @@ TEMPLATE_DIR_PIM = os.path.join(BASE_DIR,'pim/templates')
 TEMPLATE_DIR_LEAVES = os.path.join(BASE_DIR,'leaves/templates')
 TEMPLATE_DIR_ORGANISATION = os.path.join(BASE_DIR,'organisation/templates')
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -136,6 +135,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+# EMAIL
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'vaishnavirpk@gmail.com'
+EMAIL_HOST_PASSWORD = 'vadi2001'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -145,5 +151,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'login/static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets') 
-
 # SESSION_COOKIE_SECURE = True

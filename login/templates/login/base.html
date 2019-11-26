@@ -61,7 +61,7 @@
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
                                 Departments
                             </a>
-                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'location' %}">
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'worklocation' %}">
                                 Work Location
                             </a>
                         </div>
@@ -89,6 +89,10 @@
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'pim:employeelist' %}">
                                 <i class="fa fa-users" aria-hidden="true"> Employee List</i>
+                            </a>
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'pim:email' %}">
+                                <i class="fa fa-envelope" aria-hidden="true"> Email</i>
                             </a>
                         </div>
                     </li>

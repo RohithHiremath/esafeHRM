@@ -17,4 +17,6 @@ urlpatterns = [
     path('relationwithleave/<int:id>/', views.relationwithleave, name='relationwithleave'),
     path('delete/<int:id>/<int:idleave>',views.delete,name='delete'),
     path('holidays/', views.holidays, name='holidays'),
+    path('upload/', views.upload, name='upload'),
 ]
+

@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from pim.models import Personal_details
 # Create your models here.
+
 class Leavestructure(models.Model):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     shortname = models.CharField(max_length=3,validators=[alphanumeric])
@@ -40,3 +41,6 @@ class Holidays(models.Model):
 
     def __str__(self):
        return self.holidayname
+
+class Upload_list(models.Model):
+    document = models.FileField(upload_to='documents/',blank=True,null=False)

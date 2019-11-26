@@ -3,6 +3,12 @@ from .models import Personal_details
 from datetime import datetime
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department
 from organisation.models import Leveldefinition
+from django.shortcuts import render
+from esafehrm.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+from . import forms
+import string
+from random import *
 # Create your views here.
 
 def Personal_details_view(request):
@@ -12,7 +18,6 @@ def Personal_details_view(request):
         if not ishod:
             ishod=0
             reportingmanager = fnGetReportingId(reportingid)
-            print(reportingmanager)
         else:
             ishod=request.POST['ishod']
             reportingmanager=0
@@ -41,6 +46,7 @@ def Personal_details_view(request):
                                 reportingTo_id = reportingmanager
                                 )
         personal.save()
+
         return redirect('/pim/employeelist/')
     else:
         levels = Leveldefinition.objects.all().order_by('levelName')
@@ -58,15 +64,26 @@ def Personal_details_view(request):
                                                     'departments':departments,
                                                     'levels': levels})
    
+def sendemail(request):
+    sub = forms.Subscribe()
+    characters = string.ascii_letters + string.digits 
+    password = "".join(choice(characters) for x in range(randint(8,9)))
+    if request.method == 'POST':
+        sub = forms.Subscribe(request.POST)
+        subject = 'Login Details From HEE-ESAFE'
+        recepient = str(sub['Email'].value())
+        message = 'Your Username - {} and Password - {}'.format(recepient,password) 
+        send_mail(subject,
+            message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        return render(request, 'pim/success.html', {'recepient': recepient})
+    return render(request, 'pim/email.html', {'form':sub})
 
 def fnGetReportingId(idval):
     personals = Personal_details.objects.get(department_id=idval, isHOD=1)
     return personals.id
 
-
 def employeelist(request):
     personals = Personal_details.objects.all().select_related('reportingTo_id')
-    print(personals)
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):

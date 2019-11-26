@@ -1,0 +1,12 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<center>
+<form method="POST">
+    {% csrf_token %}
+    <div class = "form-group">
+        <h3>{{ form.as_p }}</h3>
+        <input type="submit" name="Subscribe" class = 'btn btn-primary btn-lg'>
+    </div>
+</form>
+</center>
+{% endblock %}

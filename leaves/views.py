@@ -1,10 +1,13 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+import datetime
+import openpyxl
+import re
+from django.urls import reverse
 from masters.models import Job
 from pim.models import Personal_details
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure
-from django.contrib import messages
-import datetime
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, Upload_list
+from django.db import IntegrityError
 
 # Create your views here.
 def leavestructure(request):
@@ -222,6 +225,24 @@ def holidays(request):
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
-    else:
+    else:   
         holiday = Holidays.objects.all()
         return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})
+
+def upload(request):
+    if "GET" == request.method:
+        holiday = Holidays.objects.all()
+        return render(request, 'leaves/holiday.html', {'holiday':holiday})
+    else:
+        excel_file = request.FILES["excel_file"]
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["Sheet1"]
+        sheet = wb.active
+        for c1, c2 in sheet[sheet.dimensions]:
+            holidayname = c1.value
+            holidaydate = c2.value
+            holyname =Holidays.objects.filter(holidayname=holidayname)
+            if not holyname:
+                holy = Holidays(holidayname=holidayname,holidayDate=holidaydate)
+                holy.save()
+        return redirect('/leaves/holidays/')

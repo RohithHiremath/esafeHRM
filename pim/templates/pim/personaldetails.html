@@ -37,10 +37,12 @@
         <div class="col-md-4">
           <label for="email">Email ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="emailid" id="emailid" value="" required>
+          <div class="error" id="emailidErr"></div>
         </div>
         <div class="col-md-4">
           <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
           <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required>
+          <div class="error" id="mobilenoErr"></div>
         </div>
         <div class="col-md-4">
           <label for="Gender">Gender<font color=red>*</font></label>
@@ -311,6 +313,40 @@
       } else {
         printError("nationalityErr", "");
         nationalityErr = false;
+        flag = true;
+      }
+      var emailid = document.getElementById('emailid').value
+      if (emailid == "") {
+        printError("emailidErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('emailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("emailidErr", "");
+          } else {
+            printError("emailidErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var mobileno = document.getElementById('mobilenumber').value
+      if (mobileno == "") {
+        printError("mobilenoErr", "Please Enter Mobile number");
+        return false;
+      } else {
+        var mobileno = document.getElementById('mobilenumber').value;
+        var mobiletenDigit = /^\d{10}$/;
+        if (mobileno != '') {
+          if (mobileno.match(mobiletenDigit)) {
+            printError("mobilenoErr", "");
+          } else {
+            printError("mobilenoErr", "Enter valid Mobile number");
+            return false;
+          }
+        }
         flag = true;
       }
       var aadhar = document.getElementById('aadhar_card_no').value
