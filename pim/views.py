@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect
 from .models import Personal_details
 from datetime import datetime
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department
-<<<<<<< HEAD
 from organisation.models import Leveldefinition
 from django.shortcuts import render
 from esafehrm.settings import EMAIL_HOST_USER
@@ -10,26 +9,16 @@ from django.core.mail import send_mail
 from . import forms
 import string
 from random import *
-=======
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
 # Create your views here.
 
 def Personal_details_view(request):
     if request.method =="POST":
-<<<<<<< HEAD
-        ishod = request.POST.get('ishod', False)
-        reportingid = request.POST.get('department', False)
-        if not ishod:
-            ishod=0
-            reportingmanager = fnGetReportingId(reportingid)
-=======
         duhead = request.POST.get('duhead', False)
         if not duhead:
             duhead=0
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
         else:
             duhead=request.POST['duhead']
         
@@ -94,19 +83,11 @@ def sendemail(request):
     return render(request, 'pim/email.html', {'form':sub})
 
 def fnGetReportingId(idval):
-<<<<<<< HEAD
-    personals = Personal_details.objects.get(department_id=idval, isHOD=1)
-    return personals.id
-
-def employeelist(request):
-    personals = Personal_details.objects.all().select_related('reportingTo_id')
-=======
     personals = Personal_details.objects.filter(department_id=idval, isHOD=1).values()
     return personals
 
 def employeelist(request):
     personals = Personal_details.objects.all()
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):

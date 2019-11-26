@@ -17,10 +17,7 @@ urlpatterns = [
     path('relationwithleave/<int:id>/', views.relationwithleave, name='relationwithleave'),
     path('delete/<int:id>/<int:idleave>',views.delete,name='delete'),
     path('holidays/', views.holidays, name='holidays'),
-<<<<<<< HEAD
     path('upload/', views.upload, name='upload'),
-=======
     path('applyleave/', views.applyleave, name='applyleave'),
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
 ]
 

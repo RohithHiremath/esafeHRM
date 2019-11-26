@@ -6,16 +6,13 @@ import re
 from django.urls import reverse
 from masters.models import Job
 from pim.models import Personal_details
-<<<<<<< HEAD
 from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, Upload_list
 from django.db import IntegrityError
-=======
 from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails
 from django.contrib import messages
 import datetime
 from datetime import date, timedelta
 from django.db.models import Sum
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
 
 # Create your views here.
 def leavestructure(request):
@@ -237,7 +234,6 @@ def holidays(request):
         holiday = Holidays.objects.all()
         return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})
 
-<<<<<<< HEAD
 def upload(request):
     if "GET" == request.method:
         holiday = Holidays.objects.all()
@@ -255,7 +251,7 @@ def upload(request):
                 holy = Holidays(holidayname=holidayname,holidayDate=holidaydate)
                 holy.save()
         return redirect('/leaves/holidays/')
-=======
+        
 def applyleave(request):
     current_user = request.user
     
@@ -307,4 +303,3 @@ def applyleave(request):
             print(balance)
             linkedleavetype.leave_type.balance = balance 
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
->>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
