@@ -1,0 +1,112 @@
+{% extends 'login/base.html' %}
+{% block content %}
+
+
+<div class="container-fluid text-right" style="margin:10px;float:right;">
+    <h4 style="float: left;">My Leave Entitlements</h4>
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<h5 style="float: left;"><b>Leave Structure : </b>{{ leavestructurrname }} ({{ leavestructureshortname }})</h5>
+<table class="table table-striped nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th class="table-th">Leave Type</th>
+            <th class="table-th">Credits</th>
+            <th class="table-th">Availed</th>
+            <th class="table-th">Requested</th>
+            <th class="table-th">Balance</th>
+            <th class="table-th">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for linkedleavetype in linkedleavetypes %}
+        <tr>
+            <td>{{ linkedleavetype.leave_type.leavetype }} ({{ linkedleavetype.leave_type.shortname }})</td>
+            <td>{{ linkedleavetype.numberOfLeaves }}</td>
+            {% if linkedleavetype.leave_type.availed  is not None %}
+                <td>{{ linkedleavetype.leave_type.availed }}</td>
+            {% else  %}
+                <td>0</td>
+            {% endif %}
+            {% if linkedleavetype.leave_type.requested  is not None %}
+                <td>{{ linkedleavetype.leave_type.requested }}</td>
+            {% else  %}
+                <td>0</td>
+            {% endif %}
+            <td>{{ linkedleavetype.leave_type.balance }}</td>
+            {% if linkedleavetype.leave_type.balance > 0 %}
+                <td><a href="javascript:fnapplyleave( {{ linkedleavetype.leave_type.id }},'{{ linkedleavetype.leave_type.leavetype }}' )">
+                        Apply 
+                    </a>
+                </td>
+            {% else  %}
+                <td></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<div id="leavetab" style="display:none;">
+    <form action="" name="emplist" id="emplist" method="POST">
+        {% csrf_token %}
+        <div class="container-fluid text-right" style="margin:10px;float:right;">
+            <h4 style="float: left;padding-right: 10px;"> Applying </h4>
+            <h4 style="float: left;" id="leavename"> </h4>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="leaveday">Full/Half Day Leave<span style="color:red;">*</span></label>
+                <select name="FullorHalfday" id="FullorHalfday" required class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="1">Full Day</option>
+                    <option value="2">Half Day</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="fromDate">From Date<span style="color:red;">*</span></label>
+                <input type="text" class="form-control" name="Fromdate" id="Fromdate" placeholder="Select From Date"
+                    required>
+                <input type="hidden" name="idleave" id="idleave" value="">
+                <input type="hidden" name="employee" id="employee" value="{{ personid }}">
+            </div>
+            <div class="col-md-4">
+                <label for="toDate">To Date<span style="color:red;">*</span></label>
+                <input type="text" class="form-control" name="Todate" id="Todate" placeholder="Select To Date" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label for="reason">Reason<span style="color:red;">*</span></label>
+                <input type="text" class="form-control" name="Reason" id="Reason" placeholder="Enter reason for leave"
+                    required>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-12" style="float:right;">
+                <button type="submit" class="btn btn-primary pull-right">
+                    save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function fnapplyleave(idval, leavename) {
+        document.getElementById("leavetab").style.display = "block";
+        document.getElementById("leavename").innerHTML = leavename;
+        document.getElementById("idleave").value = idval;
+    }
+    $(document).ready(function () {
+        $("#Fromdate").datepicker({
+            minDate: 0,
+            dateFormat: 'dd-mm-yy'
+        });
+        $("#Todate").datepicker({
+            minDate: 0,
+            dateFormat: 'dd-mm-yy'
+        });
+    });
+</script>
+{% endblock %}

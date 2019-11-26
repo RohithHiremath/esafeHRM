@@ -2,27 +2,26 @@ from django.shortcuts import render,redirect
 from .models import Personal_details
 from datetime import datetime
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department
-from organisation.models import Leveldefinition
+from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
+from django.http import HttpResponse,Http404,JsonResponse
+import json
 # Create your views here.
 
 def Personal_details_view(request):
     if request.method =="POST":
-        ishod = request.POST.get('ishod', False)
-        reportingid = request.POST.get('department', False)
-        if not ishod:
-            ishod=0
-            reportingmanager = fnGetReportingId(reportingid)
-            print(reportingmanager)
+        duhead = request.POST.get('duhead', False)
+        if not duhead:
+            duhead=0
         else:
-            ishod=request.POST['ishod']
-            reportingmanager=0
+            duhead=request.POST['duhead']
+        
         emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],
                                 last_name =request.POST['last_name'],
                                 employee_id = emp_id,
                                 date_of_birth=request.POST['date_of_birth'],
-                                emailid = request.POST['emailid'],
+                                personalemailid = request.POST['personalemailid'],
                                 mobilenumber=request.POST['mobilenumber'],
                                 gender=request.POST['gender'],
                                 marital_status=request.POST['marital_status'],
@@ -37,9 +36,12 @@ def Personal_details_view(request):
                                 work_shifts=request.POST['work_shifts'],
                                 worklocation_id=request.POST['worklocation'],
                                 department_id=request.POST['department'],
-                                isHOD=ishod,
-                                reportingTo_id = reportingmanager
-                                )
+                                DUHead=duhead,
+                                companyemailid = request.POST['companyemailid'],
+                                reportingto = request.POST['reportingname'],
+                                reportingtoId = request.POST['reportingmanager'],
+                                reportingdepartment = request.POST['reportingdepartment']
+                             )
         personal.save()
         return redirect('/pim/employeelist/')
     else:
@@ -60,13 +62,11 @@ def Personal_details_view(request):
    
 
 def fnGetReportingId(idval):
-    personals = Personal_details.objects.get(department_id=idval, isHOD=1)
-    return personals.id
-
+    personals = Personal_details.objects.filter(department_id=idval, isHOD=1).values()
+    return personals
 
 def employeelist(request):
-    personals = Personal_details.objects.all().select_related('reportingTo_id')
-    print(personals)
+    personals = Personal_details.objects.all()
     return render(request,'pim/employeelist.html',{'personals':personals})
 
 def edit(request, id):
@@ -74,11 +74,12 @@ def edit(request, id):
     personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
     personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
     personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
-    jobtitles = Job.objects.all().order_by('jobtitle')
-    jobgrades = Jobgrade.objects.all().order_by('jobgrade')
+    jobtitles = LevelDesignation.objects.filter(levelid_id=personal.employmentLevel_id).select_related('designations')
+    jobgrades = LevelGrades.objects.filter(levelid_id=personal.employmentLevel_id).select_related('grades')
     employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')
     locations = Location.objects.all().order_by('location')
     departments = Department.objects.all().order_by('departmentname')
+    reportingmanagers = Personal_details.objects.filter(department_id=personal.reportingdepartment, job_grade_id__gte = personal.job_grade_id)
     levels = Leveldefinition.objects.all().order_by('levelName')
     return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
                                                 'jobtitles':jobtitles,
@@ -86,24 +87,23 @@ def edit(request, id):
                                                 'employmentstatus':employmentstatus,
                                                 'locations':locations,
                                                 'departments':departments,
-                                                'levels':levels})                                              
+                                                'levels':levels,
+                                                "reportingmanagers":reportingmanagers})                                              
 
 def update(request, id):
-    ishod = request.POST.get('ishod', False)
+    duhead = request.POST.get('duhead', False)
     reportingid = request.POST.get('department_id', False)
-    if not ishod:
-        ishod=0
-        reportingmanager = fnGetReportingId(reportingid)
+    if not duhead:
+        duhead=0
     else:
-        ishod=request.POST['ishod']
-        reportingmanager = 0
+        duhead=request.POST['duhead']
     personal = Personal_details.objects.get(id=id)
     personal.employee_id = request.POST['employee_id']
     personal.first_name = request.POST['first_name']
     personal.middle_name = request.POST['middle_name']
     personal.last_name = request.POST['last_name']
     personal.date_of_birth = request.POST['date_of_birth']
-    personal.emailid = request.POST['emailid']
+    personal.personalemailid = request.POST['personalemailid']
     personal.mobilenumber = request.POST['mobilenumber']
     personal.gender = request.POST['gender']
     personal.marital_status = request.POST['marital_status']
@@ -115,11 +115,15 @@ def update(request, id):
     personal.job_title_id= request.POST['job_title_id']
     personal.job_grade_id = request.POST['job_grade_id']
     personal.department_id = request.POST['department_id']
+    personal.companyemailid = request.POST['companyemailid']
     personal.employment_status_id = request.POST['employment_status_id']
     personal.worklocation_id = request.POST['worklocation_id']
     personal.work_shifts = request.POST['work_shifts']
-    personal.isHOD = ishod
-    personal.reportingTo_id = reportingmanager
+    personal.duhead = duhead
+    personal.reportingtoId = request.POST['reportingmanager']
+    personal.reportingto = request.POST['reportingname']
+    personal.reportingdepartment = request.POST['reportingdepartment']
+    
     personal.save()
     return redirect('/pim/employeelist/')
 
@@ -138,3 +142,43 @@ def fngetempid(request):
         latestempid = 1
         latestempid = str(latestempid).zfill(5)
         return latestempid
+
+def getdropdownvalues(request):
+    levelid = None
+    levelid = request.POST['levelid']
+    reqflag = request.POST['reqflag']
+    if int(reqflag) == 1:   
+        designations = LevelDesignation.objects.filter(levelid_id=levelid).select_related('designations')
+        dlist=[]
+        for designation in designations:
+            d={}
+            d['id']=designation.designations.id
+            d['value']=designation.designations.jobtitle
+            dlist.append(d)
+        jobgradelist = dlist
+    else:
+        grades = LevelGrades.objects.filter(levelid_id=levelid).select_related('grades')
+        glist=[]
+        for grade in grades:
+            g={}
+            g['id']=grade.grades.id
+            g['value']=grade.grades.jobgrade
+            glist.append(g)
+        jobgradelist = glist
+    return JsonResponse(jobgradelist, safe=False)
+
+def getmanagers(request):
+    deptid = None
+    deptid = request.POST['deptid']
+    idgrade = request.POST['idgrade']
+    print(idgrade)
+    reportingmanagers = Personal_details.objects.filter(department_id=deptid, job_grade_id__gte = idgrade)
+    rlist=[]
+    for reportingmanager in reportingmanagers:
+        r={}
+        r['id']=reportingmanager.id
+        r['value']=reportingmanager.first_name+' '+reportingmanager.middle_name+' '+reportingmanager.last_name
+        rlist.append(r)
+    reportingmanagers = rlist
+    return JsonResponse(reportingmanagers, safe=False)
+

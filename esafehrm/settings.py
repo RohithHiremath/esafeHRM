@@ -19,7 +19,7 @@ TEMPLATE_DIR_MASTERS = os.path.join(BASE_DIR,'masters/templates')
 TEMPLATE_DIR_PIM = os.path.join(BASE_DIR,'pim/templates')
 TEMPLATE_DIR_LEAVES = os.path.join(BASE_DIR,'leaves/templates')
 TEMPLATE_DIR_ORGANISATION = os.path.join(BASE_DIR,'organisation/templates')
-
+TEMPLATE_DIR_ORGANISATION = os.path.join(BASE_DIR,'attendance/templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'organisation.apps.OrganisationConfig',
     'pim',
     'leaves',
+    'attendance.apps.AttendanceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

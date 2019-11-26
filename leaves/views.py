@@ -2,9 +2,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from masters.models import Job
 from pim.models import Personal_details
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails
 from django.contrib import messages
 import datetime
+from datetime import date, timedelta
+from django.db.models import Sum
 
 # Create your views here.
 def leavestructure(request):
@@ -225,3 +227,55 @@ def holidays(request):
     else:
         holiday = Holidays.objects.all()
         return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})
+
+def applyleave(request):
+    current_user = request.user
+    
+    if request.method == 'POST':
+        dt_obj_from = datetime.datetime.strptime(request.POST['Fromdate'],"%d-%m-%Y")
+        fromdate = dt_obj_from.date()
+        dt_obj_to = datetime.datetime.strptime(request.POST['Todate'],"%d-%m-%Y")
+        todate = dt_obj_to.date()
+        delta = todate - fromdate
+        for i in range(delta.days+1):
+            day = fromdate + timedelta(days=i)
+            leavedetails = LeaveDetails(
+                            employee_id = request.POST['employee'],
+                            Fromdate = day,
+                            Todate = day,
+                            NumberOfLeaves = 1,
+                            AppliedDate = datetime.datetime.now().strftime('%Y-%m-%d'),
+                            Status = 1,
+                            Reason = request.POST['Reason'],
+                            FullorHalfday = request.POST['FullorHalfday'],
+                            leave_type_id = request.POST['idleave'],
+                          )
+            leavedetails.save()
+        return redirect('/leaves/applyleave/')
+    else:
+        personal = Personal_details.objects.get(emailid=current_user.email)
+        leavestructurdetails = AssignLeaveStructure.objects.filter(empid_id=personal.id).select_related('leave_structure')
+        for leavestructurdetails in leavestructurdetails:
+            leavestructurrname = leavestructurdetails.leave_structure.leavestructure
+            leavestructureid =  leavestructurdetails.leave_structure.id  
+            leavestructureshortname =  leavestructurdetails.leave_structure.shortname
+        linkedleavetypes = Linktoleavetype.objects.filter(leave_structure_id=leavestructureid).select_related('leave_type')
+        for linkedleavetype in linkedleavetypes:
+            leaveid = linkedleavetype.leave_type.id
+            availed = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status = 2).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            requested = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status = 1).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            linkedleavetype.leave_type.availed = availed['totalleaves']
+            linkedleavetype.leave_type.requested = requested['totalleaves']
+            if availed['totalleaves'] is not None:
+                availedval = availed['totalleaves']
+            else:
+                availedval = 0
+
+            if requested['totalleaves'] is not None:
+                requestedval = requested['totalleaves']
+            else:
+                requestedval = 0
+            balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
+            print(balance)
+            linkedleavetype.leave_type.balance = balance 
+        return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})

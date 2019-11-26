@@ -10,7 +10,7 @@ class Personal_details(models.Model):
    last_name = models.CharField(max_length=150,blank = False)
    date_of_birth = models.DateField(blank = False)
    employee_id = models.CharField(max_length=150,blank = False)
-   emailid = models.EmailField(max_length=150)
+   personalemailid = models.EmailField(max_length=150)
    mobilenumber = models.CharField(max_length=15,blank = False)
    gender = models.SmallIntegerField(default=1,blank = False)
    marital_status = models.SmallIntegerField(default=1,blank = False)
@@ -25,7 +25,10 @@ class Personal_details(models.Model):
    worklocation = models.ForeignKey(Location,on_delete=models.CASCADE)
    employment_status = models.ForeignKey(Employmentstatus,on_delete=models.CASCADE)
    work_shifts = models.IntegerField(default=1)
-   isHOD = models.SmallIntegerField(default=0,blank = False)
-   reportingTo_id = models.ForeignKey('self',on_delete=models.CASCADE)
+   companyemailid = models.EmailField(max_length=150)
+   DUHead = models.SmallIntegerField(default=0,blank = False)
+   reportingtoId = models.SmallIntegerField(default=1,blank = False)
+   reportingto = models.CharField(max_length=150,blank = False)
+   reportingdepartment = models.SmallIntegerField(default=1,blank = False)
    def __str__(self):
        return self.first_name

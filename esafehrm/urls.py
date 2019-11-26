@@ -19,6 +19,7 @@ from masters import views
 from pim import views
 from leaves import views
 from organisation import views
+from attendance import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +27,6 @@ urlpatterns = [
     path('pim/', include('pim.urls')),
     path('leaves/', include('leaves.urls')),
     path('organisation/', include('organisation.urls')),
+    path('attendance/', include('attendance.urls')),
     path('', include('login.urls'))
 ]
