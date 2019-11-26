@@ -42,5 +42,18 @@ class Holidays(models.Model):
     def __str__(self):
        return self.holidayname
 
+<<<<<<< HEAD
 class Upload_list(models.Model):
     document = models.FileField(upload_to='documents/',blank=True,null=False)
+=======
+class LeaveDetails(models.Model):
+    employee = models.ForeignKey(Personal_details,on_delete = models.CASCADE)
+    Fromdate = models.DateField(blank=False)
+    Todate = models.DateField(blank=False)
+    leave_type = models.ForeignKey(Leavetype,on_delete = models.CASCADE)
+    NumberOfLeaves = models.SmallIntegerField(default=1,blank=False)
+    AppliedDate = models.DateField(blank=False)
+    Status = models.SmallIntegerField(default=1,blank=False)
+    Reason = models.CharField(max_length=100,blank=True)
+    FullorHalfday = models.SmallIntegerField(default=1,blank=False)
+>>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a

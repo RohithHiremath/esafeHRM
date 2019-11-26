@@ -35,6 +35,7 @@
           <div class="error" id="dobErr"></div>
         </div>
         <div class="col-md-4">
+<<<<<<< HEAD
           <label for="email">Email ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="emailid" id="emailid" value="" required>
           <div class="error" id="emailidErr"></div>
@@ -43,6 +44,16 @@
           <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
           <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required>
           <div class="error" id="mobilenoErr"></div>
+=======
+          <label for="personalemail">Personal E-mail ID<font color=red>*</font></label>
+          <input type="email" class="form-control" name="personalemailid" id="personalemailid" value="" required
+            placeholder="Enter personal E-mail Id">
+        </div>
+        <div class="col-md-4">
+          <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
+          <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required
+            placeholder="Enter Mobile Number">
+>>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
         </div>
         <div class="col-md-4">
           <label for="Gender">Gender<font color=red>*</font></label>
@@ -119,7 +130,8 @@
         </div>
         <div class="col-md-4">
           <label for="empllevel">Employment Level:<font color=red>*</font></label>
-          <select name="empllevel" id="empllevel" class="form-control" required>
+          <select name="empllevel" id="empllevel" class="form-control" required onchange="fngetdropdownvalues(this)"
+            data-url="{% url 'pim:getdropdownvalues' %}">
             <option value="" disabled selected hidden>Select Employment Level</option>
             {% for level in levels %}
             <option value="{{ level.id }}">{{ level.levelName }}</option>
@@ -129,11 +141,6 @@
         <div class="col-md-4">
           <label for="JobTitle">Job Title<font color=red>*</font></label>
           <select name="job_title" id="job_title" class="form-control" required>
-            <option value="" disabled selected hidden>Select Job Title</option>
-            <option value="">Select</option>
-            {% for job in jobtitles %}
-            <option value="{{ job.id }}">{{ job.jobtitle }}</option>
-            {% endfor %}
           </select>
           <div class="error" id="jobtitleErr"></div>
         </div>
@@ -141,10 +148,6 @@
           <label for="Jobgrade">Job Grade<font color=red>*</font></label>
           <select name="Jobgrade" id="Jobgrade" class="form-control" required>
             <option value="" disabled selected hidden>Select Job Grade</option>
-            <option value="">Select</option>
-            {% for jobgrade in jobgrades %}
-            <option value="{{ jobgrade.id }}">{{ jobgrade.jobgrade }}</option>
-            {% endfor %}
           </select>
           <div class="error" id="jobcategoryErr"></div>
         </div>
@@ -196,29 +199,192 @@
         </div>
       </div>
       <div class="row">
-          <div class=col-md-4>
-              Is HOD?
-              <label class="switch" title="click to Enable or Disable"> 
-                <input type="checkbox" id="ishod" name="ishod" value='1' class="form-control" >
-                <span class="slider round"></span>
-              </label>
-          </div>
+        <div class="col-md-4">
+          <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
+          <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" required
+            placeholder="Enter Company email">
         </div>
+        <div class=col-md-4>
+          DU Head
+          <label class="switch" title="click to Enable or Disable">
+            <input type="checkbox" id="duhead" name="duhead" value='1'>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+      <h4>Assign Reporting Manager</h4>
       <div class="row">
-        <div class="col-md-12" style="float:right;">
-          <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
-            Save
-          </button>
-          <button type="button" class="btn btn-primary" onclick="somefunction(3);">
-            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Prev
-          </button>
+        <div class="col-md-4">
+          <label for="reportingdepartment">Reporting Department<font color=red>*</font></label>
+          <select name="reportingdepartment" id="reportingdepartment" class="form-control"
+            onchange="fngetmanagers(this)" data-url="{% url 'pim:getmanagers' %}">
+            <option value="">Select</option>
+            {% for job in departments %}
+            <option value="{{ job.id }}"">
+              {{ job.departmentname }}</option>
+            {% endfor %}
+          </select>
+          <div class=" error" id="departmentErr">
         </div>
+      </div>
+      <div class=col-md-4>
+        <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
+        <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
+          <option value="" disabled>Select Reporting Manager</option>
+        </select>
+        <input type="hidden" name="reportingname" id="reportingname" value="">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" style="float:right;">
+        <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
+          Save
+        </button>
+        <button type="button" class="btn btn-primary" onclick="somefunction(3);">
+          <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Prev
+        </button>
       </div>
     </div>
   </div>
+  </div>
 </form>
+<style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
 
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked+.slider {
+    background-color: #2196F3;
+  }
+
+  input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+</style>
 <script>
+
+  function fnsetdiplayedvalue() {
+    const sel = document.getElementById("reportingmanager");
+    let seltext = sel.options[sel.selectedIndex].text;
+    document.getElementById('reportingname').value = seltext;
+  }
+
+  function fngetmanagers(element) {
+
+    val = $(element).val();
+    idgrade = document.getElementById('Jobgrade').value;
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "deptid": val,
+          "idgrade": idgrade,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#reportingmanager').empty();
+          $('#reportingmanager').append(new Option('Select Reporting', ''))
+          for (var i = 0; i < data.length; i++) {
+            $('#reportingmanager').append(new Option(data[i].value, data[i].id));
+          }
+        }
+      });
+  }
+
+  function fngetdropdownvalues(element) {
+    val = $(element).val();
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "levelid": val,
+          "reqflag": 1,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#job_title').append(new Option('Select Job Title', ''))
+          for (var i = 0; i < data.length; i++) {
+            $('#job_title').append(new Option(data[i].value, data[i].id));
+          }
+          fngetgrades(element);
+        }
+      });
+  }
+
+  function fngetgrades(element) {
+    val = $(element).val();
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "levelid": val,
+          "reqflag": 2,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#Jobgrade').append(new Option('Select Jobgrade', ''))
+          for (var i = 0; i < data.length; i++) {
+            $('#Jobgrade').append(new Option(data[i].value, data[i].id));
+          }
+        }
+      });
+  }
+
   function somefunction(val) {
     if (val == 1) {
       flag = false;

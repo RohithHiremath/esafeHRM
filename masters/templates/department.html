@@ -7,29 +7,29 @@
     </button>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-        <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Department Name</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for department in departments %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ department.departmentname }}</td>
-                <td>{{ department.description }}</td>
-                <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
-                    <a href="#" data-toggle="modal" data-target="#editjobdepartment{{ department.id }}"><i
-                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Department Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for department in departments %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ department.departmentname }}</td>
+            <td>{{ department.description }}</td>
+            <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
+                <a href="#" data-toggle="modal" data-target="#editjobdepartment{{ department.id }}"><i
+                        class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 <div class="modal fade" id="addjobdepartment" tabindex="-1" role="dialog" aria-labelledby="addjobdepartmentLabel"
     aria-hidden="true">
@@ -44,11 +44,19 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="departmentname">Department Name</label><span>*</span>
+<<<<<<< HEAD
                             <input type="text" class="form-control" id="departmentname" name="departmentname" value="" onblur="deptvalidate(this);" data-url="{% url 'department' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+=======
+                            <input type="text" class="form-control" id="departmentname" name="departmentname" value=""
+                                onblur="deptvalidate(this);return false;" data-url="{% url 'department' %}" required>
+                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"
+                                id="login_not">
+>>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;"
+                                id="login_ok">
                                 <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
@@ -81,10 +89,25 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="departmentname">Department Name</label><span>*</span>
+<<<<<<< HEAD
                             <input type="text" class="form-control" id="departmentname" name="departmentname" value="{{ department.departmentname }}" onblur="deptedit(this,{{ department.id }});" data-url="{% url 'department' %}"  required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ department.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
+=======
+                            <input type="text" class="form-control" id="departmentname" name="departmentname"
+                                value="{{ department.departmentname }}"
+                                onblur="deptedit(this,{{ department.id }});return false;"
+                                data-url="{% url 'department' %}" required>
+                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"
+                                id="edit_not{{ department.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;"
+                                id="edit_ok{{ department.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
+>>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
                         </div>
                         <div class="col-md-6">
                             <label for="description">Description</label>
@@ -103,6 +126,7 @@
 </div>
 {% endfor %}
 <script>
+<<<<<<< HEAD
 function deptvalidate(element) {
 	$("#login_ok").hide();
 	$("#login_not").hide();
@@ -151,5 +175,61 @@ function deptedit(element,id) {
 		}
 	});
 }
+=======
+    function deptvalidate(element) {
+        $("#login_ok").hide();
+        $("#login_not").hide();
+        document.getElementById("save").disabled = false;
+        departmentname = $(element).val();
+        if (departmentname == "") {
+            return;
+        }
+        $.ajax({
+            url: $(element).attr("data-url"),
+            data: {
+                "departmentname": departmentname,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.is_success) {
+                    $("#login_ok").show();
+                    document.getElementById("save").disabled = false;
+                } else {
+                    $("#login_not").show();
+                    document.getElementById("save").disabled = true;
+                }
+            }
+        });
+    }
+    function deptedit(element, id) {
+        $("#edit_ok" + id).hide();
+        $("#edit_not" + id).hide();
+        document.getElementById("editsave" + id).disabled = false;
+        departmentname = $(element).val();
+        if (departmentname == "") {
+            return;
+        }
+        $.ajax({
+            url: $(element).attr("data-url"),
+            data: {
+                "departmentname": departmentname,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.is_success) {
+                    {% comment %} $("#edit_ok" + id).show(); {% endcomment %}
+                    {% comment %} document.getElementById("editsave" + id).disabled = false; {% endcomment %}
+                } else {
+                    $("#edit_not" + id).show();
+                    document.getElementById("editsave" + id).disabled = true;
+                }
+            }
+        });
+    }
+>>>>>>> 2b97f0d9dd5a3066a0ddb4c48d81d4d047367f7a
 </script>
 {% endblock %}
