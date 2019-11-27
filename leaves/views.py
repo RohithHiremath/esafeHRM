@@ -253,7 +253,7 @@ def applyleave(request):
             leavedetails.save()
         return redirect('/leaves/applyleave/')
     else:
-        personal = Personal_details.objects.get(emailid=current_user.email)
+        personal = Personal_details.objects.get(companyemailid=current_user.email)
         leavestructurdetails = AssignLeaveStructure.objects.filter(empid_id=personal.id).select_related('leave_structure')
         for leavestructurdetails in leavestructurdetails:
             leavestructurrname = leavestructurdetails.leave_structure.leavestructure

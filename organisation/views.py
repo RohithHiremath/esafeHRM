@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 from masters.models import Job,Jobgrade
 from organisation.models import Leveldefinition, LevelDesignation, LevelGrades
+from pim.models import Personal_details
+from django.http import HttpResponse,Http404,JsonResponse
 import json
-# Create your views here.
 
 def addlevel(request):
     if request.method == 'POST':
@@ -35,15 +36,24 @@ def addlevel(request):
         return render(request,'levels.html',{'levels':levels, 'allgrades': grades,'alldesignations': alldesignations,'title':'Add Level'})
 
 def orgchart(request):
-    # levels = Leveldefinition.objects.all().order_by('-levelName')
-    levels=[
-          [{'v':'Chairman', 'f':'Mike<div style="color:red; font-style:italic">President</div>'},
-           '', 'The President'],
-          [{'v':'Jim', 'f':'Jim<div style="color:red; font-style:italic">Vice President</div>'},
-           'Mike', 'VP'],
-          ['Alice', 'Mike', ''],
-          ['Bob', 'Mike', 'Bob Sponge'],
-          ['Carol', 'Mike', '']
-        ] 
-    myJson = json.dumps(levels)
-    return render(request,'orgchart.html',{'title':'Organisation Chart','levels':myJson})
+    return render(request,'orgchart.html',{'title':'Organisation Chart'})
+
+def orgchartdata(request):
+    emplist = Personal_details.objects.all().select_related('job_title').order_by('employmentLevel_id','job_grade_id','reportingdepartment')
+    levelslist=[]
+    i=1
+    for emplists in emplist:
+        g=[]
+        if i==1:
+            g.append(emplists.first_name+' '+emplists.middle_name+' '+emplists.last_name)
+            g.append('')
+            g.append(emplists.job_title.jobtitle)
+            i=i+1
+        else:
+            g.append(emplists.first_name+' '+emplists.middle_name+' '+emplists.last_name)
+            g.append(emplists.reportingto)
+            g.append(emplists.job_title.jobtitle)
+        levelslist.append(g)
+    levels = levelslist
+    return JsonResponse(levels, safe=False)
+
