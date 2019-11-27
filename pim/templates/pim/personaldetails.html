@@ -194,6 +194,7 @@
           <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" required
             placeholder="Enter Company email">
+            <div class="error" id="companyemailErr"></div>
         </div>
         <div class=col-md-4>
           DU Head
@@ -564,6 +565,23 @@
         jobtitleErr = false;
         flag = true;
       }
+      var companyemailid = document.getElementById('companyemailid').value
+      if (companyemailid == "") {
+        printError("companyemailErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('companyemailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("companyemailErr", "");
+          } else {
+            printError("companyemailErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
       var dept = document.getElementById('department').value
       if (dept == "") {
         printError("departmentErr", "Please select the department");
