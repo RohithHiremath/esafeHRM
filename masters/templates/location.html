@@ -36,18 +36,15 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="addjoblocationLabel">Add Work Location</h5>
             </div>
-            <form action="" name="addlocation" id="addlocation" method="POST">
+            <form method="POST" action="" name="addlocation" id="addlocation">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <label for="location">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="location" name="location" value="" onblur="locationvalidate(this);return false;" data-url="{% url 'location' %}" required>
+                            <input type="text" class="form-control" id="location" name="location" value="" onblur="locationvalidate(this);" data-url="{% url 'worklocation' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
-                            </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
-                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                     </div>
@@ -75,7 +72,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="location">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="location" name="location" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'location' %}" required>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'worklocation' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ location.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -100,9 +97,6 @@ function locationvalidate(element) {
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
 	location = $(element).val();
-	if (location == "") {
-		return;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
@@ -126,14 +120,11 @@ function locationedit(element,id) {
     $("#edit_ok"+id).hide();
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
-	locationnamevalue = $(element).val();
-	if (locationnamevalue == "") {
-		return false;
-	}
+	location = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
-            "locationname":locationnamevalue,
+            "locationname":location,
 			"csrfmiddlewaretoken" : '{{ csrf_token }}',
 		},
 		method: "POST",
@@ -149,5 +140,5 @@ function locationedit(element,id) {
 		}
 	});
 }
-</script>
+</script> 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
-    <h3 style="float: left;margin-left: -22px;">Job Grades</h3>
+    <h4 style="float: left;margin-left: -22px;">Job Grades</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobgrade">
         Add
     </button>
@@ -30,14 +30,14 @@
     </table>
 </div>
 <div class="modal fade" id="addjobgrade" tabindex="-1" role="dialog" aria-labelledby="addjobgradeLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addjobgradeLabel">Add Job Grade</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                {% comment %} <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button>
+                </button> {% endcomment %}
             </div>
             <form action="" name="addgrade" id="addgrade" method="POST">
                 {% csrf_token %}
@@ -81,12 +81,10 @@
                         <div class="col-md-8">
                             <label for="jobgrade">Job Grade</label><span>*</span>
                             <input type="text" class="form-control" id="jobgrade" name="jobgrade"
-                                value="{{ grade.jobgrade }}" onblur="gradeedit(this,{{ grade.id }});return false;" data-url="{% url 'jobgrade' %}" required>
+                                value="{{ grade.jobgrade }}" onblur="gradeedit(this,{{ grade.id }});
+                                " data-url="{% url 'jobgrade' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ grade.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
-                            </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ grade.id }}">
-                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                     </div>
@@ -106,9 +104,6 @@ function gradevalidate(element) {
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
 	jobgrade = $(element).val();
-	if (jobgrade == "") {
-		return;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
@@ -133,9 +128,6 @@ function gradeedit(element,id) {
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
 	jobgradevalue = $(element).val();
-	if (jobgradevalue == "") {
-		return false;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {

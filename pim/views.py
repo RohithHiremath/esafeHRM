@@ -2,6 +2,13 @@ from django.shortcuts import render,redirect
 from .models import Personal_details
 from datetime import datetime
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department
+from organisation.models import Leveldefinition
+from django.shortcuts import render
+from esafehrm.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+from . import forms
+import string
+from random import *
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
@@ -40,9 +47,11 @@ def Personal_details_view(request):
                                 companyemailid = request.POST['companyemailid'],
                                 reportingto = request.POST['reportingname'],
                                 reportingtoId = request.POST['reportingmanager'],
-                                reportingdepartment = request.POST['reportingdepartment']
-                             )
+                                reportingdepartment = request.POST['reportingdepartment'])
+        email = request.POST['companyemailid']
+        # print(email)
         personal.save()
+        sendemail(request,email)
         return redirect('/pim/employeelist/')
     else:
         levels = Leveldefinition.objects.all().order_by('levelName')
@@ -60,6 +69,15 @@ def Personal_details_view(request):
                                                     'departments':departments,
                                                     'levels': levels})
    
+def sendemail(request,email):
+    characters = string.ascii_letters + string.digits 
+    password = "".join(choice(characters) for x in range(randint(6,7)))
+    if request.method == 'POST':
+        subject = 'Login Details'
+        recepient = str(email)
+        message = 'Your Username - {} and Password - {}'.format(recepient,password) 
+        send_mail(subject,
+            message, EMAIL_HOST_USER, [recepient], fail_silently = False)
 
 def fnGetReportingId(idval):
     personals = Personal_details.objects.filter(department_id=idval, isHOD=1).values()
@@ -123,7 +141,6 @@ def update(request, id):
     personal.reportingtoId = request.POST['reportingmanager']
     personal.reportingto = request.POST['reportingname']
     personal.reportingdepartment = request.POST['reportingdepartment']
-    
     personal.save()
     return redirect('/pim/employeelist/')
 

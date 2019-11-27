@@ -38,11 +38,13 @@
           <label for="personalemail">Personal E-mail ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="personalemailid" id="personalemailid" value="" required
             placeholder="Enter personal E-mail Id">
+            <div class="error" id="personalemailidErr"></div>
         </div>
         <div class="col-md-4">
           <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
           <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required
             placeholder="Enter Mobile Number">
+            <div class="error" id="mobilenumberErr"></div>
         </div>
         <div class="col-md-4">
           <label for="Gender">Gender<font color=red>*</font></label>
@@ -192,6 +194,7 @@
           <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" required
             placeholder="Enter Company email">
+            <div class="error" id="companyemailErr"></div>
         </div>
         <div class=col-md-4>
           DU Head
@@ -470,6 +473,40 @@
         nationalityErr = false;
         flag = true;
       }
+      var personalemailid = document.getElementById('personalemailid').value
+      if (personalemailid == "") {
+        printError("personalemailidErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('personalemailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("personalemailidErr", "");
+          } else {
+            printError("personalemailidErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var mobileno = document.getElementById('mobilenumber').value
+      if (mobileno == "") {
+        printError("mobilenumberErr", "Please Enter Mobile number");
+        return false;
+      } else {
+        var mobileno = document.getElementById('mobilenumber').value;
+        var mobiletenDigit = /^\d{10}$/;
+        if (mobileno != '') {
+          if (mobileno.match(mobiletenDigit)) {
+            printError("mobilenumberErr", "");
+          } else {
+            printError("mobilenumberErr", "Enter valid Mobile number");
+            return false;
+          }
+        }
+        flag = true;
+      }
       var aadhar = document.getElementById('aadhar_card_no').value
       if (aadhar == "") {
         printError("aadharErr", "Please Enter Aadhar number");
@@ -528,6 +565,23 @@
         jobtitleErr = false;
         flag = true;
       }
+      var companyemailid = document.getElementById('companyemailid').value
+      if (companyemailid == "") {
+        printError("companyemailErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('companyemailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("companyemailErr", "");
+          } else {
+            printError("companyemailErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
       var dept = document.getElementById('department').value
       if (dept == "") {
         printError("departmentErr", "Please select the department");

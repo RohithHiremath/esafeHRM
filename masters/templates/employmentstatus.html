@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <label for="employementstatus">Employment Type</label><span>*</span>
-                            <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" onblur="statusvalidate(this);return false;" data-url="{% url 'status' %}" required>
+                            <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" onblur="statusvalidate(this);" data-url="{% url 'status' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -79,9 +79,6 @@
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ status.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ status.id }}">
-                                <i class="fa fa-check" aria-hidden="true">Available.</i>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,9 +97,6 @@ function statusvalidate(element) {
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
 	employementstatus = $(element).val();
-	if (employementstatus == "") {
-		return;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
@@ -127,9 +121,6 @@ function statusedit(element,id) {
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
 	employementstatusvalue = $(element).val();
-	if (employementstatusvalue == "") {
-		return false;
-	}
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {

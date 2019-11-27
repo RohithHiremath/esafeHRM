@@ -1,9 +1,12 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
-        <h4 style="float: left;margin-left: -22px;">Leave Type</h4>
+        <h4 style="float: left;margin-left: -22px;">Holiday List</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
         Add
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploaddocument">
+        Upload
     </button>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
@@ -13,7 +16,6 @@
                 <th>#</th>
                 <th>Holiday Name</th>
                 <th>Holiday Date</th>
-                {% comment %} <th>Action</th> {% endcomment %}
             </tr>
         </thead>
         <tbody>
@@ -22,11 +24,6 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ holy.holidayname }}</td>
                 <td>{{ holy.holidayDate }}</td>
-                {% comment %} <td data-toggle="tooltip" title="Click to edit">
-                    <a href="#" data-toggle="modal" data-target="#editleavetype{{ leave.id }}">
-                        <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
-                    </a>
-                </td> {% endcomment %}
             </tr>
             {% endfor %}
         </tbody>
@@ -64,6 +61,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="uploaddocument" tabindex="-1" role="dialog" aria-labelledby="uploaddocumentLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploaddocumentLabel">Upload Holiday List</h5>
+            </div>
+            <form action="/leaves/upload/" method="post" name="form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" title="Upload excel file" name="excel_file"
+                   style="border: 1px solid black; padding: 5px;"required="required">
+                <div class="modal-footer">
+                <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
 $(document).ready(function () {
         $("#holidayDate").datepicker({
@@ -71,7 +87,6 @@ $(document).ready(function () {
             dateFormat: 'yy-mm-dd'
         });
     });
-
 function validateholiday(element) {
 	$("#login_ok").hide();
 	$("#login_not").hide();

@@ -41,20 +41,17 @@ def editjobtitles(request, id):
 
 def jobcategories(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        category = None
+        category = Jobcategory.objects.filter(jobcategory = request.POST['jobcategory'])
+        if not category:
+            response_data["is_success"] = True
+            category = Jobcategory(jobcategory=request.POST['jobcategory'])
+            category.save()
+            return redirect('jobcategory')
         else:
-            response_data = {}
-            category = None
-            category = Jobcategory.objects.filter(jobcategory = request.POST['jobcategory'])
-            if not category:
-                response_data["is_success"] = True
-                category = Jobcategory(jobcategory=request.POST['jobcategory'])
-                category.save()
-                return redirect('jobcategory')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         categories = Jobcategory.objects.all().order_by('jobcategory')
         return render(request,'jobcategories.html',{'title':'Jobcategories List','categories':categories})
@@ -77,20 +74,16 @@ def editjobcategories(request, id):
 
 def jobgrade(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        grade = None
+        grade = Jobgrade.objects.filter(jobgrade = request.POST['jobgrade'])
+        if not grade:
+            grade = Jobgrade(jobgrade = request.POST['jobgrade'])
+            grade.save()
+            return redirect('jobgrade')
         else:
-            response_data = {}
-            grade = None
-            grade = Jobgrade.objects.filter(jobgrade = request.POST['jobgrade'])
-            if not grade:
-                # response_data["is_success"] = True
-                grade = Jobgrade(jobgrade=request.POST['jobgrade'])
-                grade.save()
-                return redirect('jobgrade')
-            else:
-                response_data["is_success"] = False
-                return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         grades = Jobgrade.objects.all().order_by('jobgrade')
     return render(request,'jobgrades.html',{'title':'jobgrades List','grades':grades})
@@ -113,20 +106,17 @@ def editjobgrade(request, id):
 
 def component(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        component = None
+        component = Salarycomponent.objects.filter(componentname = request.POST['componentname'])
+        if not component:
+            response_data["is_success"] = True
+            component = Salarycomponent(componentname=request.POST['componentname'],types=request.POST['types'])
+            component.save()
+            return redirect('component')
         else:
-            response_data = {}
-            component = None
-            component = Salarycomponent.objects.filter(componentname = request.POST['componentname'])
-            if not component:
-                response_data["is_success"] = True
-                component = Salarycomponent(componentname=request.POST['componentname'],types=request.POST['types'])
-                component.save()
-                return redirect('component')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         components = Salarycomponent.objects.all().order_by('componentname','types')
     return render(request,'salarycomponents.html',{'title':'component List','components':components})
@@ -150,20 +140,17 @@ def editcomponent(request, id):
 
 def employementstatus(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        status = None
+        status = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
+        if not status:
+            response_data["is_success"] = True
+            status = Employmentstatus(employementstatus=request.POST['employementstatus'])
+            status.save()
+            return redirect('status')
         else:
-            response_data = {}
-            status = None
-            status = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
-            if not status:
-                response_data["is_success"] = True
-                status = Employmentstatus(employementstatus=request.POST['employementstatus'])
-                status.save()
-                return redirect('status')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         statuses = Employmentstatus.objects.all().order_by('employementstatus')
     return render(request,'employmentstatus.html',{'title':'status List','statuses':statuses})
@@ -172,7 +159,7 @@ def editemployementstatus(request, id):
     if request.method == 'POST':
         response_data = {}
         job = None
-        job = Salarycomponent.objects.filter(employementstatus = request.POST['employementstatus'])
+        job = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
         if not job:
             cat = Employmentstatus.objects.get(id=id)
             cat.employementstatus = request.POST['employementstatus']
@@ -186,20 +173,17 @@ def editemployementstatus(request, id):
 
 def department(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
+        response_data = {}
+        department = None
+        department = Department.objects.filter(departmentname = request.POST['departmentname'])
+        if not department:
+            response_data["is_success"] = True
+            department = Department(departmentname=request.POST['departmentname'],description=request.POST['description'])
+            department.save()
+            return redirect('department')
         else:
-            response_data = {}
-            department = None
-            department = Department.objects.filter(departmentname = request.POST['departmentname'])
-            if not department:
-                response_data["is_success"] = True
-                department = Department(departmentname=request.POST['departmentname'],description=request.POST['description'])
-                department.save()
-                return redirect('department')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
     else:
         departments = Department.objects.all().order_by('departmentname')
     return render(request,'department.html',{'title':'Department','departments':departments})
@@ -210,7 +194,6 @@ def editdepartment(request, id):
         dept = None
         dept = Department.objects.filter(departmentname = request.POST['departmentname'])
         if not dept:
-            # response_data["is_success"] = True
             depts = Department.objects.get(id=id)
             depts.departmentname = request.POST['departmentname']
             depts.description = request.POST['description']
@@ -222,39 +205,27 @@ def editdepartment(request, id):
     else:
         return redirect('department')
 
-def location(request):
+def worklocation(request):
     if request.method == 'POST':
-        if request.method == "GET":
-            raise Http404("URL doesn't exists")
-        else:
-            response_data = {}
-            loc = None
-            loc = Location.objects.filter(location = request.POST['location'])
-            if not loc:
-                response_data["is_success"] = True
-                location = Location(location = request.POST['location'])
-                location.save()
-                return redirect('location')
-            else:
-                response_data["is_success"] = False
-            return JsonResponse(response_data)
+        loctn = Location(location=request.POST['location'])
+        loctn.save()
+        return redirect('worklocation')
     else:
-        locations = Location.objects.all()
-    return render(request,'location.html',{'title':'Location','locations':locations})
+        locations = Location.objects.all().order_by('location')
+    return render(request,'location.html',{'title':'Location','locations':locations})   
 
 def editlocation(request, id):
     if request.method == 'POST':
         response_data = {}
         dept = None
-        dept = Location.objects.filter(location = request.POST['locationname'])
+        dept = Location.objects.filter(location = request.POST['location'])
         if not dept:
-            # response_data["is_success"] = True
             loc = Location.objects.get(id=id)
             loc.location = request.POST['location']
             loc.save()
-            return redirect('location')
+            return redirect('worklocation')
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
     else:
-        return redirect('location')
+        return redirect('worklocation')
