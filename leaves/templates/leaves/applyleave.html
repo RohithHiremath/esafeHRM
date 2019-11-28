@@ -1,7 +1,6 @@
 {% extends 'login/base.html' %}
+
 {% block content %}
-
-
 <div class="container-fluid text-right" style="margin:10px;float:right;">
     <h4 style="float: left;">My Leave Entitlements</h4>
 </div>
@@ -24,23 +23,24 @@
             <td>{{ linkedleavetype.leave_type.leavetype }} ({{ linkedleavetype.leave_type.shortname }})</td>
             <td>{{ linkedleavetype.numberOfLeaves }}</td>
             {% if linkedleavetype.leave_type.availed  is not None %}
-                <td>{{ linkedleavetype.leave_type.availed }}</td>
+            <td>{{ linkedleavetype.leave_type.availed }}</td>
             {% else  %}
-                <td>0</td>
+            <td>0</td>
             {% endif %}
             {% if linkedleavetype.leave_type.requested  is not None %}
-                <td>{{ linkedleavetype.leave_type.requested }}</td>
+            <td>{{ linkedleavetype.leave_type.requested }}</td>
             {% else  %}
-                <td>0</td>
+            <td>0</td>
             {% endif %}
             <td>{{ linkedleavetype.leave_type.balance }}</td>
             {% if linkedleavetype.leave_type.balance > 0 %}
-                <td><a href="javascript:fnapplyleave( {{ linkedleavetype.leave_type.id }},'{{ linkedleavetype.leave_type.leavetype }}' )">
-                        Apply 
-                    </a>
-                </td>
+            <td><a
+                    href="javascript:fnapplyleave( {{ linkedleavetype.leave_type.id }},'{{ linkedleavetype.leave_type.leavetype }}','{{ linkedleavetype.leave_type.balance}}' )">
+                    Apply
+                </a>
+            </td>
             {% else  %}
-                <td></td>
+            <td></td>
             {% endif %}
         </tr>
         {% endfor %}
@@ -51,7 +51,6 @@
     <form action="" name="emplist" id="emplist" method="POST">
         {% csrf_token %}
         <div class="container-fluid text-right" style="margin:10px;float:right;">
-            <h4 style="float: left;padding-right: 10px;"> Applying </h4>
             <h4 style="float: left;" id="leavename"> </h4>
         </div>
         <div class="row">
@@ -66,15 +65,18 @@
             <div class="col-md-4">
                 <label for="fromDate">From Date<span style="color:red;">*</span></label>
                 <input type="text" class="form-control" name="Fromdate" id="Fromdate" placeholder="Select From Date"
-                    required>
+                    required value="">
                 <input type="hidden" name="idleave" id="idleave" value="">
                 <input type="hidden" name="employee" id="employee" value="{{ personid }}">
             </div>
             <div class="col-md-4">
                 <label for="toDate">To Date<span style="color:red;">*</span></label>
-                <input type="text" class="form-control" name="Todate" id="Todate" placeholder="Select To Date" required>
+                <input type="text" value="" class="form-control" name="Todate" id="Todate" placeholder="Select To Date" required
+                    onchange="testbal()" ;>
+                    <span id= "errordisplay" style="color:red;"></span>     
             </div>
         </div>
+       
         <div class="row">
             <div class="col-md-12">
                 <label for="reason">Reason<span style="color:red;">*</span></label>
@@ -82,10 +84,15 @@
                     required>
             </div>
         </div>
-        <br/>
+        <div class="row">
+                <div class="col-md-12">
+                    <span id= "errordisplay" style="color:red;"></span>
+                </div>
+            </div>
+        <br />
         <div class="row">
             <div class="col-md-12" style="float:right;">
-                <button type="submit" class="btn btn-primary pull-right">
+                <button type="submit" class="btn btn-primary pull-right" id="savebutton">
                     save
                 </button>
             </div>
@@ -93,12 +100,16 @@
     </form>
 </div>
 <script>
-    function fnapplyleave(idval, leavename) {
+    var leavebal = 0;
+    function fnapplyleave(idval, leavename, leavebalance) {
+        leavebal = leavebalance;
         document.getElementById("leavetab").style.display = "block";
         document.getElementById("leavename").innerHTML = leavename;
         document.getElementById("idleave").value = idval;
     }
+    
     $(document).ready(function () {
+        document.getElementById("savebutton").disabled = true;
         $("#Fromdate").datepicker({
             minDate: 0,
             dateFormat: 'dd-mm-yy'
@@ -108,5 +119,39 @@
             dateFormat: 'dd-mm-yy'
         });
     });
+
+    function testbal() {
+        var leavetype = document.getElementById("FullorHalfday").value;
+        if(leavetype==''){
+            alert("Please Select Leave Type");
+            document.getElementById("Todate").value = "";
+            document.getElementById("savebutton").disabled = true;
+            return false;
+        }
+        document.getElementById("errordisplay").innerHTML = "";
+        var date1 = document.getElementById("Fromdate").value;
+        var mdy1 = date1.split('-');
+        var date2 = document.getElementById("Todate").value;
+        var mdy2 = date2.split('-');
+        var date3 = new Date(mdy1[1]+"/"+mdy1[0]+"/"+mdy1[2]); 
+        var date4 = new Date(mdy2[1]+"/"+mdy2[0]+"/"+mdy2[2]); 
+        // To calculate the time difference of two dates 
+        var Difference_In_Time = date4.getTime() - date3.getTime(); 
+        // To calculate the no. of days between two dates 
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); 
+        Difference_In_Days = Difference_In_Days+1;
+        if(leavetype==1){
+            var mainbal = leavebal;
+        }else{
+            var mainbal = (leavebal*2);
+        }
+        if(Difference_In_Days>mainbal){
+            document.getElementById("errordisplay").innerHTML = "You can apply only "+leavebal+" leaves";
+            document.getElementById("savebutton").disabled = true;
+        }else{
+            document.getElementById("errordisplay").innerHTML = "";
+            document.getElementById("savebutton").disabled = false;
+        }
+    }
 </script>
 {% endblock %}

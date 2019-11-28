@@ -6,13 +6,11 @@ from organisation.models import Leveldefinition
 from django.shortcuts import render
 from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
-from . import forms
 import string
 from random import *
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
-# Create your views here.
 
 def Personal_details_view(request):
     if request.method =="POST":

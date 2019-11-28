@@ -1,12 +1,37 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;float:right;">
+<!-- <div class="container-fluid text-right" style="margin:10px;float:right;">
     <h4 style="float:left;"> Attendance Policy Details </h4>
 </div>
-<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div> -->
 <form action="" name="policy" id="policy" method="POST">
     {% csrf_token %}
     {% for tardinessvalue in tardinessvalues %}
+    <h5><b style="color:seagreen">Over Time Policy </b></h5>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="minimumHoursForOT">Minmum working Hours for OT<font color=red>*</font></label>
+            <input type="text" class="form-control" name="minimumHoursForOT" id="minimumHoursForOT" 
+            maxlength="1" value="{{ tardinessvalue.minimumHoursForOT }}">
+        </div>
+        <div class="col-md-4">
+            <label for="OTcompensatorytype">Compensatory Type<font color=red>*</font></label>
+            <select name="OTcompensatorytype" id="OTcompensatorytype" class="form-control" value="" required>
+                    <option value="" disabled selected hidden>Select Compensatory Type</option>
+                    <option value="1" {% if tardinessvalue.OTcompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
+                    <option value="2" {% if tardinessvalue.OTcompensatorytype == 2 %}selected{% endif %}>Payment</option>
+                </select>
+        </div>
+        <div class="col-md-4">
+            <label for="OT">Payment<font color=red>*</font></label>
+            <select name="OTPayment" id="OTPayment" class="form-control"  required>
+                <option value="" disabled selected hidden>Select Payment Type</option>
+                <option value="1" {% if tardinessvalue.OTPayment == 1 %}selected{% endif %}>One Day Payment</option>
+                <option value="2" {% if tardinessvalue.OTPayment == 2 %}selected{% endif %}>Double Payment</option>
+                <option value="3" {% if tardinessvalue.OTPayment == 3 %}selected{% endif %}>No Payment</option>
+            </select>
+        </div>
+    </div>
     <h5><b style="color:seagreen">Late Login</b></h5>
     <div class="row">
         <div class="col-md-4">
@@ -81,6 +106,7 @@
             </select>
         </div>
     </div>
+    
     {% endfor %}
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">

@@ -11,3 +11,7 @@ class TardinessDetails(models.Model):
     holidaypaymentqty = models.SmallIntegerField(default=3,blank = False)
     weekendcompensatorytype = models.SmallIntegerField(default=2,blank = False)
     weekendpaymentqty = models.SmallIntegerField(default=3,blank = False)
+    minimumHoursForOT = models.SmallIntegerField(default=2,blank = False)
+    OTcompensatorytype = models.SmallIntegerField(default=2,blank = False)
+    OTPayment = models.SmallIntegerField(default=3,blank = False)
+

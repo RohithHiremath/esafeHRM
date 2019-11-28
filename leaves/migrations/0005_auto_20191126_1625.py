@@ -17,19 +17,4 @@ class Migration(migrations.Migration):
             name='document',
             field=models.FileField(blank=True, upload_to='documents/'),
         ),
-        migrations.CreateModel(
-            name='LeaveDetails',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Fromdate', models.DateField()),
-                ('Todate', models.DateField()),
-                ('NumberOfLeaves', models.SmallIntegerField(default=1)),
-                ('AppliedDate', models.DateField()),
-                ('Status', models.SmallIntegerField(default=1)),
-                ('Reason', models.CharField(blank=True, max_length=100)),
-                ('FullorHalfday', models.SmallIntegerField(default=1)),
-                ('employee', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pim.Personal_details')),
-                ('leave_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='leaves.Leavetype')),
-            ],
-        ),
     ]
