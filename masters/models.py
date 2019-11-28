@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Job(models.Model):
@@ -47,3 +48,10 @@ class Location(models.Model):
 
     def __str__(self):
        return self.location
+
+class Emailtemplate(models.Model):
+    title = models.CharField(max_length=50,default='')
+    description = RichTextField(blank=True,null=True)
+
+    def __str__(self):
+       return self.title

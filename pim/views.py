@@ -1,13 +1,13 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
 from datetime import datetime
-from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department
+from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate
 from organisation.models import Leveldefinition
 from django.shortcuts import render
 from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
-from . import forms
 import string
+import re
 from random import *
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
@@ -48,10 +48,17 @@ def Personal_details_view(request):
                                 reportingto = request.POST['reportingname'],
                                 reportingtoId = request.POST['reportingmanager'],
                                 reportingdepartment = request.POST['reportingdepartment'])
-        email = request.POST['companyemailid']
-        # print(email)
+        emailid = request.POST['companyemailid']
         personal.save()
-        sendemail(request,email)
+        characters = string.ascii_letters + string.digits 
+        password = "".join(choice(characters) for x in range(randint(5,6)))
+        emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
+        for temp in emailtemplate:
+            template = temp.description
+        clean = re.compile('<.*?>')
+        emailtemplate = re.sub(clean, '', str(template))
+        mailtemplate = emailtemplate.replace("Name",(request.POST['first_name']+" "+request.POST['middle_name'] +" "+request.POST['last_name'])).replace("user",request.POST['companyemailid']).replace("pword",password).replace("&nbsp;", "")
+        sendemail(request,emailid,mailtemplate)
         return redirect('/pim/employeelist/')
     else:
         levels = Leveldefinition.objects.all().order_by('levelName')
@@ -68,14 +75,15 @@ def Personal_details_view(request):
                                                     'locations':locations,
                                                     'departments':departments,
                                                     'levels': levels})
-   
-def sendemail(request,email):
-    characters = string.ascii_letters + string.digits 
-    password = "".join(choice(characters) for x in range(randint(6,7)))
+# def remove_html_tags(text):
+#     clean = re.compile('<.*?>')
+#     return re.sub(clean, '', text)
+
+def sendemail(request,emailid,mailtemplate):
     if request.method == 'POST':
         subject = 'Login Details'
-        recepient = str(email)
-        message = 'Your Username - {} and Password - {}'.format(recepient,password) 
+        recepient = str(emailid)
+        message = mailtemplate
         send_mail(subject,
             message, EMAIL_HOST_USER, [recepient], fail_silently = False)
 
