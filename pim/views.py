@@ -75,9 +75,6 @@ def Personal_details_view(request):
                                                     'locations':locations,
                                                     'departments':departments,
                                                     'levels': levels})
-# def remove_html_tags(text):
-#     clean = re.compile('<.*?>')
-#     return re.sub(clean, '', text)
 
 def sendemail(request,emailid,mailtemplate):
     if request.method == 'POST':
