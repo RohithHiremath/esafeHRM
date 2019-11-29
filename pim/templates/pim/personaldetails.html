@@ -217,7 +217,7 @@
               {{ job.departmentname }}</option>
             {% endfor %}
           </select>
-          <div class=" error" id="departmentErr">
+          <div class="error" id="reportingdepartmentErr">
         </div>
       </div>
       <div class=col-md-4>
@@ -226,6 +226,7 @@
           <option value="" disabled>Select Reporting Manager</option>
         </select>
         <input type="hidden" name="reportingname" id="reportingname" value="">
+        <div class="error" id="reportingmanagerErr">
       </div>
     </div>
     <div class="row">
@@ -571,12 +572,13 @@
         return false;
       }else {
           var emailid = document.getElementById('companyemailid').value;
-          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          var reg = /.+@(hee-esafe)\.com$/;
+          //var regcompany = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
           if (emailid != '') {
           if (reg.test(String(emailid).toLowerCase())){
             printError("companyemailErr", "");
-          } else {
-            printError("companyemailErr", "Enter valid Email-id");
+          }else {
+            printError("companyemailErr", "Enter Company Email-id");
             return false;
           }
           }
@@ -625,6 +627,24 @@
       } else {
         printError("workshiftErr", "");
         workshiftErr = false;
+        flag = true;
+      }
+      var repdept = document.getElementById('reportingdepartment').value
+      if (repdept == "") {
+        printError("reportingdepartmentErr", "Please select Reporting Department");
+        return false;
+      } else {
+        printError("reportingdepartmentErr", "");
+        reportingdepartmentErr = false;
+        flag = true;
+      }
+      var repmanager = document.getElementById('reportingmanager').value
+      if (repmanager == "") {
+        printError("reportingmanagerErr", "Please select Reporting Manager");
+        return false;
+      } else {
+        printError("reportingmanagerErr", "");
+        reportingmanagerErr = false;
         flag = true;
       }
       if (flag == false) {

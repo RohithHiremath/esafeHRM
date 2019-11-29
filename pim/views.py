@@ -50,7 +50,7 @@ def Personal_details_view(request):
         emailid = request.POST['companyemailid']
         personal.save()
         characters = string.ascii_letters + string.digits 
-        password = "".join(choice(characters) for x in range(randint(5,6)))
+        password = "".join(choice(characters) for x in range(randint(6,7)))
         emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
         for temp in emailtemplate:
             template = temp.description

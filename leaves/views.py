@@ -254,7 +254,6 @@ def upload(request):
         
 def applyleave(request):
     current_user = request.user
-    
     if request.method == 'POST':
         dt_obj_from = datetime.datetime.strptime(request.POST['Fromdate'],"%d-%m-%Y")
         fromdate = dt_obj_from.date()
@@ -300,6 +299,5 @@ def applyleave(request):
             else:
                 requestedval = 0
             balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
-            print(balance)
             linkedleavetype.leave_type.balance = balance 
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
