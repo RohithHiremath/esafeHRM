@@ -45,10 +45,12 @@
         <div class="col-md-4">
           <label for="personalemail">Personal E-mail ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="personalemailid" id="personalemailid" value="{{ personal.personalemailid }}" required>
+          <div class="error" id="personalemailidErr"></div>
         </div>
         <div class="col-md-4">
           <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
           <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="{{ personal.mobilenumber }}" required>
+          <div class="error" id="mobilenumberErr"></div>
         </div>
       </div>
       <div class="row">
@@ -210,6 +212,7 @@
         <div class="col-md-4">
           <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
           <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="{{ personal.companyemailid }}" required>
+          <div class="error" id="companyemailErr"></div>
         </div>
         <div class=col-md-4>
           DU Head
@@ -226,24 +229,25 @@
           <label for="reportingdepartment">Reporting Department<font color=red>*</font></label>
           <select name="reportingdepartment" id="reportingdepartment" class="form-control" onchange="fngetmanagers(this)"
           data-url="{% url 'pim:getmanagers' %}" >
-            <option value="" disabled>Select</option>
+            <option value="">Select</option>
             {% for job in departments %}
             <option value="{{ job.id }}" {% if personal.reportingdepartment ==  job.id %} selected {% endif %}>
               {{ job.departmentname }}</option>
             {% endfor %}
           </select>
-          <div class="error" id="departmentErr"></div>
+          <div class="error" id="reportingdepartmentErr"></div>
         </div>
         <div class=col-md-4>
           <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
           <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
-            <option value="" disabled>Select Reporting Manager</option>
+            <option value="">Select Reporting Manager</option>
             {% for reportingmanager in reportingmanagers %}
             <option value="{{ reportingmanager.id }}" {% if personal.reportingtoId ==  reportingmanager.id %} selected {% endif %}>
                 {{ reportingmanager.first_name }}  {{ reportingmanager.middle_name }}  {{ reportingmanager.last_name }}</option>
               {% endfor %}
           </select>
           <input type="hidden" name="reportingname" id="reportingname" value="{{ personal.reportingto}}" >
+          <div class="error" id="reportingmanagerErr"></div>
         </div>
       </div>
       <div class="row">
@@ -459,7 +463,7 @@
         var age_month = nowmonth - birthmonth;
         var age_day = nowday - birthday;
         if ((age == 18 && age_month <= 0 && age_day <= 0) || age < 18) {
-          printError("dobErr", "Age should be 18 or more than 18 years.Please enter a valid DOB");
+          printError("dobErr", "Age should be minimum 18 years.");
           return false;
         }
         printError("dobErr", "");
@@ -473,6 +477,40 @@
       } else {
         printError("genderErr", "");
         genderErr = false;
+        flag = true;
+      }
+      var personalemailid = document.getElementById('personalemailid').value
+      if (personalemailid == "") {
+        printError("personalemailidErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('personalemailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("personalemailidErr", "");
+          } else {
+            printError("personalemailidErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var mobileno = document.getElementById('mobilenumber').value
+      if (mobileno == "") {
+        printError("mobilenumberErr", "Please Enter Mobile number");
+        return false;
+      } else {
+        var mobileno = document.getElementById('mobilenumber').value;
+        var mobiletenDigit = /^\d{10}$/;
+        if (mobileno != '') {
+          if (mobileno.match(mobiletenDigit)) {
+            printError("mobilenumberErr", "");
+          } else {
+            printError("mobilenumberErr", "Enter valid Mobile number");
+            return false;
+          }
+        }
         flag = true;
       }
       var maritalstatus = document.getElementById('marital_status').value;
@@ -573,6 +611,24 @@
         worklocationErr = false;
         flag = true;
       }
+      var companyemailid = document.getElementById('companyemailid').value
+      if (companyemailid == "") {
+        printError("companyemailErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('companyemailid').value;
+          var reg = /.+@(hee-esafe)\.com$/;
+          //var regcompany = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("companyemailErr", "");
+          }else {
+            printError("companyemailErr", "Enter Company Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
       var empstatus = document.getElementById('employment_status').value;
       if (empstatus == "") {
         printError("employmentstatusErr", "Please select employment status");
@@ -582,7 +638,24 @@
         employmentstatusErr = false;
         flag = true;
       }
-
+      var repdept = document.getElementById('reportingdepartment').value
+      if (repdept == "") {
+        printError("reportingdepartmentErr", "Please select Reporting Department");
+        return false;
+      } else {
+        printError("reportingdepartmentErr", "");
+        reportingdepartmentErr = false;
+        flag = true;
+      }
+      var repmanager = document.getElementById('reportingmanager').value
+      if (repmanager == "") {
+        printError("reportingmanagerErr", "Please select Reporting Manager");
+        return false;
+      } else {
+        printError("reportingmanagerErr", "");
+        reportingmanagerErr = false;
+        flag = true;
+      }
       var jobcat = document.getElementById('job_grade_id').value;
       if (jobcat == "") {
         printError("jobcategoryErr", "Please select job grade");

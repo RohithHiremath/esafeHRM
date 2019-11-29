@@ -6,9 +6,8 @@ import re
 from django.urls import reverse
 from masters.models import Job
 from pim.models import Personal_details
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, Upload_list
 from django.db import IntegrityError
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, Upload_list
 from django.contrib import messages
 import datetime
 from datetime import date, timedelta
@@ -254,7 +253,6 @@ def upload(request):
         
 def applyleave(request):
     current_user = request.user
-    
     if request.method == 'POST':
         dt_obj_from = datetime.datetime.strptime(request.POST['Fromdate'],"%d-%m-%Y")
         fromdate = dt_obj_from.date()
