@@ -300,6 +300,43 @@ def applyleave(request):
             else:
                 requestedval = 0
             balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
-            print(balance)
             linkedleavetype.leave_type.balance = balance 
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
+
+def getleavedetails(request):
+    leaveid = request.POST['leaveid']
+    typeflag = request.POST['typeflag']
+    empid = request.POST['empid']
+    if int(typeflag) == 1:
+        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status = 2)
+    elif int(typeflag) == 2:
+        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status = 2)
+    else:
+        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status = 1)
+    
+    llist=[]
+    for detail in details:
+        fromdt = datetime.datetime.strftime(detail.Fromdate, '%d-%m-%Y')
+        todt = datetime.datetime.strftime(detail.Todate, '%d-%m-%Y')
+        appdt = datetime.datetime.strftime(detail.AppliedDate, '%d-%m-%Y')
+        l = {}
+        l['id']=detail.id
+        l['Fromdate']=fromdt
+        l['Todate']=todt
+        l['AppliedDate']=appdt
+        l['FullorHalfday']=detail.FullorHalfday
+        l['Reason']=detail.Reason
+        l['Status']=detail.Status
+        llist.append(l)
+    leavedetailsarr = llist
+    return JsonResponse(leavedetailsarr, safe=False)
+
+def cancelrequest(request):
+    leaveid = request.POST['leaveid']
+    leave = {}
+    leavesobj = LeaveDetails.objects.get(id=leaveid)
+    leavesobj.Status = 4
+    leavesobj.save()
+    leave['status'] = "Success"
+    return JsonResponse(leave, safe=False)
+

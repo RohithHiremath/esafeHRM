@@ -13,7 +13,9 @@ def policyDetails(request):
                                 holidaycompensatorytype=request.POST['holidaycompensatorytype'],
                                 holidaypaymentqty=request.POST['holidaypaymentqty'],
                                 weekendcompensatorytype=request.POST['weekendcompensatorytype'],
-                                weekendpaymentqty=request.POST['weekendpaymentqty']
+                                weekendpaymentqty=request.POST['weekendpaymentqty'],
+                                holidaydaystoexpire=request.POST['holidaydaystoexpire'],
+                                weekenddaystoexpire=request.POST['weekenddaystoexpire'],
                                 )
             tardinessdetails.save()
             tardinessvalues = TardinessDetails.objects.all()
@@ -31,6 +33,8 @@ def policyDetails(request):
             tardinessdetails.minimumHoursForOT=request.POST['minimumHoursForOT']
             tardinessdetails.OTcompensatorytype=request.POST['OTcompensatorytype']
             tardinessdetails.OTPayment=request.POST['OTPayment']
+            tardinessdetails.holidaydaystoexpire=request.POST['holidaydaystoexpire']
+            tardinessdetails.weekenddaystoexpire=request.POST['weekenddaystoexpire']
             tardinessdetails.save()
             tardinessvalues = TardinessDetails.objects.all()
             return render(request,'policy.html',{'title':'Attendance Policy Details','tardinessvalues':tardinessvalues})

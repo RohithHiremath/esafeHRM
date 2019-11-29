@@ -21,14 +21,17 @@
         {% for linkedleavetype in linkedleavetypes %}
         <tr>
             <td>{{ linkedleavetype.leave_type.leavetype }} ({{ linkedleavetype.leave_type.shortname }})</td>
-            <td>{{ linkedleavetype.numberOfLeaves }}</td>
+            <td><a href="javascript:getleavedetails(1,'{{ linkedleavetype.leave_type.id }}','{{ personid }}')"
+                    title="click to see details">{{ linkedleavetype.numberOfLeaves }}</a></td>
             {% if linkedleavetype.leave_type.availed  is not None %}
-            <td>{{ linkedleavetype.leave_type.availed }}</td>
+            <td><a href="javascript:getleavedetails(2,'{{ linkedleavetype.leave_type.id }}','{{ personid }}')"
+                    title="click to see details">{{ linkedleavetype.leave_type.availed }}</a></td>
             {% else  %}
             <td>0</td>
             {% endif %}
             {% if linkedleavetype.leave_type.requested  is not None %}
-            <td>{{ linkedleavetype.leave_type.requested }}</td>
+            <td><a href="javascript:getleavedetails(3,'{{ linkedleavetype.leave_type.id }}','{{ personid }}')"
+                    title="click to see details">{{ linkedleavetype.leave_type.requested }}</a></td>
             {% else  %}
             <td>0</td>
             {% endif %}
@@ -46,11 +49,12 @@
         {% endfor %}
     </tbody>
 </table>
-<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<div class="card"></div>
+<div id="leavedetails" style="display:none;"></div>
 <div id="leavetab" style="display:none;">
     <form action="" name="emplist" id="emplist" method="POST">
         {% csrf_token %}
-        <div class="container-fluid text-right" style="margin:10px;float:right;">
+        <div class="container-fluid text-right" style="margin: 10px 0px 10px 0px;float:right;">
             <h4 style="float: left;" id="leavename"> </h4>
         </div>
         <div class="row">
@@ -71,12 +75,11 @@
             </div>
             <div class="col-md-4">
                 <label for="toDate">To Date<span style="color:red;">*</span></label>
-                <input type="text" value="" class="form-control" name="Todate" id="Todate" placeholder="Select To Date" required
-                    onchange="testbal()" ;>
-                    <span id= "errordisplay" style="color:red;"></span>     
+                <input type="text" value="" class="form-control" name="Todate" id="Todate" placeholder="Select To Date"
+                    required onchange="testbal()" ;>
+                <span id="errordisplay" style="color:red;"></span>
             </div>
         </div>
-       
         <div class="row">
             <div class="col-md-12">
                 <label for="reason">Reason<span style="color:red;">*</span></label>
@@ -85,29 +88,25 @@
             </div>
         </div>
         <div class="row">
-                <div class="col-md-12">
-                    <span id= "errordisplay" style="color:red;"></span>
-                </div>
+            <div class="col-md-12">
+                <span id="errordisplay" style="color:red;"></span>
             </div>
+        </div>
         <br />
         <div class="row">
-            <div class="col-md-12" style="float:right;">
+            <div class="col-md-12" >
                 <button type="submit" class="btn btn-primary pull-right" id="savebutton">
                     save
+                </button>
+                <button type="button" style="margin-right:10px;"class="btn btn-primary pull-right" id="clear" onclick="fnredirect()">
+                    Clear
                 </button>
             </div>
         </div>
     </form>
 </div>
 <script>
-    var leavebal = 0;
-    function fnapplyleave(idval, leavename, leavebalance) {
-        leavebal = leavebalance;
-        document.getElementById("leavetab").style.display = "block";
-        document.getElementById("leavename").innerHTML = leavename;
-        document.getElementById("idleave").value = idval;
-    }
-    
+
     $(document).ready(function () {
         document.getElementById("savebutton").disabled = true;
         $("#Fromdate").datepicker({
@@ -120,9 +119,19 @@
         });
     });
 
+    var leavebal = 0;
+    var leavetypeflag = 0;
+    function fnapplyleave(idval, leavename, leavebalance) {
+        document.getElementById("leavedetails").style.display = "none";
+        leavebal = leavebalance;
+        document.getElementById("leavetab").style.display = "block";
+        document.getElementById("leavename").innerHTML = leavename;
+        document.getElementById("idleave").value = idval;
+    }
+
     function testbal() {
         var leavetype = document.getElementById("FullorHalfday").value;
-        if(leavetype==''){
+        if (leavetype == '') {
             alert("Please Select Leave Type");
             document.getElementById("Todate").value = "";
             document.getElementById("savebutton").disabled = true;
@@ -133,25 +142,177 @@
         var mdy1 = date1.split('-');
         var date2 = document.getElementById("Todate").value;
         var mdy2 = date2.split('-');
-        var date3 = new Date(mdy1[1]+"/"+mdy1[0]+"/"+mdy1[2]); 
-        var date4 = new Date(mdy2[1]+"/"+mdy2[0]+"/"+mdy2[2]); 
+        var date3 = new Date(mdy1[1] + "/" + mdy1[0] + "/" + mdy1[2]);
+        var date4 = new Date(mdy2[1] + "/" + mdy2[0] + "/" + mdy2[2]);
         // To calculate the time difference of two dates 
-        var Difference_In_Time = date4.getTime() - date3.getTime(); 
+        var Difference_In_Time = date4.getTime() - date3.getTime();
         // To calculate the no. of days between two dates 
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); 
-        Difference_In_Days = Difference_In_Days+1;
-        if(leavetype==1){
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+        Difference_In_Days = Difference_In_Days + 1;
+        if (leavetype == 1) {
             var mainbal = leavebal;
-        }else{
-            var mainbal = (leavebal*2);
+        } else {
+            var mainbal = (leavebal * 2);
         }
-        if(Difference_In_Days>mainbal){
-            document.getElementById("errordisplay").innerHTML = "You can apply only "+leavebal+" leaves";
+        if (Difference_In_Days > mainbal) {
+            document.getElementById("errordisplay").innerHTML = "You can apply only " + leavebal + " leaves";
             document.getElementById("savebutton").disabled = true;
-        }else{
+        } else {
             document.getElementById("errordisplay").innerHTML = "";
             document.getElementById("savebutton").disabled = false;
         }
+    }
+
+    function getleavedetails(typeflag, idval, empid) {
+        leavetypeflag = typeflag;
+        desturl = '/leaves/getleavedetails/';
+        $.ajax({
+            url: desturl,
+            data: {
+                "typeflag": typeflag,
+                "leaveid": idval,
+                "empid": empid,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data1) {
+                document.getElementById("leavetab").style.display = "none";
+                document.getElementById("leavedetails").style.display = "block";
+                if (leavetypeflag == 1) {
+                    displaydata = '<div class="container-fluid text-right" style="margin:10px;float:right;">';
+                    displaydata += '<h4 style="float: left;" id="leaveheadname">Leave Credit Details</h4>';
+                    displaydata += '</div>';
+                    displaydata += '<table class="table table-striped nowrap" style="width:100%">';
+                    displaydata += '<thead>';
+                    displaydata += '<tr>';
+                    displaydata += '<th class="table-th">Sl. NO</th>';
+                    displaydata += '<th class="table-th">Year</th>';
+                    displaydata += '<th class="table-th">Credited</th>';
+                    displaydata += '<th class="table-th">Carried Forward</th>';
+                    displaydata += '<th class="table-th">Total</th>';
+                    displaydata += '</thead><tbody>';
+                    // for (var i = 0; i < data1.length; i++) {
+                    //     displaydata += '<tr>';
+                    //     displaydata += '<td>' + (i + 1) + '</td>';
+                    //     displaydata += '<td>' + data1[i].Fromdate + '</td>';
+                    //     displaydata += '<td>' + data1[i].AppliedDate + '</td>';
+                    //     if (data1[i].FullorHalfday == 1) {
+                    //         displaydata += '<td>Full day</td>';
+                    //     } else {
+                    //         displaydata += '<td>Half Day</td>';
+                    //     }
+                    //     displaydata += '<td>' + data1[i].Reason + '</td>';
+                    //     if (data1[i].Status == 1) {
+                    //         displaydata += '<td>Pending</td>';
+                    //     } else if (data1[i].Status == 2) {
+                    //         displaydata += '<td>Approved</td>';
+                    //     } else {
+                    //         displaydata += '<td>Rejected</td>';
+                    //     }
+                    //     if (data1[i].Status == 1) {
+                    //         displaydata += '<td><a id = "cancelstatus' + data1[i].id + '" href="#" onclick = "fncancelleaverequest(' + data1[i].id + ')">Cancel Request</a></td>';
+                    //     } else {
+                    //         displaydata += '<td>NA</td>';
+                    //     }
+                    //     displaydata += '</tr>';
+                    // }
+                    displaydata += '<tr><td colspan="7"><input type="button" class="btn btn-primary pull-right" name="Clear" id="Clear" value="Close" onclick = "fnredirect()"></td>';
+                    displaydata += '</tbody></table>';
+                } else if (leavetypeflag == 2) {
+                    displaydata = '<div class="container-fluid text-right" style="margin:10px;float:right;">';
+                    displaydata += '<h4 style="float: left;" id="leaveheadname">Leave Details</h4>';
+                    displaydata += '</div>';
+                    displaydata += '<table class="table table-striped nowrap" style="width:100%">';
+                    displaydata += '<thead>';
+                    displaydata += '<tr>';
+                    displaydata += '<th class="table-th">Sl. NO</th>';
+                    displaydata += '<th class="table-th">Leave Date</th>';
+                    displaydata += '<th class="table-th">Applied ON</th>';
+                    displaydata += '<th class="table-th">Half/Full Day</th>';
+                    displaydata += '<th class="table-th">Reason</th>';
+                    displaydata += '</thead><tbody>';
+                    for (var i = 0; i < data1.length; i++) {
+                        displaydata += '<tr>';
+                        displaydata += '<td>' + (i + 1) + '</td>';
+                        displaydata += '<td>' + data1[i].Fromdate + '</td>';
+                        displaydata += '<td>' + data1[i].AppliedDate + '</td>';
+                        if (data1[i].FullorHalfday == 1) {
+                            displaydata += '<td>Full day</td>';
+                        } else {
+                            displaydata += '<td>Half Day</td>';
+                        }
+                        displaydata += '<td>' + data1[i].Reason + '</td>';
+
+                        displaydata += '</tr>';
+                    }
+                    displaydata += '<tr><td colspan="7"><input type="button" class="btn btn-primary pull-right" name="Clear" id="Clear" value="Close" onclick = "fnredirect()"></td>';
+                    displaydata += '</tbody></table>';
+                } else {
+                    displaydata = '<div class="container-fluid text-right" style="margin:10px;float:right;">';
+                    displaydata += '<h4 style="float: left;" id="leaveheadname"> Requested Leave Details</h4>';
+                    displaydata += '</div>';
+                    displaydata += '<table class="table table-striped nowrap" style="width:100%">';
+                    displaydata += '<thead>';
+                    displaydata += '<tr>';
+                    displaydata += '<th class="table-th">Sl. NO</th>';
+                    displaydata += '<th class="table-th">Leave Date</th>';
+                    displaydata += '<th class="table-th">Applied ON</th>';
+                    displaydata += '<th class="table-th">Half/Full Day</th>';
+                    displaydata += '<th class="table-th">Reason</th>';
+                    displaydata += '<th class="table-th">Status</th>';
+                    displaydata += '<th class="table-th">Action</th>';
+                    displaydata += '</thead><tbody>';
+                    for (var i = 0; i < data1.length; i++) {
+                        displaydata += '<tr>';
+                        displaydata += '<td>' + (i + 1) + '</td>';
+                        displaydata += '<td>' + data1[i].Fromdate + '</td>';
+                        displaydata += '<td>' + data1[i].AppliedDate + '</td>';
+                        if (data1[i].FullorHalfday == 1) {
+                            displaydata += '<td>Full day</td>';
+                        } else {
+                            displaydata += '<td>Half Day</td>';
+                        }
+                        displaydata += '<td>' + data1[i].Reason + '</td>';
+                        if (data1[i].Status == 1) {
+                            displaydata += '<td>Pending</td>';
+                        } else if (data1[i].Status == 2) {
+                            displaydata += '<td>Approved</td>';
+                        } else {
+                            displaydata += '<td>Rejected</td>';
+                        }
+                        if (data1[i].Status == 1) {
+                            displaydata += '<td><a id = "cancelstatus' + data1[i].id + '" href="#" onclick = "fncancelleaverequest(' + data1[i].id + ')">Cancel</a></td>';
+                        } else {
+                            displaydata += '<td>NA</td>';
+                        }
+                        displaydata += '</tr>';
+                    }
+                    displaydata += '<tr><td colspan="7"><input type="button" class="btn btn-primary pull-right" name="Clear" id="Clear" value="Close" onclick = "fnredirect()"></td>';
+                    displaydata += '</tbody></table>';
+                }
+                document.getElementById("leavedetails").innerHTML = displaydata;
+            }
+        });
+    }
+
+    function fnredirect() {
+        location.reload();
+    }
+    function fncancelleaverequest(val) {
+        desturl = '/leaves/cancelrequest/';
+        $.ajax({
+            url: desturl,
+            data: {
+                "leaveid": val,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                document.getElementById("cancelstatus" + val).innerHTML = "Cancelled";
+            }
+        });
     }
 </script>
 {% endblock %}

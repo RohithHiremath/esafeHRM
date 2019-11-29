@@ -192,7 +192,6 @@ def getmanagers(request):
     deptid = None
     deptid = request.POST['deptid']
     idgrade = request.POST['idgrade']
-    print(idgrade)
     reportingmanagers = Personal_details.objects.filter(department_id=deptid, job_grade_id__gte = idgrade)
     rlist=[]
     for reportingmanager in reportingmanagers:

@@ -1,7 +1,7 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
-        <h4 style="float: left;margin-left: -22px;">Holiday List</h4>
+    <h4 style="float: left;margin-left: -22px;">Holiday List</h4>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
         Add
     </button>
@@ -10,24 +10,24 @@
     </button>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-        <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Holiday Name</th>
-                <th>Holiday Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for holy in holiday %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ holy.holidayname }}</td>
-                <td>{{ holy.holidayDate }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Holiday Name</th>
+            <th>Holiday Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for holy in holiday %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ holy.holidayname }}</td>
+            <td>{{ holy.holidayDate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 <div class="modal fade" id="addleavetype" tabindex="-1" role="dialog" aria-labelledby="addleavetypeLabel"
     aria-hidden="true">
@@ -42,8 +42,10 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="holidayname">Holiday Name</label><span>*</span>
-                            <input type="text" class="form-control" id="holidayname" name="holidayname" value="" onblur="validateholiday(this);" data-url="{% url 'leaves:holidays' %}" required>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                            <input type="text" class="form-control" id="holidayname" name="holidayname" value=""
+                                onblur="validateholiday(this);" data-url="{% url 'leaves:holidays' %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
+                                id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
                         </div>
@@ -70,46 +72,52 @@
             </div>
             <form action="/leaves/upload/" method="post" name="form" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" title="Upload excel file" name="excel_file"
-                   style="border: 1px solid black; padding: 5px;"required="required">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" class="form-control" title="Upload excel file" name="excel_file"
+                                style="border: 1px solid black; padding: 5px;" required="required">
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
         $("#holidayDate").datepicker({
             minDate: 0,
             dateFormat: 'yy-mm-dd'
         });
     });
-function validateholiday(element) {
-	$("#login_ok").hide();
-	$("#login_not").hide();
-    document.getElementById("save").disabled = false;
-	holidayname = $(element).val();
-	$.ajax({
-		url : $(element).attr("data-url"),
-		data : {
-            "holidayname":holidayname,
-			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-		},
-		method: "POST",
-		dataType : "json",
-		success : function (data) {
-			if (data.is_success) {
-				 $("#login_ok").show(); 
-                 document.getElementById("save").disabled = false; 
-			}else {
-				$("#login_not").show();
-                document.getElementById("save").disabled = true;
-			}
-		}
-	});
-}
+    function validateholiday(element) {
+        $("#login_ok").hide();
+        $("#login_not").hide();
+        document.getElementById("save").disabled = false;
+        holidayname = $(element).val();
+        $.ajax({
+            url: $(element).attr("data-url"),
+            data: {
+                "holidayname": holidayname,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.is_success) {
+                    $("#login_ok").show();
+                    document.getElementById("save").disabled = false;
+                } else {
+                    $("#login_not").show();
+                    document.getElementById("save").disabled = true;
+                }
+            }
+        });
+    }
 </script>
 {% endblock %}

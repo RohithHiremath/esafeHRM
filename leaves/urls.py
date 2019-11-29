@@ -19,5 +19,7 @@ urlpatterns = [
     path('holidays/', views.holidays, name='holidays'),
     path('upload/', views.upload, name='upload'),
     path('applyleave/', views.applyleave, name='applyleave'),
+    path('getleavedetails/', views.getleavedetails, name='getleavedetails'),
+    path('cancelrequest/', views.cancelrequest, name='cancelrequest'),
 ]
 

@@ -117,8 +117,8 @@ function jobvalidate(element) {
 		dataType : "json",
 		success : function (data) {
 			if (data.is_success) {
-				{% comment %} $("#login_ok").show(); {% endcomment %}
-                {% comment %} document.getElementById("save").disabled = false; {% endcomment %}
+				// $("#login_ok").show(); 
+                // document.getElementById("save").disabled = false; 
 			}else {
 				$("#login_not").show();
                 document.getElementById("save").disabled = true;
@@ -141,7 +141,7 @@ function jobedit(element,id) {
 		dataType : "json",
 		success : function (data) {
 			if (data.is_success) {
-				 {% comment %} $("#edit_ok"+id).show(); {% endcomment %}
+				 // $("#edit_ok"+id).show();
                 document.getElementById("editsave"+id).disabled = true;
 			}else {
 				$("#edit_not"+id).show();
