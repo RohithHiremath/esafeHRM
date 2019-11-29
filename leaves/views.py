@@ -6,9 +6,8 @@ import re
 from django.urls import reverse
 from masters.models import Job
 from pim.models import Personal_details
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, Upload_list
 from django.db import IntegrityError
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, Upload_list
 from django.contrib import messages
 import datetime
 from datetime import date, timedelta
@@ -301,3 +300,4 @@ def applyleave(request):
             balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
             linkedleavetype.leave_type.balance = balance 
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
+
