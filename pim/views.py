@@ -20,7 +20,6 @@ def Personal_details_view(request):
             duhead=0
         else:
             duhead=request.POST['duhead']
-        
         emp_id = fngetempid(request)
         personal = Personal_details(first_name=request.POST['first_name'],
                                 middle_name=request.POST['middle_name'],

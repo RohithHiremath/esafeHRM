@@ -19,5 +19,6 @@ urlpatterns = [
     path('holidays/', views.holidays, name='holidays'),
     path('upload/', views.upload, name='upload'),
     path('applyleave/', views.applyleave, name='applyleave'),
+    path('leaverequested/', views.leaverequested, name='leaverequested'),
 ]
 

@@ -1,0 +1,50 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<form action="" name="emplist" id="emplist" method="POST" >
+{% csrf_token %}
+    <div class="container-fluid text-right" style="margin:10px;float:right;">
+        <h4 style="float: left;">Leaves Requested</h4>
+    </div>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <table id="example" class="table table-striped nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Emp Id</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Leave Type</th>
+            <th>Requested Date</th>
+            <th>Applied Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detail in leavedetails %}
+        <tr>
+            <td><input type="checkbox" name="empids" id="{{ personal.id }}" value="{{ personal.id }}" /></td>
+            <td>{{ detail.employee.employee_id }}</td>
+            <td>{{ detail.employee.first_name }} {{ detail.employee.middle_name }} {{ detail.employee.last_name }}</td>
+            <td>{{ detail.employee.department }}</td>
+            <td>{{ detail.leave_type.leavetype }}</td>
+            <td>{{ detail.Fromdate }}</td>
+            <td>{{ detail.AppliedDate }}</td>
+            <td class = "select"> 
+                <select> 
+                <option value="Select">-Select-</option>
+                <option value="2">Approve</option>
+                <option value="3">Reject</option>
+                </select>
+                </td> 
+         </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+        <div class="col-md-12" style="float:right;">
+        <button type="submit" class="btn btn-primary pull-right">
+        Save
+        </button>
+    </div>
+</form>
+{% endblock %}
