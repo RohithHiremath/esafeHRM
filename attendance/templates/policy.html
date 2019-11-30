@@ -10,21 +10,21 @@
     <h5><b style="color:seagreen">Over Time Policy </b></h5>
     <div class="row">
         <div class="col-md-4">
-            <label for="minimumHoursForOT">Minmum working Hours for OT<font color=red>*</font></label>
-            <input type="text" class="form-control" name="minimumHoursForOT" id="minimumHoursForOT" 
-            maxlength="1" value="{{ tardinessvalue.minimumHoursForOT }}">
+            <label for="minimumHoursForOT">Minmum working Hours for OT<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="minimumHoursForOT" id="minimumHoursForOT" maxlength="1"
+                value="{{ tardinessvalue.minimumHoursForOT }}">
         </div>
         <div class="col-md-4">
-            <label for="OTcompensatorytype">Compensatory Type<font color=red>*</font></label>
+            <label for="OTcompensatorytype">Compensatory Type<span style="color:red">*</span></label>
             <select name="OTcompensatorytype" id="OTcompensatorytype" class="form-control" value="" required>
-                    <option value="" disabled selected hidden>Select Compensatory Type</option>
-                    <option value="1" {% if tardinessvalue.OTcompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
-                    <option value="2" {% if tardinessvalue.OTcompensatorytype == 2 %}selected{% endif %}>Payment</option>
-                </select>
+                <option value="" disabled selected hidden>Select Compensatory Type</option>
+                <option value="1" {% if tardinessvalue.OTcompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
+                <option value="2" {% if tardinessvalue.OTcompensatorytype == 2 %}selected{% endif %}>Payment</option>
+            </select>
         </div>
         <div class="col-md-4">
-            <label for="OT">Payment<font color=red>*</font></label>
-            <select name="OTPayment" id="OTPayment" class="form-control"  required>
+            <label for="OT">Payment<span style="color:red">*</span></label>
+            <select name="OTPayment" id="OTPayment" class="form-control" required>
                 <option value="" disabled selected hidden>Select Payment Type</option>
                 <option value="1" {% if tardinessvalue.OTPayment == 1 %}selected{% endif %}>One Day Payment</option>
                 <option value="2" {% if tardinessvalue.OTPayment == 2 %}selected{% endif %}>Double Payment</option>
@@ -32,15 +32,92 @@
             </select>
         </div>
     </div>
+    <h5><b style="color:seagreen">Holiday Work</b></h5>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="holidaycompensatorytype">Compensatory Type<span style="color:red">*</span></label>
+            <select name="holidaycompensatorytype" id="holidaycompensatorytype" class="form-control" value="" required
+                onchange="fnsetappplydays(this.value,1)">
+                <option value="" disabled selected hidden>Select Penalty Type</option>
+                <option value="1" {% if tardinessvalue.holidaycompensatorytype == 1 %}selected{% endif %}>Comp Off
+                </option>
+                <option value="2" {% if tardinessvalue.holidaycompensatorytype == 2 %}selected{% endif %}>Payment
+                </option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="holidaypaymentqty">Payment<span style="color:red">*</span></label>
+            <select name="holidaypaymentqty" id="holidaypaymentqty" class="form-control" value="" required>
+                <option value="" disabled selected hidden>Select Payment Type</option>
+                <option value="1" {% if tardinessvalue.holidaypaymentqty == 1 %}selected{% endif %}>One Day Payment
+                </option>
+                <option value="2" {% if tardinessvalue.holidaypaymentqty == 2 %}selected{% endif %}>Double Payment
+                </option>
+                <option value="3" {% if tardinessvalue.holidaypaymentqty == 3 %}selected{% endif %}>No Payment</option>
+            </select>
+        </div>
+        {% if tardinessvalue.holidaycompensatorytype == 1 %}
+        <div class="col-md-4" style="display:block;" id="holidayexpire">
+            <label for="holidaydaystoexpire">Days to expire<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="holidaydaystoexpire" id="holidaydaystoexpire" maxlength="2"
+                value="{{ tardinessvalue.holidaydaystoexpire }}">
+        </div>
+        {% else %}     
+        <div class="col-md-4" style="display:none;" id="holidayexpire">
+                <label for="holidaydaystoexpire">Days to expire<span style="color:red">*</span></label>
+                <input type="text" class="form-control" name="holidaydaystoexpire" id="holidaydaystoexpire" maxlength="2"
+                    value="{{ tardinessvalue.holidaydaystoexpire }}">
+            </div>
+        {% endif %} 
+    </div>
+    <h5><b style="color:seagreen">Weekend Work</b></h5>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="weekendcompensatorytype">Compensatory Type<span style="color:red">*</span></label>
+            <select name="weekendcompensatorytype" id="weekendcompensatorytype" class="form-control" value="" required
+                onchange="fnsetappplydays(this.value,2)">
+                <option value="" disabled selected hidden>Select Compensatory Type</option>
+                <option value="1" {% if tardinessvalue.weekendcompensatorytype == 1 %}selected{% endif %}>Comp Off
+                </option>
+                <option value="2" {% if tardinessvalue.weekendcompensatorytype == 2 %}selected{% endif %}>Payment
+                </option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="weekendpaymentqty">Payment<span style="color:red">*</span></label>
+            <select name="weekendpaymentqty" id="weekendpaymentqty" class="form-control" value="" required>
+                <option value="" disabled selected hidden>Select Payment Type</option>
+                <option value="1" {% if tardinessvalue.weekendpaymentqty == 1 %}selected{% endif %}>One Day Payment
+                </option>
+                <option value="2" {% if tardinessvalue.weekendpaymentqty == 2 %}selected{% endif %}>Double Payment
+                </option>
+                <option value="3" {% if tardinessvalue.weekendpaymentqty == 3 %}selected{% endif %}>No Payment</option>
+            </select>
+        </div>
+        {% if tardinessvalue.weekendcompensatorytype == 1 %}
+        <div class="col-md-4" style="display:block;" id="weekendexpire">
+                <label for="weekenddaystoexpire">Days to expire<span style="color:red">*</span></label>
+                <input type="text" class="form-control" name="weekenddaystoexpire" id="weekenddaystoexpire" maxlength="2"
+                    value="{{ tardinessvalue.weekenddaystoexpire }}">
+            </div>
+        {% else %}     
+        <div class="col-md-4" style="display:none;" id="weekendexpire">
+                <label for="weekenddaystoexpire">Days to expire<span style="color:red">*</span></label>
+                <input type="text" class="form-control" name="weekenddaystoexpire" id="weekenddaystoexpire" maxlength="2"
+                    value="{{ tardinessvalue.weekenddaystoexpire }}">
+            </div>
+        {% endif %} 
+        
+    </div>
     <h5><b style="color:seagreen">Late Login</b></h5>
     <div class="row">
         <div class="col-md-4">
-            <label for="latelogin">Maximum Allowed Times<font color=red>*</font></label>
-            <input type="text" class="form-control" name="maxallowedlate" id="maxallowedlate" 
-                maxlength="1" value="{{ tardinessvalue.maxallowedlate }}">
+            <label for="latelogin">Maximum Allowed Times<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="maxallowedlate" id="maxallowedlate" maxlength="1"
+                value="{{ tardinessvalue.maxallowedlate }}">
         </div>
         <div class="col-md-4">
-            <label for="latepenalty">Penalty<font color=red>*</font></label>
+            <label for="latepenalty">Penalty<span style="color:red">*</span></label>
             <select name="penalty_late" id="penalty_late" class="form-control" value="" required>
                 <option value="" disabled selected hidden>Select Penalty Type</option>
                 <option value="1" {% if tardinessvalue.penalty_late == 1 %}selected{% endif %}>Half Day Leave</option>
@@ -52,12 +129,12 @@
     <h5><b style="color:seagreen">Early Logout</b></h5>
     <div class="row">
         <div class="col-md-4">
-            <label for="earlylogout">Maximum Allowed Times<font color=red>*</font></label>
+            <label for="earlylogout">Maximum Allowed Times<span style="color:red">*</span></label>
             <input type="text" class="form-control" name="maxallowedearly" id="maxallowedearly"
                 placeholder="Enter Value" maxlength="1" value="{{ tardinessvalue.maxallowedearly }}">
         </div>
         <div class="col-md-4">
-            <label for="earlypenalty">Penalty<font color=red>*</font></label>
+            <label for="earlypenalty">Penalty<span style="color:red">*</span></label>
             <select name="penalty_early" id="penalty_early" class="form-control" value="" required>
                 <option value="" disabled selected hidden>Select Penalty Type</option>
                 <option value="1" {% if tardinessvalue.penalty_early == 1 %}selected{% endif %}>Half Day Leave</option>
@@ -66,47 +143,6 @@
             </select>
         </div>
     </div>
-    <h5><b style="color:seagreen">Holiday Work</b></h5>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="holidaycompensatorytype">Compensatory Type<font color=red>*</font></label>
-            <select name="holidaycompensatorytype" id="holidaycompensatorytype" class="form-control" value="" required>
-                    <option value="" disabled selected hidden>Select Penalty Type</option>
-                    <option value="1" {% if tardinessvalue.holidaycompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
-                    <option value="2" {% if tardinessvalue.holidaycompensatorytype == 2 %}selected{% endif %}>Payment</option>
-                </select>
-        </div>
-        <div class="col-md-4">
-            <label for="holidaypaymentqty">Payment<font color=red>*</font></label>
-            <select name="holidaypaymentqty" id="holidaypaymentqty" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Payment Type</option>
-                <option value="1" {% if tardinessvalue.holidaypaymentqty == 1 %}selected{% endif %}>One Day Payment</option>
-                <option value="2" {% if tardinessvalue.holidaypaymentqty == 2 %}selected{% endif %}>Double Payment</option>
-                <option value="3" {% if tardinessvalue.holidaypaymentqty == 3 %}selected{% endif %}>No Payment</option>
-            </select>
-        </div>
-    </div>
-    <h5><b style="color:seagreen">Weekend Work</b></h5>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="weekendcompensatorytype">Compensatory Type<font color=red>*</font></label>
-            <select name="weekendcompensatorytype" id="weekendcompensatorytype" class="form-control" value="" required>
-                    <option value="" disabled selected hidden>Select Compensatory Type</option>
-                    <option value="1" {% if tardinessvalue.weekendcompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
-                    <option value="2" {% if tardinessvalue.weekendcompensatorytype == 2 %}selected{% endif %}>Payment</option>
-                </select>
-        </div>
-        <div class="col-md-4">
-            <label for="weekendpaymentqty">Payment<font color=red>*</font></label>
-            <select name="weekendpaymentqty" id="weekendpaymentqty" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Payment Type</option>
-                <option value="1" {% if tardinessvalue.weekendpaymentqty == 1 %}selected{% endif %}>One Day Payment</option>
-                <option value="2" {% if tardinessvalue.weekendpaymentqty == 2 %}selected{% endif %}>Double Payment</option>
-                <option value="3" {% if tardinessvalue.weekendpaymentqty == 3 %}selected{% endif %}>No Payment</option>
-            </select>
-        </div>
-    </div>
-    
     {% endfor %}
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">
@@ -115,4 +151,21 @@
         </div>
     </div>
 </form>
+<script>
+    function fnsetappplydays(val, typeflag) {
+        if (val == 1) {
+            if (typeflag == 1) {
+                document.getElementById('holidayexpire').style.display = "block";
+            } else {
+                document.getElementById('weekendexpire').style.display = "block";
+            }
+        } else {
+            if (typeflag == 1) {
+                document.getElementById('holidayexpire').style.display = "none";
+            } else {
+                document.getElementById('weekendexpire').style.display = "none";
+            }
+        }
+    }
+</script>
 {% endblock %}

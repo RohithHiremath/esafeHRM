@@ -20,5 +20,7 @@ urlpatterns = [
     path('upload/', views.upload, name='upload'),
     path('applyleave/', views.applyleave, name='applyleave'),
     path('leaverequested/', views.leaverequested, name='leaverequested'),
+    path('getleavedetails/', views.getleavedetails, name='getleavedetails'),
+    path('cancelrequest/', views.cancelrequest, name='cancelrequest'),
 ]
 
