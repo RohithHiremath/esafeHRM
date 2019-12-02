@@ -26,8 +26,8 @@ def login(request):
         return redirect('/')
 
 def dashboard(request):
-    print(request.user.is_authenticated)
-    return render(request,'login/dashboard.html',{'title':'dashboard'})
+    leaverequestcount = LeaveDetails.objects.filter(Status=3).count()
+    return render(request,'login/dashboard.html',{'title':'dashboard','requestcount':leaverequestcount})
 
 def logout(request):
     auth.logout(request)
