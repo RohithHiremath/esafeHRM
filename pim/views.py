@@ -51,7 +51,7 @@ def Personal_details_view(request):
         personal.save()
         characters = string.ascii_letters + string.digits 
         password = "".join(choice(characters) for x in range(randint(6,7)))
-        emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
+        emailtemplate = Emailtemplate.objects.filter(title = 'Welcome Email')
         for temp in emailtemplate:
             template = temp.description
         clean = re.compile('<.*?>')
