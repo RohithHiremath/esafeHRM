@@ -2,35 +2,42 @@
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Job Titles </h4>
+    <a href="#" data-toggle="modal" data-target="#ggg">
+            <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="float:left;padding-left:25px;margin-top:5px;"></i>
+        </a>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
         Add
     </button>
 </div>
-<div class="card" style="margin: 10px 0px 10px 0px;"></div>
-        <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Job Title</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for job in jobs %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ job.jobtitle }}</td>
-                <td>{{ job.jobdescription }}</td>
-                <td data-toggle="tooltip" title="Click to edit">
-                    <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}"><i
-                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"> </div>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Job Title</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ job.jobtitle }}</td>
+            <td>{{ job.jobdescription }}</td>
+            <td data-toggle="tooltip" title="Click to edit">
+                <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}"><i
+                        class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
 <div class="modal fade" id="addjobtitle" tabindex="-1" role="dialog" aria-labelledby="addjobtitleLabel"
     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
@@ -44,8 +51,10 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
-                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="" onblur="jobvalidate(this);" data-url="{% url 'jobtitle' %}" required/>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value=""
+                                onblur="jobvalidate(this);" data-url="{% url 'jobtitle' %}" required />
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
+                                id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
                         </div>
@@ -77,11 +86,15 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
-                            <input type="text" class="form-control" id="jobtitle" name="jobtitle" value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});" data-url="{% url 'editjobtitle'  job.id  %}" required>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ job.id }}">
+                            <input type="text" class="form-control" id="jobtitle" name="jobtitle"
+                                value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});"
+                                data-url="{% url 'editjobtitle'  job.id  %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
+                                id="edit_not{{ job.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ job.id }}">
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;"
+                                id="edit_ok{{ job.id }}">
                                 <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
@@ -101,55 +114,66 @@
     </div>
 </div>
 {% endfor %}
+
+<div class="modal fade" id="ggg" tabindex="-1" role="dialog" aria-labelledby="screeninfo"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ggg">Screen Info</h5>
+            </div>
+            <div class="modal-body">asfasdfasdf</div>
+        </div>
+    </div>
+</div>
 <script>
-function jobvalidate(element) {
-	$("#login_ok").hide();
-	$("#login_not").hide();
-    document.getElementById("save").disabled = false;
-	jobtitle = $(element).val();
-	$.ajax({
-		url : $(element).attr("data-url"),
-		data : {
-            "jobtitle":jobtitle,
-			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-		},
-		method: "POST",
-		dataType : "json",
-		success : function (data) {
-			if (data.is_success) {
-				// $("#login_ok").show(); 
-                // document.getElementById("save").disabled = false; 
-			}else {
-				$("#login_not").show();
-                document.getElementById("save").disabled = true;
-			}
-		}
-	});
-}
-function jobedit(element,id) {
-    $("#edit_ok"+id).hide();
-	$("#edit_not"+id).hide();
-    document.getElementById("editsave"+id).disabled = false;
-	jobtitlevalue = $(element).val();
-	$.ajax({
-		url : $(element).attr("data-url"),
-		data : {
-            "jobtitle":jobtitlevalue,
-			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-		},
-		method: "POST",
-		dataType : "json",
-		success : function (data) {
-			if (data.is_success) {
-				 // $("#edit_ok"+id).show();
-                document.getElementById("editsave"+id).disabled = true;
-			}else {
-				$("#edit_not"+id).show();
-                document.getElementById("editsave"+id).disabled = true;
-			}
-		}
-	});
-}
+    function jobvalidate(element) {
+        $("#login_ok").hide();
+        $("#login_not").hide();
+        document.getElementById("save").disabled = false;
+        jobtitle = $(element).val();
+        $.ajax({
+            url: $(element).attr("data-url"),
+            data: {
+                "jobtitle": jobtitle,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.is_success) {
+                    // $("#login_ok").show(); 
+                    // document.getElementById("save").disabled = false; 
+                } else {
+                    $("#login_not").show();
+                    document.getElementById("save").disabled = true;
+                }
+            }
+        });
+    }
+    function jobedit(element, id) {
+        $("#edit_ok" + id).hide();
+        $("#edit_not" + id).hide();
+        document.getElementById("editsave" + id).disabled = false;
+        jobtitlevalue = $(element).val();
+        $.ajax({
+            url: $(element).attr("data-url"),
+            data: {
+                "jobtitle": jobtitlevalue,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.is_success) {
+                    // $("#edit_ok"+id).show();
+                    document.getElementById("editsave" + id).disabled = true;
+                } else {
+                    $("#edit_not" + id).show();
+                    document.getElementById("editsave" + id).disabled = true;
+                }
+            }
+        });
+    }
 </script>
 {% endblock %}
-

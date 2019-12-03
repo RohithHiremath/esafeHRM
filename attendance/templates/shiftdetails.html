@@ -4,84 +4,127 @@
     <h4 style="float:left;"> Employee Shift Details </h4>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-<form action="" name="policy" id="policy" method="POST">
+<form action="" name="shifts" id="shifts" method="POST">
     {% csrf_token %}
-    {% for tardinessvalue in tardinessvalues %}
-    <h5><b style="color:seagreen">Late Login</b></h5>
     <div class="row">
         <div class="col-md-4">
-            <label for="latelogin">Maximum Allowed Times<font color=red>*</font></label>
-            <input type="text" class="form-control" name="maxallowedlate" id="maxallowedlate" 
-                maxlength="1" value="{{ tardinessvalue.maxallowedlate }}">
+            <label for="shiftname">Shift Name<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="shiftname" id="shiftname">
+        </div>
+        <div class="col-md-2">
+            <label for="shortname">Short Name<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="shortname" id="shortname">
         </div>
         <div class="col-md-4">
-            <label for="latepenalty">Penalty<font color=red>*</font></label>
-            <select name="penalty_late" id="penalty_late" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Penalty Type</option>
-                <option value="1" {% if tardinessvalue.penalty_late == 1 %}selected{% endif %}>Half Day Leave</option>
-                <option value="2" {% if tardinessvalue.penalty_late == 2 %}selected{% endif %}>Half Day Salary</option>
-                <option value="3" {% if tardinessvalue.penalty_late == 3 %}selected{% endif %}>No Penalty</option>
+            <label for="shiftdescription">Description<span style="color:red">*</span></label>
+            <input type="text" class="form-control" name="shiftdescription" id="shiftdescription" required>
+        </div>
+        <div class="col-md-2">
+            <label for="flexible">Flexible Shift (?)<span style="color:red">*</span></label>
+            <select name="flexible" id="flexible" class="form-control" required>
+                <option value="" disabled selected hidden>Select</option>
+                <option value="1">Yes</option>
+                <option value="2">No</option>
             </select>
         </div>
     </div>
-    <h5><b style="color:seagreen">Early Logout</b></h5>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="earlylogout">Maximum Allowed Times<font color=red>*</font></label>
-            <input type="text" class="form-control" name="maxallowedearly" id="maxallowedearly"
-                placeholder="Enter Value" maxlength="1" value="{{ tardinessvalue.maxallowedearly }}">
-        </div>
-        <div class="col-md-4">
-            <label for="earlypenalty">Penalty<font color=red>*</font></label>
-            <select name="penalty_early" id="penalty_early" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Penalty Type</option>
-                <option value="1" {% if tardinessvalue.penalty_early == 1 %}selected{% endif %}>Half Day Leave</option>
-                <option value="2" {% if tardinessvalue.penalty_early == 2 %}selected{% endif %}>Half Day Salary</option>
-                <option value="3" {% if tardinessvalue.penalty_early == 3 %}selected{% endif %}>No Penalty</option>
-            </select>
-        </div>
-    </div>
-    <h5><b style="color:seagreen">Holiday Work</b></h5>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="holidaycompensatorytype">Compensatory Type<font color=red>*</font></label>
-            <select name="holidaycompensatorytype" id="holidaycompensatorytype" class="form-control" value="" required>
-                    <option value="" disabled selected hidden>Select Penalty Type</option>
-                    <option value="1" {% if tardinessvalue.holidaycompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
-                    <option value="2" {% if tardinessvalue.holidaycompensatorytype == 2 %}selected{% endif %}>Payment</option>
-                </select>
-        </div>
-        <div class="col-md-4">
-            <label for="holidaypaymentqty">Payment<font color=red>*</font></label>
-            <select name="holidaypaymentqty" id="holidaypaymentqty" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Payment Type</option>
-                <option value="1" {% if tardinessvalue.holidaypaymentqty == 1 %}selected{% endif %}>One Day Payment</option>
-                <option value="2" {% if tardinessvalue.holidaypaymentqty == 2 %}selected{% endif %}>Double Payment</option>
-                <option value="3" {% if tardinessvalue.holidaypaymentqty == 3 %}selected{% endif %}>No Payment</option>
-            </select>
-        </div>
-    </div>
-    <h5><b style="color:seagreen">Weekend Work</b></h5>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="weekendcompensatorytype">Compensatory Type<font color=red>*</font></label>
-            <select name="weekendcompensatorytype" id="weekendcompensatorytype" class="form-control" value="" required>
-                    <option value="" disabled selected hidden>Select Compensatory Type</option>
-                    <option value="1" {% if tardinessvalue.weekendcompensatorytype == 1 %}selected{% endif %}>Comp Off</option>
-                    <option value="2" {% if tardinessvalue.weekendcompensatorytype == 2 %}selected{% endif %}>Payment</option>
-                </select>
-        </div>
-        <div class="col-md-4">
-            <label for="weekendpaymentqty">Payment<font color=red>*</font></label>
-            <select name="weekendpaymentqty" id="weekendpaymentqty" class="form-control" value="" required>
-                <option value="" disabled selected hidden>Select Payment Type</option>
-                <option value="1" {% if tardinessvalue.weekendpaymentqty == 1 %}selected{% endif %}>One Day Payment</option>
-                <option value="2" {% if tardinessvalue.weekendpaymentqty == 2 %}selected{% endif %}>Double Payment</option>
-                <option value="3" {% if tardinessvalue.weekendpaymentqty == 3 %}selected{% endif %}>No Payment</option>
-            </select>
-        </div>
-    </div>
-    {% endfor %}
+    <table class="table" style="width:100%">
+        <thead>
+            <tr>
+                <th class="table-th">Work Days</th>
+                <th class="table-th">Shift In Time</th>
+                <th class="table-th">Shift Out Time</th>
+                <th class="table-th">Break Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="2"> Monday</td>
+                <td><input type="text" style="width:75%" name="mondayintime" id="mondayintime"
+                        placeholder="Select In-Time"></td>
+                <td><input type="text" style="width:75%" name="mondayouttime" id="mondayouttime"
+                        placeholder="Select Out-Time"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="mondaybreaktimefrom" id="mondaybreaktimefrom"
+                        placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="mondaybreaktimeto"
+                        id="mondaybreaktimeto" placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="3"> Tuesday</td>
+                <td><input type="text" style="width:75%" name="tuesdayintime" id="tuesdayintime"
+                        placeholder="Select In-Time"></td>
+                <td><input type="text" style="width:75%" name="tuesdayouttime" id="tuesdayouttime"
+                        placeholder="Select Out-Time"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="tuesdaybreaktimefrom"
+                        id="tuesdaybreaktimefrom" placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="tuesdaybreaktimeto"
+                        id="tuesdaybreaktimeto" placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="4"> Wednesday</td>
+                <td><input type="text" style="width:75%" name="wednesdayintime" id="wednesdayintime"
+                        placeholder="Select In-Time"></td>
+                <td><input type="text" style="width:75%" name="wednesdayouttime" id="wednesdayouttime"
+                        placeholder="Select Out-Time"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="wednesdaybreaktimefrom"
+                        id="wednesdaybreaktimefrom" placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="wednesdaybreaktimeto"
+                        id="wednesdaybreaktimeto" placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="5"> Thursday</td>
+                <td><input type="text" style="width:75%" name="thursdayintime" id="thursdayintime"
+                        placeholder="Select In-Time"></td>
+                <td><input type="text" style="width:75%" name="thursdayouttime" id="thursdayouttime"
+                        placeholder="Select Out-Time"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="thursdaybreaktimefrom"
+                        id="thursdaybreaktimefrom" placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="thursdaybreaktimeto"
+                        id="thursdaybreaktimeto" placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="6"> Friday</td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="fridayintime" id="fridayintime"></td>
+                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="fridayouttime" id="fridayouttime"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="fridaybreaktimefrom" id="fridaybreaktimefrom"
+                        placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="fridaybreaktimeto"
+                        id="fridaybreaktimeto" placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="7"> Saturday</td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="saturdayintime" id="saturdayintime"></td>
+                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="saturdayouttime" id="saturdayouttime"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="saturdayintimefrom" id="saturdayintimefrom"
+                        placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="saturdayintimeto" id="saturdayintimeto"
+                        placeholder="To Time">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="workingday" id="workingday" value="1"> Sunday</td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayintime" id="sundayintime"></td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayouttime" id="sundayouttime"></td>
+                <td>
+                    <input type="text" style="width:40%;float:left;" name="sundaybreaktimefrom" id="sundaybreaktimefrom"
+                        placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto" id="sundaybreaktimeto"
+                        placeholder="To Time">
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">
         <div class="col-md-12">
@@ -89,4 +132,36 @@
         </div>
     </div>
 </form>
+
+<script>
+    $(document).ready(function () {
+        $('#sundayintime').timepicker({
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true
+        });
+        $('#sundayouttime').timepicker({});
+        $('#sundaybreaktime').timepicker({});
+        $('#mondayintime').timepicker({});
+        $('#mondayouttime').timepicker({});
+        $('#mondaybreaktimeto').timepicker({});
+        $('#mondaybreaktimefrom').timepicker({});
+        $('#tuesdayintime').timepicker({});
+        $('#tuesdayottime').timepicker({});
+        $('#tuesdaybreaktime').timepicker({});
+        $('#wednesdayintime').timepicker({});
+        $('#wednesdayouttime').timepicker({});
+        $('#wednesdaybreaktime').timepicker({});
+        $('#thursdayintime').timepicker({});
+        $('#thursdayouttime').timepicker({});
+        $('#thursdaybreaktime').timepicker({});
+        $('#fridayintime').timepicker({});
+        $('#fridayouttime').timepicker({});
+        $('#fridaybreaktime').timepicker({});
+        $('#saturdayintime').timepicker({});
+        $('#saturdayouttime').timepicker({});
+        $('#saturdaybreaktime').timepicker({});
+    });
+</script>
+
 {% endblock %}

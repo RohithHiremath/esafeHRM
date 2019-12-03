@@ -26,7 +26,7 @@ def login(request):
         return redirect('/')
 
 def dashboard(request):
-    leaverequestcount = LeaveDetails.objects.filter(Status=3).count()
+    leaverequestcount = LeaveDetails.objects.filter(Status=1).count()
     return render(request,'login/dashboard.html',{'title':'dashboard','requestcount':leaverequestcount})
 
 def logout(request):

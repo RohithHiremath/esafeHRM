@@ -302,7 +302,7 @@ def applyleave(request):
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
         
 def leaverequested(request):
-    leavedetails = LeaveDetails.objects.filter(Status=3).select_related('employee','leave_type')
+    leavedetails = LeaveDetails.objects.filter(Status=1).select_related('employee','leave_type')
     return render(request,'leaves/leaverequested.html',{'leavedetails':leavedetails})
 
 def getleavedetails(request):
