@@ -22,7 +22,7 @@
     <tbody>
         {% for detail in leavedetails %}
         <tr>
-            <td><input type="checkbox" name="empids" id="{{ personal.id }}" value="{{ personal.id }}" /></td>
+            <td><input type="checkbox" name="empids" id="{{ detail.id }}" value="{{ detail.id }}" /></td>
             <td>{{ detail.employee.employee_id }}</td>
             <td>{{ detail.employee.first_name }} {{ detail.employee.middle_name }} {{ detail.employee.last_name }}</td>
             <td>{{ detail.employee.department }}</td>
@@ -30,8 +30,8 @@
             <td>{{ detail.Fromdate }}</td>
             <td>{{ detail.AppliedDate }}</td>
             <td class = "select" > 
-                <select> 
-                <option value="Select">Select</option>
+                <select name="status"> 
+                <option value="">-Select-</option>
                 <option value="2">Approve</option>
                 <option value="3">Reject</option>
                 </select>

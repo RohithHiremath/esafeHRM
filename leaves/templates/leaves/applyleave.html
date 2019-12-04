@@ -106,7 +106,6 @@
     </form>
 </div>
 <script>
-
     $(document).ready(function () {
         document.getElementById("savebutton").disabled = true;
         $("#Fromdate").datepicker({
@@ -118,7 +117,6 @@
             dateFormat: 'dd-mm-yy'
         });
     });
-
     var leavebal = 0;
     var leavetypeflag = 0;
     function fnapplyleave(idval, leavename, leavebalance) {
@@ -128,7 +126,6 @@
         document.getElementById("leavename").innerHTML = leavename;
         document.getElementById("idleave").value = idval;
     }
-
     function testbal() {
         var leavetype = document.getElementById("FullorHalfday").value;
         if (leavetype == '') {
@@ -162,7 +159,6 @@
             document.getElementById("savebutton").disabled = false;
         }
     }
-
     function getleavedetails(typeflag, idval, empid) {
         leavetypeflag = typeflag;
         desturl = '/leaves/getleavedetails/';
@@ -243,7 +239,6 @@
                             displaydata += '<td>Half Day</td>';
                         }
                         displaydata += '<td>' + data1[i].Reason + '</td>';
-
                         displaydata += '</tr>';
                     }
                     displaydata += '<tr><td colspan="7"><input type="button" class="btn btn-primary pull-right" name="Clear" id="Clear" value="Close" onclick = "fnredirect()"></td>';
@@ -295,7 +290,6 @@
             }
         });
     }
-
     function fnredirect() {
         location.reload();
     }

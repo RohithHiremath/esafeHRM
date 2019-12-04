@@ -192,8 +192,11 @@
       <div class="row">
         <div class="col-md-4">
           <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
-          <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" required
+          <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" onblur="companymailvalidate(this);" data-url="{% url 'pim:details' %}" required
             placeholder="Enter Company email">
+            <div class="col-md-12 col-sm-12" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                <i class="fa fa-times" aria-hidden="true">Company Email-id Already exist.</i>
+            </div>
             <div class="error" id="companyemailErr"></div>
         </div>
         <div class=col-md-4>
@@ -231,7 +234,7 @@
     </div>
     <div class="row">
       <div class="col-md-12" style="float:right;">
-        <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
+        <button type="button" class="btn btn-primary pull-right" id ="save" onclick="somefunction(2);">
           Save
         </button>
         <button type="button" class="btn btn-primary" onclick="somefunction(3);">
@@ -659,5 +662,26 @@
     var Msg = hintMsg.fontcolor("red");
     document.getElementById(elemId).innerHTML = Msg;
   }
+  function companymailvalidate(element) {
+	$("#login_not").hide();
+	companyemailidvalue = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "companyemailid":companyemailidvalue,
+			      "csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				// $("#login_ok").show(); 
+                // document.getElementById("save").disabled = false; 
+			}else {
+				$("#login_not").show();
+			}
+		}
+	});
+}
 </script>
 {% endblock %}

@@ -251,7 +251,7 @@ def upload(request):
                 holy = Holidays(holidayname=holidayname,holidayDate=holidaydate)
                 holy.save()
         return redirect('/leaves/holidays/')
-        
+
 def applyleave(request):
     current_user = request.user
     if request.method == 'POST':
@@ -301,10 +301,20 @@ def applyleave(request):
             balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
             linkedleavetype.leave_type.balance = balance 
         return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
-        
+                
 def leaverequested(request):
-    leavedetails = LeaveDetails.objects.filter(Status=1).select_related('employee','leave_type')
-    return render(request,'leaves/leaverequested.html',{'leavedetails':leavedetails})
+    if request.method == "POST":
+        statuslist = request.POST.getlist('status')
+        empList = request.POST.getlist('empids')
+        for (val,lst) in zip(empList,statuslist):
+            leaverequest = LeaveDetails.objects.filter(id = val)
+            leaverequest.update(Status = lst)
+        for i in leaverequest:
+            i.save()
+        return redirect('/leaves/leaverequested/')
+    else:    
+        leavedetails = LeaveDetails.objects.filter(Status=1).select_related('employee','leave_type')
+        return render(request,'leaves/leaverequested.html',{'leavedetails':leavedetails})
 
 def getleavedetails(request):
     leaveid = request.POST['leaveid']

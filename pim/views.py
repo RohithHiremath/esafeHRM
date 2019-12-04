@@ -15,49 +15,56 @@ import json
 
 def Personal_details_view(request):
     if request.method =="POST":
+        response_data = {}
+        compmail = None
         duhead = request.POST.get('duhead', False)
         if not duhead:
             duhead=0
         else:
             duhead=request.POST['duhead']
         emp_id = fngetempid(request)
-        personal = Personal_details(first_name=request.POST['first_name'],
-                                middle_name=request.POST['middle_name'],
-                                last_name =request.POST['last_name'],
-                                employee_id = emp_id,
-                                date_of_birth=request.POST['date_of_birth'],
-                                personalemailid = request.POST['personalemailid'],
-                                mobilenumber=request.POST['mobilenumber'],
-                                gender=request.POST['gender'],
-                                marital_status=request.POST['marital_status'],
-                                nationality=request.POST['nationality'],                                                             
-                                aadhar_card_no=request.POST['aadhar_card_no'],
-                                joined_date=request.POST['joined_date'],
-                                date_of_permanency=request.POST['date_of_permanency'],
-                                employmentLevel_id = request.POST['empllevel'],
-                                job_title_id =request.POST['job_title'],
-                                job_grade_id=request.POST['Jobgrade'],
-                                employment_status_id=request.POST['employment_status'],
-                                work_shifts=request.POST['work_shifts'],
-                                worklocation_id=request.POST['worklocation'],
-                                department_id=request.POST['department'],
-                                DUHead=duhead,
-                                companyemailid = request.POST['companyemailid'],
-                                reportingto = request.POST['reportingname'],
-                                reportingtoId = request.POST['reportingmanager'],
-                                reportingdepartment = request.POST['reportingdepartment'])
-        emailid = request.POST['companyemailid']
-        personal.save()
-        characters = string.ascii_letters + string.digits 
-        password = "".join(choice(characters) for x in range(randint(6,7)))
-        emailtemplate = Emailtemplate.objects.filter(title = 'Welcome Email')
-        for temp in emailtemplate:
-            template = temp.description
-        clean = re.compile('<.*?>')
-        emailtemplate = re.sub(clean, '', str(template))
-        mailtemplate = emailtemplate.replace("Name",(request.POST['first_name']+" "+request.POST['middle_name'] +" "+request.POST['last_name'])).replace("user",request.POST['companyemailid']).replace("pword",password).replace("&nbsp;", "")
-        sendemail(request,emailid,mailtemplate)
-        return redirect('/pim/employeelist/')
+        compmail = Personal_details.objects.filter(companyemailid = request.POST['companyemailid'])
+        if not compmail:
+            personal = Personal_details(first_name=request.POST['first_name'],
+                                    middle_name=request.POST['middle_name'],
+                                    last_name =request.POST['last_name'],
+                                    employee_id = emp_id,
+                                    date_of_birth=request.POST['date_of_birth'],
+                                    personalemailid = request.POST['personalemailid'],
+                                    mobilenumber=request.POST['mobilenumber'],
+                                    gender=request.POST['gender'],
+                                    marital_status=request.POST['marital_status'],
+                                    nationality=request.POST['nationality'],                                                             
+                                    aadhar_card_no=request.POST['aadhar_card_no'],
+                                    joined_date=request.POST['joined_date'],
+                                    date_of_permanency=request.POST['date_of_permanency'],
+                                    employmentLevel_id = request.POST['empllevel'],
+                                    job_title_id =request.POST['job_title'],
+                                    job_grade_id=request.POST['Jobgrade'],
+                                    employment_status_id=request.POST['employment_status'],
+                                    work_shifts=request.POST['work_shifts'],
+                                    worklocation_id=request.POST['worklocation'],
+                                    department_id=request.POST['department'],
+                                    DUHead=duhead,
+                                    companyemailid = request.POST['companyemailid'],
+                                    reportingto = request.POST['reportingname'],
+                                    reportingtoId = request.POST['reportingmanager'],
+                                    reportingdepartment = request.POST['reportingdepartment'])
+            emailid = request.POST['companyemailid']
+            personal.save()
+            characters = string.ascii_letters + string.digits 
+            password = "".join(choice(characters) for x in range(randint(6,7)))
+            emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
+            for temp in emailtemplate:
+                template = temp.description
+            clean = re.compile('<.*?>')
+            emailtemplate = re.sub(clean, '', str(template))
+            mailtemplate = emailtemplate.replace("Name",(request.POST['first_name']+" "+request.POST['middle_name'] +" "+request.POST['last_name'])).replace("user",request.POST['companyemailid']).replace("pword",password).replace("&nbsp;", "")
+            sendemail(request,emailid,mailtemplate)
+            return redirect('/pim/employeelist/')
+        else:
+            response_data["is_success"] = False
+            return JsonResponse(response_data)
     else:
         levels = Leveldefinition.objects.all().order_by('levelName')
         personals = Personal_details.objects.all()
