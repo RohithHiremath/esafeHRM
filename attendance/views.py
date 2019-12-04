@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import TardinessDetails
+# import xlrd
+import openpyxl
 # Create your views here.
 
 def policyDetails(request):
@@ -45,3 +47,35 @@ def policyDetails(request):
 
 def shiftDetails(request):
     return render(request,'shiftdetails.html',{'title':'Employee ShiftDetails'})
+
+def uploadattendance(request):
+    if "GET" == request.method:
+        render(request,'processattendance.html',{'title':'Upload Attendance'})
+    else:
+        new_file = request.FILES["uploadattendance"]
+        wb_obj = openpyxl.load_workbook(new_file)
+        sheet_obj = wb_obj.active
+        max_row = sheet_obj.max_row
+        max_col = sheet_obj.max_column
+        cell_obj = sheet_obj.cell(row = 12, column = 4) 
+        for i in range(12, max_row): 
+            Employee_Code = sheet_obj.cell(row = i, column = 4)
+            Employee_Name = sheet_obj.cell(row = i, column = 6)
+            shift = sheet_obj.cell(row = i, column = 8)
+            Intime = sheet_obj.cell(row = i, column = 9)
+            outime = sheet_obj.cell(row = i, column = 10)
+            workduration = sheet_obj.cell(row = i, column = 13)
+            OT = sheet_obj.cell(row = i, column = 14) 
+            totalwork = sheet_obj.cell(row = i, column = 16)
+            status = sheet_obj.cell(row = i, column = 17)
+            print(Employee_Code.value)
+            print(Employee_Name.value)
+            print(shift.value)
+            print(Intime.value)
+            print(outime.value)
+            print(workduration.value)
+            print(OT.value)
+            print(totalwork.value)
+            print(status.value)
+
+    return render(request,'processattendance.html',{'title':'Upload Attendance'})

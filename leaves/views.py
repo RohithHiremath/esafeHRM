@@ -239,6 +239,7 @@ def upload(request):
         return render(request, 'leaves/holiday.html', {'holiday':holiday})
     else:
         excel_file = request.FILES["excel_file"]
+        print(excel_file)
         wb = openpyxl.load_workbook(excel_file)
         worksheet = wb["Sheet1"]
         sheet = wb.active

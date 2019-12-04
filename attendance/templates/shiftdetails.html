@@ -92,8 +92,10 @@
             </tr>
             <tr>
                 <td><input type="checkbox" name="workingday" id="workingday" value="6"> Friday</td>
-                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="fridayintime" id="fridayintime"></td>
-                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="fridayouttime" id="fridayouttime"></td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="fridayintime"
+                        id="fridayintime"></td>
+                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="fridayouttime"
+                        id="fridayouttime"></td>
                 <td>
                     <input type="text" style="width:40%;float:left;" name="fridaybreaktimefrom" id="fridaybreaktimefrom"
                         placeholder="From Time">
@@ -103,24 +105,28 @@
             </tr>
             <tr>
                 <td><input type="checkbox" name="workingday" id="workingday" value="7"> Saturday</td>
-                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="saturdayintime" id="saturdayintime"></td>
-                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="saturdayouttime" id="saturdayouttime"></td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="saturdayintime"
+                        id="saturdayintime"></td>
+                <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="saturdayouttime"
+                        id="saturdayouttime"></td>
                 <td>
-                    <input type="text" style="width:40%;float:left;" name="saturdayintimefrom" id="saturdayintimefrom"
-                        placeholder="From Time">
-                    <input type="text" style="width:35%;margin-left:20px;" name="saturdayintimeto" id="saturdayintimeto"
-                        placeholder="To Time">
+                    <input type="text" style="width:40%;float:left;" name="saturdaybreaktimefrom"
+                        id="saturdaybreaktimefrom" placeholder="From Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="saturdaybreaktimeto"
+                        id="saturdaybreaktimeto" placeholder="To Time">
                 </td>
             </tr>
             <tr>
                 <td><input type="checkbox" name="workingday" id="workingday" value="1"> Sunday</td>
-                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayintime" id="sundayintime"></td>
-                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayouttime" id="sundayouttime"></td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayintime"
+                        id="sundayintime"></td>
+                <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayouttime"
+                        id="sundayouttime"></td>
                 <td>
                     <input type="text" style="width:40%;float:left;" name="sundaybreaktimefrom" id="sundaybreaktimefrom"
                         placeholder="From Time">
-                    <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto" id="sundaybreaktimeto"
-                        placeholder="To Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto"
+                        id="sundaybreaktimeto" placeholder="To Time">
                 </td>
             </tr>
         </tbody>
@@ -135,32 +141,40 @@
 
 <script>
     $(document).ready(function () {
-        $('#sundayintime').timepicker({
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
+        $('#sundayintime').timepicker({});
         $('#sundayouttime').timepicker({});
-        $('#sundaybreaktime').timepicker({});
+        $('#sundaybreaktimeto').timepicker({});
+        $('#sundaybreaktimefrom').timepicker({});
+
         $('#mondayintime').timepicker({});
         $('#mondayouttime').timepicker({});
         $('#mondaybreaktimeto').timepicker({});
         $('#mondaybreaktimefrom').timepicker({});
+
         $('#tuesdayintime').timepicker({});
-        $('#tuesdayottime').timepicker({});
-        $('#tuesdaybreaktime').timepicker({});
+        $('#tuesdayouttime').timepicker({});
+        $('#tuesdaybreaktimeto').timepicker({});
+        $('#tuesdaybreaktimefrom').timepicker({});
+
         $('#wednesdayintime').timepicker({});
         $('#wednesdayouttime').timepicker({});
-        $('#wednesdaybreaktime').timepicker({});
+        $('#wednesdaybreaktimeto').timepicker({});
+        $('#wednesdaybreaktimefrom').timepicker({});
+
         $('#thursdayintime').timepicker({});
         $('#thursdayouttime').timepicker({});
-        $('#thursdaybreaktime').timepicker({});
+        $('#thursdaybreaktimeto').timepicker({});
+        $('#thursdaybreaktimefrom').timepicker({});
+
         $('#fridayintime').timepicker({});
         $('#fridayouttime').timepicker({});
-        $('#fridaybreaktime').timepicker({});
+        $('#fridaybreaktimeto').timepicker({});
+        $('#fridaybreaktimefrom').timepicker({});
+
         $('#saturdayintime').timepicker({});
         $('#saturdayouttime').timepicker({});
-        $('#saturdaybreaktime').timepicker({});
+        $('#saturdaybreaktimeto').timepicker({});
+        $('#saturdaybreaktimefrom').timepicker({});
     });
 </script>
 
