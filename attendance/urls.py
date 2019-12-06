@@ -5,5 +5,7 @@ app_name ='attendance'
 
 urlpatterns = [
     path('policies', views.policyDetails, name='policies'),
-    path('shiftdetails', views.shiftDetails, name='shiftdetails')
+    path('shiftdetails', views.shiftDetails, name='shiftdetails'),
+    path('validateshiftdetails', views.validateshiftDetails, name='validateshiftdetails'),
+    path('shifttimings', views.ShiftTimings, name='shifttimings'),
 ]

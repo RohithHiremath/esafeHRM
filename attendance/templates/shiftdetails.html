@@ -9,23 +9,32 @@
     <div class="row">
         <div class="col-md-4">
             <label for="shiftname">Shift Name<span style="color:red">*</span></label>
-            <input type="text" class="form-control" name="shiftname" id="shiftname">
+            <input type="text" class="form-control" name="shiftname" id="shiftname" onblur="shiftnamevalidate(this);" data-url="{% url 'attendance:shiftdetails' %}">
+            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;" id="login_not">
+                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+            </div>
+            <div class="error" id="shiftnameErr"></div>
         </div>
         <div class="col-md-2">
             <label for="shortname">Short Name<span style="color:red">*</span></label>
-            <input type="text" class="form-control" name="shortname" id="shortname">
+            <input type="text" class="form-control" name="shortname" id="shortname" onblur="shortnamevalidate(this);" data-url="{% url 'attendance:validateshiftdetails' %}">
+            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;" id="login_ok">
+                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+            </div>
+            <div class="error" id="shortnameErr"></div>
         </div>
         <div class="col-md-4">
-            <label for="shiftdescription">Description<span style="color:red">*</span></label>
-            <input type="text" class="form-control" name="shiftdescription" id="shiftdescription" required>
+            <label for="shiftdescription">Description</label>
+            <input type="text" class="form-control" name="shiftdescription" id="shiftdescription">
         </div>
         <div class="col-md-2">
-            <label for="flexible">Flexible Shift (?)<span style="color:red">*</span></label>
-            <select name="flexible" id="flexible" class="form-control" required>
+            <label for="flexibleshift">Flexible Shift (?)<span style="color:red">*</span></label>
+            <select name="flexibleshift" id="flexibleshift" class="form-control" required>
                 <option value="" disabled selected hidden>Select</option>
                 <option value="1">Yes</option>
                 <option value="2">No</option>
             </select>
+            <div class="error" id="flexibleshiftErr"></div>
         </div>
     </div>
     <table class="table" style="width:100%">
@@ -35,11 +44,12 @@
                 <th class="table-th">Shift In Time</th>
                 <th class="table-th">Shift Out Time</th>
                 <th class="table-th">Break Time</th>
+                <th class="table-th">Week Off</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="2"> Monday</td>
+                <td><input type="checkbox" name="mondayworkingday" id="mondayworkingday" value="2" checked > Monday</td>
                 <td><input type="text" style="width:75%" name="mondayintime" id="mondayintime"
                         placeholder="Select In-Time"></td>
                 <td><input type="text" style="width:75%" name="mondayouttime" id="mondayouttime"
@@ -48,11 +58,15 @@
                     <input type="text" style="width:40%;float:left;" name="mondaybreaktimefrom" id="mondaybreaktimefrom"
                         placeholder="From Time">
                     <input type="text" style="width:35%;margin-left:20px;" name="mondaybreaktimeto"
-                        id="mondaybreaktimeto" placeholder="To Time">
-                </td>
+                        id="mondaybreaktimeto" placeholder="To Time"></td>
+                <td><select name="weekoffmonday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="3"> Tuesday</td>
+                <td><input type="checkbox" name="tuesdayworkingday" id="tuesdayworkingday" value="3" checked> Tuesday</td>
                 <td><input type="text" style="width:75%" name="tuesdayintime" id="tuesdayintime"
                         placeholder="Select In-Time"></td>
                 <td><input type="text" style="width:75%" name="tuesdayouttime" id="tuesdayouttime"
@@ -63,9 +77,14 @@
                     <input type="text" style="width:35%;margin-left:20px;" name="tuesdaybreaktimeto"
                         id="tuesdaybreaktimeto" placeholder="To Time">
                 </td>
+                <td><select name="weekofftuesday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="4"> Wednesday</td>
+                <td><input type="checkbox" name="wednesdayworkingday" id="wednesdayworkingday" value="4" checked> Wednesday</td>
                 <td><input type="text" style="width:75%" name="wednesdayintime" id="wednesdayintime"
                         placeholder="Select In-Time"></td>
                 <td><input type="text" style="width:75%" name="wednesdayouttime" id="wednesdayouttime"
@@ -76,9 +95,14 @@
                     <input type="text" style="width:35%;margin-left:20px;" name="wednesdaybreaktimeto"
                         id="wednesdaybreaktimeto" placeholder="To Time">
                 </td>
+                <td><select name="weekoffwednesday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="5"> Thursday</td>
+                <td><input type="checkbox" name="thursdayworkingday" id="thursdayworkingday" value="5" checked> Thursday</td>
                 <td><input type="text" style="width:75%" name="thursdayintime" id="thursdayintime"
                         placeholder="Select In-Time"></td>
                 <td><input type="text" style="width:75%" name="thursdayouttime" id="thursdayouttime"
@@ -89,9 +113,14 @@
                     <input type="text" style="width:35%;margin-left:20px;" name="thursdaybreaktimeto"
                         id="thursdaybreaktimeto" placeholder="To Time">
                 </td>
+                <td><select name="weekoffthursday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="6"> Friday</td>
+                <td><input type="checkbox" name="fridayworkingday" id="fridayworkingday" value="6" checked> Friday</td>
                 <td><input type="text" placeholder="Select In-Time" style="width:75%" name="fridayintime" id="fridayintime"></td>
                 <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="fridayouttime" id="fridayouttime"></td>
                 <td>
@@ -100,20 +129,30 @@
                     <input type="text" style="width:35%;margin-left:20px;" name="fridaybreaktimeto"
                         id="fridaybreaktimeto" placeholder="To Time">
                 </td>
+                <td><select name="weekofffriday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="7"> Saturday</td>
+                <td><input type="checkbox" name="saturdayworkingday" id="saturdayworkingday" value="7" checked> Saturday</td>
                 <td><input type="text" placeholder="Select In-Time" style="width:75%" name="saturdayintime" id="saturdayintime"></td>
                 <td><input type="text" placeholder="Select Out-Time" style="width:75%" name="saturdayouttime" id="saturdayouttime"></td>
                 <td>
-                    <input type="text" style="width:40%;float:left;" name="saturdayintimefrom" id="saturdayintimefrom"
+                    <input type="text" style="width:40%;float:left;" name="saturdaybreaktimefrom" id="saturdaybreaktimefrom"
                         placeholder="From Time">
-                    <input type="text" style="width:35%;margin-left:20px;" name="saturdayintimeto" id="saturdayintimeto"
+                    <input type="text" style="width:35%;margin-left:20px;" name="saturdaybreaktimeto" id="saturdaybreaktimeto"
                         placeholder="To Time">
                 </td>
+                <td><select name="weekoffsaturday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="2" selected>No</option>
+                </select></td>
             </tr>
             <tr>
-                <td><input type="checkbox" name="workingday" id="workingday" value="1"> Sunday</td>
+                <td><input type="checkbox" name="sundayworkingday" id="sundayworkingday" value="1" checked> Sunday</td>
                 <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayintime" id="sundayintime"></td>
                 <td><input type="text" placeholder="Select In-Time" style="width:75%" name="sundayouttime" id="sundayouttime"></td>
                 <td>
@@ -122,46 +161,96 @@
                     <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto" id="sundaybreaktimeto"
                         placeholder="To Time">
                 </td>
+                <td><select name="weekoffsunday"> 
+                    <option value="" disabled selected hidden>-Select-</option>
+                    <option value="1" selected>Yes</option>
+                    <option value="2">No</option>
+                </select></td>
             </tr>
         </tbody>
     </table>
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary pull-right">Save</button>
+            <button type="submit" class="btn btn-primary pull-right" id="save">Save</button>
         </div>
     </div>
 </form>
-
 <script>
-    $(document).ready(function () {
-        $('#sundayintime').timepicker({
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
-        $('#sundayouttime').timepicker({});
-        $('#sundaybreaktime').timepicker({});
-        $('#mondayintime').timepicker({});
-        $('#mondayouttime').timepicker({});
-        $('#mondaybreaktimeto').timepicker({});
-        $('#mondaybreaktimefrom').timepicker({});
-        $('#tuesdayintime').timepicker({});
-        $('#tuesdayottime').timepicker({});
-        $('#tuesdaybreaktime').timepicker({});
-        $('#wednesdayintime').timepicker({});
-        $('#wednesdayouttime').timepicker({});
-        $('#wednesdaybreaktime').timepicker({});
-        $('#thursdayintime').timepicker({});
-        $('#thursdayouttime').timepicker({});
-        $('#thursdaybreaktime').timepicker({});
-        $('#fridayintime').timepicker({});
-        $('#fridayouttime').timepicker({});
-        $('#fridaybreaktime').timepicker({});
-        $('#saturdayintime').timepicker({});
-        $('#saturdayouttime').timepicker({});
-        $('#saturdaybreaktime').timepicker({});
+$(document).ready(function () {
+    document.getElementById("asd").disabled = true;
+    $('#sundayintime').timepicker({
+        dynamic: true,
+        dropdown: true,
+        scrollbar: true
     });
+    $('#sundayouttime').timepicker({});
+    $('#sundaybreaktime').timepicker({});
+    $('#mondayintime').timepicker({});
+    $('#mondayouttime').timepicker({});
+    $('#mondaybreaktimeto').timepicker({});
+    $('#mondaybreaktimefrom').timepicker({});
+    $('#tuesdayintime').timepicker({});
+    $('#tuesdayottime').timepicker({});
+    $('#tuesdaybreaktime').timepicker({});
+    $('#wednesdayintime').timepicker({});
+    $('#wednesdayouttime').timepicker({});
+    $('#wednesdaybreaktime').timepicker({});
+    $('#thursdayintime').timepicker({});
+    $('#thursdayouttime').timepicker({});
+    $('#thursdaybreaktime').timepicker({});
+    $('#fridayintime').timepicker({});
+    $('#fridayouttime').timepicker({});
+    $('#fridaybreaktime').timepicker({});
+    $('#saturdayintime').timepicker({});
+    $('#saturdayouttime').timepicker({});
+    $('#saturdaybreaktime').timepicker({});
+});
+function shiftnamevalidate(element) {
+    $("#login_not").hide();
+    document.getElementById("save").disabled = false;
+    shiftname = $(element).val();
+    $.ajax({
+    url: $(element).attr("data-url"),
+    data: {
+    "shiftname": shiftname,
+    "csrfmiddlewaretoken": '{{ csrf_token }}',
+    },
+    method: "POST",
+    dataType: "json",
+    success: function (data) {
+    if (data.is_success) {
+    // $("#login_ok").show(); 
+    // document.getElementById("save").disabled = false; 
+    } else {
+    $("#login_not").show();
+    document.getElementById("save").disabled = true;
+    }
+    }
+    });
+}
+function shortnamevalidate(element) {
+    $("#login_ok").hide();
+    document.getElementById("save").disabled = false;
+    shortname = $(element).val();
+    $.ajax({
+    url: $(element).attr("data-url"),
+    data: {
+    "shortname": shortname,
+    "csrfmiddlewaretoken": '{{ csrf_token }}',
+    },
+    method: "POST",
+    dataType: "json",
+    success: function (data) {
+    if (data.is_success) {
+    // $("#login_ok").show(); 
+    // document.getElementById("save").disabled = false; 
+    } else {
+    $("#login_ok").show();
+    document.getElementById("save").disabled = true;
+    }
+    }
+    });
+}
 </script>
-
 {% endblock %}
