@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 from django.shortcuts import render,redirect
 from .models import TardinessDetails,ShiftDetails,ShiftTimings
 from django.http import JsonResponse
+=======
+from django.shortcuts import render
+from .models import TardinessDetails
+# import xlrd
+import openpyxl
+>>>>>>> e61066235ec95b1546412ac19e93ec51a38c0583
 # Create your views here.
 
 def policyDetails(request):

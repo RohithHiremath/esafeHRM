@@ -158,8 +158,8 @@
                 <td>
                     <input type="text" style="width:40%;float:left;" name="sundaybreaktimefrom" id="sundaybreaktimefrom"
                         placeholder="From Time">
-                    <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto" id="sundaybreaktimeto"
-                        placeholder="To Time">
+                    <input type="text" style="width:35%;margin-left:20px;" name="sundaybreaktimeto"
+                        id="sundaybreaktimeto" placeholder="To Time">
                 </td>
                 <td><select name="weekoffsunday"> 
                     <option value="" disabled selected hidden>-Select-</option>
@@ -178,7 +178,6 @@
 </form>
 <script>
 $(document).ready(function () {
-    document.getElementById("asd").disabled = true;
     $('#sundayintime').timepicker({
         dynamic: true,
         dropdown: true,

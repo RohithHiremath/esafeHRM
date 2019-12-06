@@ -1,0 +1,39 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<div class="container-fluid text-right" style="margin:10px;float:right;">
+    <h4 style="float:left;">Process Attendance</h4>
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<form action="/attendance/uploadattendance/" method="post" name="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            <label for="uploadattendance">Upload Attendance File</label><span style="color:red;">*</span>
+            <input type="file" class="form-control" title="Upload excel file" name="uploadattendance" 
+                style="border: 1px solid black; padding: 5px;" required="required">
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary" id="save" style="margin-top:30px;">Upload</button>
+            <!-- <button type="button" class="btn btn-primary" onclick={% url 'attendance:uploadattendance'%}>Clear</button> -->
+        </div>
+    </div>
+</form>
+<!-- <table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Holiday Name</th>
+            <th>Holiday Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for holy in holiday %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ holy.holidayname }}</td>
+            <td>{{ holy.holidayDate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->
+{% endblock %}
