@@ -140,9 +140,6 @@ def validateshiftDetails(request):
 
 def employeeshiftlist(request): 
     shiftdetails = ShiftTimings.objects.all().select_related('shift_name').values('shift_name__shiftname','shift_name__shortname','shift_in_time','shift_out_time').distinct()
-    for i in shiftdetails:
-        print(i)
-    # shiftdetails = ShiftTimings.objects.all().select_related('shift_name')
     return render(request,'employeeshiftlist.html',{'title':'Employee Shift list','shiftdetails':shiftdetails})
 
 
