@@ -23,8 +23,8 @@ class ShiftDetails(models.Model):
     shiftdescription = models.CharField(max_length=150,blank = False)
     flexibleshift = models.SmallIntegerField(default=1,blank=False)
     
-    # def __str__(self):
-    #     return self.shiftname
+    def __str__(self):
+        return self.shiftname
     
 class ShiftTimings(models.Model):
     shift_name = models.ForeignKey(ShiftDetails,on_delete=models.CASCADE)

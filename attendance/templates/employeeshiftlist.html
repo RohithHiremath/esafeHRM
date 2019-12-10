@@ -1,0 +1,39 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<form action="" name="emplist" id="emplist" method="POST" >
+{% csrf_token %}
+    <div class="container-fluid text-right" style="margin:10px;float:right;">
+        <h4 style="float: left;">Employee Shift List</h4>
+    <a href="{% url 'attendance:shiftdetails' %}">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
+        Add
+    </button>
+    </a>
+    </div>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <table id="example" class="table table-striped nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Shift Name</th>
+            <th>Short Name</th>
+            <th>Working Days</th>
+            <th>Shift Timings</th>
+            <th>Week Off</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for shift in shiftdetails %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ shift.shift_name__shiftname}}</td>
+            <td>{{ shift.shift_name__shortname }}</td>
+            <td>Monday - Saturday</td>
+            <td>{{ shift.shift_in_time }}-{{ shift.shift_out_time }}</td>
+            <td>Sunday</td>
+         </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</form>
+{% endblock %}

@@ -4,7 +4,7 @@ import datetime
 import openpyxl
 import re
 from django.urls import reverse
-from masters.models import Job
+from masters.models import Job, Emailtemplate
 from pim.models import Personal_details
 from django.db import IntegrityError
 from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, Upload_list
@@ -12,6 +12,10 @@ from django.contrib import messages
 import datetime
 from datetime import date, timedelta
 from django.db.models import Sum
+from esafehrm.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+import string
+import re
 
 # Create your views here.
 def leavestructure(request):
@@ -311,10 +315,42 @@ def leaverequested(request):
             leaverequest.update(Status = lst)
         for i in leaverequest:
             i.save()
+        apptemplate = Emailtemplate.objects.filter(title = 'approve')
+        for temp in apptemplate:
+            atemplate = temp.description
+        clean = re.compile('<.*?>')
+        approvetemp = re.sub(clean, '', str(atemplate))
+        approvetemplate = approvetemp.replace("&nbsp;", "")
+        
+        rejtemplate = Emailtemplate.objects.filter(title = 'reject')
+        for temp in rejtemplate:
+            rtemplate = temp.description
+        clean = re.compile('<.*?>')
+        rejecttemp = re.sub(clean, '', str(rtemplate))
+        rejecttemplate = rejecttemp.replace("&nbsp;", "")
+
+        for (val,lst) in zip(empList,statuslist):
+            emailid =  LeaveDetails.objects.values_list('employee__companyemailid',flat=True).get(id = val)
+            sendemail(request,emailid,approvetemplate,rejecttemplate,lst)
         return redirect('/leaves/leaverequested/')
     else:    
         leavedetails = LeaveDetails.objects.filter(Status=1).select_related('employee','leave_type')
         return render(request,'leaves/leaverequested.html',{'leavedetails':leavedetails})
+
+def sendemail(request,emailid,approvetemplate,rejecttemplate,statuslist):
+    if request.method == 'POST':
+        if (statuslist == '2'):
+            subject = 'Approval of leave'
+            recepient = str(emailid)
+            message = approvetemplate
+            send_mail(subject,
+                message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        else:
+            subject = 'Leave Rejected'
+            recepient = str(emailid)
+            message = rejecttemplate
+            send_mail(subject,
+                message, EMAIL_HOST_USER, [recepient], fail_silently = False)
 
 def getleavedetails(request):
     leaveid = request.POST['leaveid']

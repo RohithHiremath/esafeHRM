@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 from django.shortcuts import render,redirect
 from .models import TardinessDetails,ShiftDetails,ShiftTimings
 from django.http import JsonResponse
-=======
-from django.shortcuts import render
-from .models import TardinessDetails
-# import xlrd
-import openpyxl
->>>>>>> e61066235ec95b1546412ac19e93ec51a38c0583
 # Create your views here.
 
 def policyDetails(request):
@@ -121,7 +114,7 @@ def shiftDetails(request):
             fridayshifttiming.save()
             saturdayshifttiming.save()
             sundayshifttiming.save()
-            return redirect('/attendance/shiftdetails')
+            return redirect('/attendance/employeeshiftlist')
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
@@ -140,8 +133,19 @@ def validateshiftDetails(request):
                                     shiftdescription=request.POST['shiftdescription'],
                                     flexibleshift=request.POST['flexibleshift'])
             shiftdetail.save()
-            return redirect('/attendance/shiftdetails')
+            return redirect('/attendance/employeeshiftlist')
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def employeeshiftlist(request): 
+    shiftdetails = ShiftTimings.objects.all().select_related('shift_name').values('shift_name__shiftname','shift_name__shortname','shift_in_time','shift_out_time').distinct()
+    for i in shiftdetails:
+        print(i)
+    # shiftdetails = ShiftTimings.objects.all().select_related('shift_name')
+    return render(request,'employeeshiftlist.html',{'title':'Employee Shift list','shiftdetails':shiftdetails})
+
+
+
+        
 

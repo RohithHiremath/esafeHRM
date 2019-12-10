@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-2">
             <label for="flexibleshift">Flexible Shift (?)<span style="color:red">*</span></label>
-            <select name="flexibleshift" id="flexibleshift" class="form-control" required>
+            <select name="flexibleshift" id="flexibleshift" class="form-control">
                 <option value="" disabled selected hidden>Select</option>
                 <option value="1">Yes</option>
                 <option value="2">No</option>
@@ -172,7 +172,12 @@
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary pull-right" id="save">Save</button>
+            <button type="submit" class="btn btn-primary pull-right" id="save" onclick="somefunction();">Save</button>
+        <a href="{% url 'attendance:employeeshiftlist' %}">
+            <button type="button" class="btn btn-primary">
+                <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
+            </button>
+        </a>
         </div>
     </div>
 </form>
@@ -250,6 +255,26 @@ function shortnamevalidate(element) {
     }
     }
     });
+}
+function somefunction(){  
+    var shiftname = document.getElementById('shiftname').value
+    if (shiftname == ""){
+        document.getElementById("save").disabled = true;
+    }else{
+        document.getElementById("save").disabled = false;
+    }
+    var shortname = document.getElementById('shortname').value
+    if (shortname == ""){
+        document.getElementById("save").disabled = true;
+    }else{
+        document.getElementById("save").disabled = false;
+    }
+    var flexibleshift = document.getElementById('flexibleshift').value
+    if (flexibleshift == ""){
+        document.getElementById("save").disabled = true;
+    }else{
+        document.getElementById("save").disabled = false;
+    }
 }
 </script>
 {% endblock %}
