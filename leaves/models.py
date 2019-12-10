@@ -50,7 +50,7 @@ class LeaveDetails(models.Model):
     Fromdate = models.DateField(blank=False)
     Todate = models.DateField(blank=False)
     leave_type = models.ForeignKey(Leavetype,on_delete = models.CASCADE)
-    NumberOfLeaves = models.SmallIntegerField(default=1,blank=False)
+    NumberOfLeaves = models.DecimalField(default=1,blank=False,max_digits=3, decimal_places=2)
     AppliedDate = models.DateField(blank=False)
     Status = models.SmallIntegerField(default=1,blank=False)
     Reason = models.CharField(max_length=100,blank=True)

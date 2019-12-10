@@ -241,7 +241,11 @@
           <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
           <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
             <option value="">Select Reporting Manager</option>
+            <option value="1000">Self</option>
             {% for reportingmanager in reportingmanagers %}
+            {% if reportingmanager.reportingtoId ==  1000 %}
+                <option value="1000" selected >Self</option>
+            {% endif %}
             <option value="{{ reportingmanager.id }}" {% if personal.reportingtoId ==  reportingmanager.id %} selected {% endif %}>
                 {{ reportingmanager.first_name }}  {{ reportingmanager.middle_name }}  {{ reportingmanager.last_name }}</option>
               {% endfor %}
@@ -348,6 +352,7 @@
         success: function (data) {
           $('#reportingmanager').empty();
           $('#reportingmanager').append(new Option('Select Reporting', ''))
+          $('#reportingmanager').append(new Option('Self', '1000'))
           for (var i = 0; i < data.length; i++) {
             $('#reportingmanager').append(new Option(data[i].value, data[i].id));
           }
