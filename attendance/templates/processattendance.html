@@ -11,6 +11,7 @@
             <label for="uploadattendance">Upload Attendance File</label><span style="color:red;">*</span>
             <input type="file" class="form-control" title="Upload excel file" name="uploadattendance" 
                 style="border: 1px solid black; padding: 5px;" required="required">
+            <span id="attendanceerror" style="display:none;color:red;"></span>    
         </div>
         <div class="col-md-6">
             <button type="submit" class="btn btn-primary" id="save" style="margin-top:30px;">Upload</button>
@@ -18,22 +19,50 @@
         </div>
     </div>
 </form>
-<!-- <table id="example" class="table table-striped" style="width:100%">
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+{% if saved_details %}
+ <table id="example" class="table table-striped" style="width:100%">
     <thead>
         <tr>
-            <th>#</th>
-            <th>Holiday Name</th>
-            <th>Holiday Date</th>
+            <!-- <th>#</th> -->
+            <th>Date</th>
+            <th>Emp ID</th>
+            <th>Emp Name</th>
+            <th>Shift</th>
+            <th>In Time</th>
+            <th>Out Time</th>
+            <th>Worked hours</th>
+            <th>OT</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        {% for holy in holiday %}
+        {% for detais in saved_details %}
         <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ holy.holidayname }}</td>
-            <td>{{ holy.holidayDate }}</td>
+            <!-- <td>{{ forloop.counter }}</td> -->
+            <td>{{ detais.attendance_date | date:'d-m-Y' }}</td>
+            <td>{{ detais.employee_code.employee_id }}</td>
+            <td>{{ detais.employee_name }}</td>
+            <td>{{ detais.employee_shift }}</td>
+            <td>{{ detais.employee_intime | date:'H:i' }}</td>
+            <td>{{ detais.employee_outime | date:'H:i' }}</td>
+            <td>{{ detais.employee_workduration | date:'H:i' }}</td>
+            <td>{{ detais.employee_OT | date:'H:i' }}</td>
+             {% if detais.attendance_status == 1 %}
+             <td> P </td>
+             {% elif detais.attendance_status == 2 %}
+             <td> A </td>
+             {% else %}
+             <td> A </td>
+             {% endif %}
         </tr>
         {% endfor %}
+        <tr>
+            <td style="float:right;">
+                <a class="btn btn-primary pull-right" href="{% url 'attendance:uploadattendance' %}">Clear</button>
+            </td>
+        </tr>
     </tbody>
-</table> -->
+</table>
+{% endif %}
 {% endblock %}

@@ -13,6 +13,7 @@
             <th class="table-th">Credits</th>
             <th class="table-th">Availed</th>
             <th class="table-th">Requested</th>
+            <th class="table-th">Cancelled</th>
             <th class="table-th">Balance</th>
             <th class="table-th">Action</th>
         </tr>
@@ -32,6 +33,12 @@
             {% if linkedleavetype.leave_type.requested  is not None %}
             <td><a href="javascript:getleavedetails(3,'{{ linkedleavetype.leave_type.id }}','{{ personid }}')"
                     title="click to see details">{{ linkedleavetype.leave_type.requested }}</a></td>
+            {% else  %}
+            <td>0</td>
+            {% endif %}
+            {% if linkedleavetype.leave_type.cancelled  is not None %}
+            <td><a href="javascript:getleavedetails(4,'{{ linkedleavetype.leave_type.id }}','{{ personid }}')"
+                    title="click to see details">{{ linkedleavetype.leave_type.cancelled }}</a></td>
             {% else  %}
             <td>0</td>
             {% endif %}
@@ -76,7 +83,7 @@
             <div class="col-md-4">
                 <label for="toDate">To Date<span style="color:red;">*</span></label>
                 <input type="text" value="" class="form-control" name="Todate" id="Todate" placeholder="Select To Date"
-                    required onchange="testbal()" ;>
+                    required onchange="testbal()";>
                 <span id="errordisplay" style="color:red;"></span>
             </div>
         </div>
@@ -88,18 +95,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <span id="errordisplay" style="color:red;"></span>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                <span id="successid" style="color:red;"></span>
+            </div>
+            <div class="col-md-4">
             </div>
         </div>
         <br />
         <div class="row">
-            <div class="col-md-12" >
-                <button type="submit" class="btn btn-primary pull-right" id="savebutton">
-                    save
-                </button>
-                <button type="button" style="margin-right:10px;"class="btn btn-primary pull-right" id="clear" onclick="fnredirect()">
+            <div class="col-md-12">
+                <button type="button" style="margin-left:10px;" class="btn btn-primary pull-right" id="clear"
+                    onclick="fnredirect()">
                     Clear
+                </button>
+                <button type="button" class="btn btn-primary pull-right" id="savebutton" onclick="fnsaveleave()">
+                    save
                 </button>
             </div>
         </div>
@@ -109,16 +121,16 @@
     $(document).ready(function () {
         document.getElementById("savebutton").disabled = true;
         $("#Fromdate").datepicker({
-            minDate: 0,
             dateFormat: 'dd-mm-yy'
         });
         $("#Todate").datepicker({
-            minDate: 0,
             dateFormat: 'dd-mm-yy'
         });
     });
+
     var leavebal = 0;
     var leavetypeflag = 0;
+
     function fnapplyleave(idval, leavename, leavebalance) {
         document.getElementById("leavedetails").style.display = "none";
         leavebal = leavebalance;
@@ -126,6 +138,7 @@
         document.getElementById("leavename").innerHTML = leavename;
         document.getElementById("idleave").value = idval;
     }
+
     function testbal() {
         var leavetype = document.getElementById("FullorHalfday").value;
         if (leavetype == '') {
@@ -159,6 +172,40 @@
             document.getElementById("savebutton").disabled = false;
         }
     }
+
+    function fnsaveleave(){
+        document.getElementById("savebutton").disabled = true; 
+        Fromdate = document.getElementById("Fromdate").value;
+        Todate = document.getElementById("Todate").value;
+        FullorHalfday = document.getElementById("FullorHalfday").value;
+        Reason = document.getElementById("Reason").value;
+        idleave = document.getElementById("idleave").value;
+        employee = document.getElementById("employee").value;
+        desturl = '/leaves/saveleaverequest/';
+        $.ajax({
+            url: desturl,
+            data: {
+                "Fromdate": Fromdate,
+                "Todate": Todate,
+                "FullorHalfday": FullorHalfday,
+                "Reason": Reason,
+                "idleave": idleave,
+                "employee": employee,
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+                document.getElementById("successid").innerHTML = "Successfully saved your leave requests";
+                setTimeout(function(){ 
+                    document.getElementById("successid").innerHTML = "";
+                    location.reload();
+                }, 5000);
+                
+            }
+        });
+    }
+
     function getleavedetails(typeflag, idval, empid) {
         leavetypeflag = typeflag;
         desturl = '/leaves/getleavedetails/';
@@ -217,7 +264,7 @@
                     displaydata += '</tbody></table>';
                 } else if (leavetypeflag == 2) {
                     displaydata = '<div class="container-fluid text-right" style="margin:10px;float:right;">';
-                    displaydata += '<h4 style="float: left;" id="leaveheadname">Leave Details</h4>';
+                    displaydata += '<h4 style="float: left;" id="leaveheadname">Leaves Taken Details</h4>';
                     displaydata += '</div>';
                     displaydata += '<table class="table table-striped nowrap" style="width:100%">';
                     displaydata += '<thead>';
@@ -245,7 +292,7 @@
                     displaydata += '</tbody></table>';
                 } else {
                     displaydata = '<div class="container-fluid text-right" style="margin:10px;float:right;">';
-                    displaydata += '<h4 style="float: left;" id="leaveheadname"> Requested Leave Details</h4>';
+                    displaydata += '<h4 style="float: left;" id="leaveheadname"> Requested/Cancelled  Leave Details</h4>';
                     displaydata += '</div>';
                     displaydata += '<table class="table table-striped nowrap" style="width:100%">';
                     displaydata += '<thead>';
@@ -270,12 +317,17 @@
                         }
                         displaydata += '<td>' + data1[i].Reason + '</td>';
                         if (data1[i].Status == 1) {
-                            displaydata += '<td>Pending</td>';
+                            displaydata += '<td>Pending for Approval</td>';
                         } else if (data1[i].Status == 2) {
                             displaydata += '<td>Approved</td>';
-                        } else {
+                        } else if (data1[i].Status == 3){
                             displaydata += '<td>Rejected</td>';
+                        } else if(data1[i].Status == 4){
+                            displaydata += '<td>Cancelled before approval</td>';
+                        }else{
+                            displaydata += '<td>Cancelled after approval</td>';
                         }
+
                         if (data1[i].Status == 1) {
                             displaydata += '<td><a id = "cancelstatus' + data1[i].id + '" href="#" onclick = "fncancelleaverequest(' + data1[i].id + ')">Cancel</a></td>';
                         } else {
@@ -283,6 +335,7 @@
                         }
                         displaydata += '</tr>';
                     }
+                    displaydata+='<tr><td colspan="7" align="center"><span style="color:red;" id="successcancel"></span></td></tr>';
                     displaydata += '<tr><td colspan="7"><input type="button" class="btn btn-primary pull-right" name="Clear" id="Clear" value="Close" onclick = "fnredirect()"></td>';
                     displaydata += '</tbody></table>';
                 }
@@ -290,9 +343,11 @@
             }
         });
     }
+
     function fnredirect() {
         location.reload();
     }
+
     function fncancelleaverequest(val) {
         desturl = '/leaves/cancelrequest/';
         $.ajax({
@@ -305,8 +360,13 @@
             dataType: "json",
             success: function (data) {
                 document.getElementById("cancelstatus" + val).innerHTML = "Cancelled";
+                document.getElementById("successcancel").innerHTML = "Successfully cancelled your leave request";
+                setTimeout(function(){ 
+                    document.getElementById("successcancel").innerHTML = "";
+                }, 5000);
             }
         });
     }
+
 </script>
 {% endblock %}

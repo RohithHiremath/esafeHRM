@@ -9,7 +9,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-4">
-          <label for="FirstName">First Name<font color=red>*</font></label>
+          <label for="FirstName">First Name<span style="color:red;">*</span></label>
           <input type="text" class="form-control" name="first_name" id="first_name" value=""
             placeholder="Enter First Name" required>
           <div class="error" id="firstnameErr"></div>
@@ -21,7 +21,7 @@
           <div class="error" id="midnameErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="LastName">Last Name<font color=red>*</font></label>
+          <label for="LastName">Last Name<span style="color:red;">*</span></label>
           <input type="text" class="form-control" name="last_name" id="last_name" value="" placeholder="Enter Last Name"
             required>
           <div class="error" id="lastnameErr"></div>
@@ -30,24 +30,24 @@
 
       <div class="row">
         <div class="col-md-4">
-          <label for="DateOfBirth">Date Of Birth<font color=red>*</font></label>
+          <label for="DateOfBirth">Date Of Birth<span style="color:red;">*</span></label>
           <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" value="" required>
           <div class="error" id="dobErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="personalemail">Personal E-mail ID<font color=red>*</font></label>
+          <label for="personalemail">Personal E-mail ID<span style="color:red;">*</span></label>
           <input type="email" class="form-control" name="personalemailid" id="personalemailid" value="" required
             placeholder="Enter personal E-mail Id">
             <div class="error" id="personalemailidErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
+          <label for="mobilenumber">Mobile Number<span style="color:red;">*</span></label>
           <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="" required
             placeholder="Enter Mobile Number">
             <div class="error" id="mobilenumberErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Gender">Gender<font color=red>*</font></label>
+          <label for="Gender">Gender<span style="color:red;">*</span></label>
           <select name="gender" id="gender" class="form-control" required>
             <option value="" disabled selected hidden>Select Gender</option>
             <option value="">Select</option>
@@ -57,7 +57,7 @@
           <div class="error" id="genderErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="MaritalStatus">Marital Status<font color=red>*</font></label>
+          <label for="MaritalStatus">Marital Status<span style="color:red;">*</span></label>
           <select name="marital_status" id="marital_status" class="form-control" required>
             <option value="" disabled selected hidden>Select Marital Status</option>
             <option value="">Select</option>
@@ -69,7 +69,7 @@
           <div class="error" id="maritalstatusErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Location">Nationality<font color=red>*</font></label>
+          <label for="Location">Nationality<span style="color:red;">*</span></label>
           <select name="nationality" id="nationality" class="form-control" required>
             <option value="" disabled selected hidden>Select Nationality</option>
             <option value="">Select</option>
@@ -81,7 +81,7 @@
       </div>
       <div class="row">
         <div class="col-md-4">
-          <label for="MiddleName">Aadhaar Number<font color=red>*</font></label>
+          <label for="MiddleName">Aadhaar Number<span style="color:red;">*</span></label>
           <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no" value=""
             placeholder="Enter Aadhar Number" required>
           <div class="error" id="aadharErr"></div>
@@ -110,17 +110,17 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-4">
-          <label for="joined_date">Joining Date:<font color=red>*</font></label>
+          <label for="joined_date">Joining Date:<span style="color:red;">*</span></label>
           <input type="date" class="form-control" name="joined_date" id="joined_date" required>
           <div class="error" id="joineddateErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="date_of_permanency">Date Of Permanency:<font color=red>*</font></label>
+          <label for="date_of_permanency">Date Of Permanency:<span style="color:red;">*</span></label>
           <input type="date" class="form-control" name="date_of_permanency" id="date_of_permanency" value="" required>
           <div class="error" id="dopErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="empllevel">Employment Level:<font color=red>*</font></label>
+          <label for="empllevel">Employment Level:<span style="color:red;">*</span></label>
           <select name="empllevel" id="empllevel" class="form-control" required onchange="fngetdropdownvalues(this)"
             data-url="{% url 'pim:getdropdownvalues' %}">
             <option value="" disabled selected hidden>Select Employment Level</option>
@@ -130,20 +130,20 @@
           </select>
         </div>
         <div class="col-md-4">
-          <label for="JobTitle">Job Title<font color=red>*</font></label>
+          <label for="JobTitle">Job Title<span style="color:red;">*</span></label>
           <select name="job_title" id="job_title" class="form-control" required>
           </select>
           <div class="error" id="jobtitleErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Jobgrade">Job Grade<font color=red>*</font></label>
+          <label for="Jobgrade">Job Grade<span style="color:red;">*</span></label>
           <select name="Jobgrade" id="Jobgrade" class="form-control" required>
             <option value="" disabled selected hidden>Select Job Grade</option>
           </select>
           <div class="error" id="jobcategoryErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="Department">Department<font color=red>*</font></label>
+          <label for="Department">Department<span style="color:red;">*</span></label>
           <select name="department" id="department" class="form-control" required>
             <option value="" disabled selected hidden>Select Department</option>
             <option value="">Select</option>
@@ -156,7 +156,7 @@
       </div>
       <div class="row">
         <div class="col-md-4">
-          <label for="Location">Location<font color=red>*</font></label>
+          <label for="Location">Location<span style="color:red;">*</span></label>
           <select name="worklocation" id="worklocation" class="form-control" required>
             <option value="" disabled selected hidden>Select Work Location</option>
             <option value="">Select</option>
@@ -167,7 +167,7 @@
           <div class="error" id="worklocationErr"></div>
         </div>
         <div class="col-md-4">
-          <label for="EmploymentStatus">Employment Type<font color=red>*</font></label>
+          <label for="EmploymentStatus">Employment Type<span style="color:red;">*</span></label>
           <select name="employment_status" id="employment_status" class="form-control" required>
             <option value="" disabled selected hidden>Select Employment Status</option>
             <option value="">Select</option>
@@ -179,7 +179,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="WorkShift">Work Shift<font color=red>*</font></label>
+          <label for="WorkShift">Work Shift<span style="color:red;">*</span></label>
           <select name="work_shifts" id="work_shifts" class="form-control" placeholder="Select Work Shift" required>
             <option value="" disabled selected hidden>Select Work Shift</option>
             <option value="">Select</option>
@@ -191,7 +191,7 @@
       </div>
       <div class="row">
         <div class="col-md-4">
-          <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
+          <label for="companyemail">Company E-mail ID<span style="color:red;">*</span></label>
           <input type="email" class="form-control" name="companyemailid" id="companyemailid" value="" onblur="companymailvalidate(this);" data-url="{% url 'pim:details' %}" required
             placeholder="Enter Company email">
             <div class="col-md-12 col-sm-12" style="color:red;display:none;margin-top: 4px;"  id="login_not">
@@ -211,12 +211,12 @@
       <h4>Assign Reporting Manager</h4>
       <div class="row">
         <div class="col-md-4">
-          <label for="reportingdepartment">Reporting Department<font color=red>*</font></label>
+          <label for="reportingdepartment">Reporting Department<span style="color:red;">*</span></label>
           <select name="reportingdepartment" id="reportingdepartment" class="form-control"
             onchange="fngetmanagers(this)" data-url="{% url 'pim:getmanagers' %}">
             <option value="">Select</option>
             {% for job in departments %}
-            <option value="{{ job.id }}"">
+            <option value="{{ job.id }}">
               {{ job.departmentname }}</option>
             {% endfor %}
           </select>
@@ -224,9 +224,10 @@
         </div>
       </div>
       <div class=col-md-4>
-        <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
+        <label for="reportingmanager">Reporting Manager<span style="color:red;">*</span></label>
         <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
           <option value="" disabled>Select Reporting Manager</option>
+          <option value="1000">Self</option>
         </select>
         <input type="hidden" name="reportingname" id="reportingname" value="">
         <div class="error" id="reportingmanagerErr"></div>
@@ -331,6 +332,7 @@
         success: function (data) {
           $('#reportingmanager').empty();
           $('#reportingmanager').append(new Option('Select Reporting', ''))
+          $('#reportingmanager').append(new Option('Self', '1000'))
           for (var i = 0; i < data.length; i++) {
             $('#reportingmanager').append(new Option(data[i].value, data[i].id));
           }

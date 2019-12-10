@@ -9,4 +9,5 @@ urlpatterns = [
     path('validateshiftdetails', views.validateshiftDetails, name='validateshiftdetails'),
     path('shifttimings', views.ShiftTimings, name='shifttimings'),
     path('employeeshiftlist', views.employeeshiftlist, name='employeeshiftlist'),
+    path('uploadattendance',views.uploadattendance,name='uploadattendance')
 ]

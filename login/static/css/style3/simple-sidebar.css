@@ -43,7 +43,7 @@ body {
 
 .bg-light {
   background-color: #0c5460!important;
-  /* background-image: linear-gradient(to right, #fd7e14,#fd7e14) !important; */
+  background-image: linear-gradient(to right, #059bc6,#3ba96f) !important;
 }
 
 .nav-link {
@@ -74,7 +74,8 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 
 .btn-primary {
   color: #fff;
-  background-color: #0c5460;
+  background-color: #0c5460!important;
+  background-image: linear-gradient(to right, #059bc6,#3ba96f) !important;
   border-color: #343a40;
 }
 
@@ -93,6 +94,7 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .table thead th {
   vertical-align: bottom;
   border-bottom: 1px solid #343a40;
+  background: #32a38a;
 }
 
 tr{
@@ -129,7 +131,8 @@ tr{
   margin-top: 120px !important;
 }
 .modal-header {
-  background-color: #ffffff !important;
+  background-color: #0c5460!important;
+  background-image: linear-gradient(to right, #059bc6,#3ba96f) !important;
   padding: 0.5rem;
   color: #343a40;
 }
@@ -143,7 +146,8 @@ tr{
   color:#111 !important
 }
 .card-header {
-  background-color: #0c5460 !important;
+  background-color: #0c5460!important;
+  background-image: linear-gradient(to right, #059bc6,#3ba96f) !important;
   padding: 0.5rem;
   color: white;
 }

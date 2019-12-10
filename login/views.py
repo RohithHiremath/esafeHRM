@@ -21,7 +21,7 @@ def login(request):
             return  redirect('login:dashboard')
         else:
             messages.error(request,'Invalid Username or Password')
-            return redirect('login')
+            return redirect('login:login')
     else:
         return redirect('/')
 

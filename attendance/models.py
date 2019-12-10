@@ -1,4 +1,5 @@
 from django.db import models
+from pim.models import Personal_details
 # Create your models here.
 
 class TardinessDetails(models.Model):
@@ -16,6 +17,25 @@ class TardinessDetails(models.Model):
     minimumHoursForOT = models.SmallIntegerField(default=2,blank = False)
     OTcompensatorytype = models.SmallIntegerField(default=2,blank = False)
     OTPayment = models.SmallIntegerField(default=3,blank = False)
+
+class EmployeeAttendance(models.Model):
+
+    attendance_date = models.DateField(blank = False)
+    employee_code = models.ForeignKey(Personal_details,on_delete = models.CASCADE)
+    employee_name = models.CharField(max_length=150,blank=False)
+    employee_shift = models.CharField(max_length=150,blank=False)
+    employee_intime = models.TimeField(auto_now=False, auto_now_add=False)
+    employee_outime = models.TimeField(auto_now=False, auto_now_add=False)
+    employee_workduration = models.TimeField(auto_now=False, auto_now_add=False)
+    employee_OT = models.TimeField(auto_now=False, auto_now_add=False)
+    employee_totalwork = models.TimeField(auto_now=False, auto_now_add=False)
+    holiday_status  = models.SmallIntegerField(default=2,blank = False)
+    weekend_status  = models.SmallIntegerField(default=2,blank = False)
+    attendance_status  = models.SmallIntegerField(default=1,blank = False)
+    leave_status  = models.SmallIntegerField(default=1,blank = False)
+    compoff_status  = models.SmallIntegerField(default=1,blank = False)
+    updated_date_time = models.DateTimeField(blank = False)
+
 
 class ShiftDetails(models.Model):
     shiftname = models.CharField(max_length=150,blank = False)
