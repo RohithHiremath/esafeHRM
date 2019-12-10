@@ -299,21 +299,22 @@ def leaverequested(request):
             leaverequest.update(Status = lst)
         for i in leaverequest:
             i.save()
-        apptemplate = Emailtemplate.objects.filter(title = 'approve')
-        for temp in apptemplate:
-            atemplate = temp.description
-        clean = re.compile('<.*?>')
-        approvetemp = re.sub(clean, '', str(atemplate))
-        approvetemplate = approvetemp.replace("&nbsp;", "")
-        
-        rejtemplate = Emailtemplate.objects.filter(title = 'reject')
-        for temp in rejtemplate:
-            rtemplate = temp.description
-        clean = re.compile('<.*?>')
-        rejecttemp = re.sub(clean, '', str(rtemplate))
-        rejecttemplate = rejecttemp.replace("&nbsp;", "")
 
         for (val,lst) in zip(empList,statuslist):
+            apptemplate = Emailtemplate.objects.filter(title = 'approve')
+            for temp in apptemplate:
+                atemplate = temp.description
+            clean = re.compile('<.*?>')
+            approvetemp = re.sub(clean, '', str(atemplate))
+            approvetemplate = approvetemp.replace("&nbsp;", "").replace("Employee",str( LeaveDetails.objects.values_list('employee__first_name',flat=True).get(id = val))).replace("requestdate",str( LeaveDetails.objects.values_list('AppliedDate',flat=True).get(id = val))).replace("leavereason",str( LeaveDetails.objects.values_list('Reason',flat=True).get(id = val))).replace("leaveshortname",str( LeaveDetails.objects.values_list('leave_type__shortname',flat=True).get(id = val))).replace("fromdate",str( LeaveDetails.objects.values_list('Fromdate',flat=True).get(id = val))).replace("todate",str( LeaveDetails.objects.values_list('Todate',flat=True).get(id = val)))
+            
+            rejtemplate = Emailtemplate.objects.filter(title = 'reject')
+            for temp in rejtemplate:
+                rtemplate = temp.description
+            clean = re.compile('<.*?>')
+            rejecttemp = re.sub(clean, '', str(rtemplate))
+            rejecttemplate = rejecttemp.replace("&nbsp;", "").replace("Employee",str( LeaveDetails.objects.values_list('employee__first_name',flat=True).get(id = val))).replace("requestdate",str( LeaveDetails.objects.values_list('AppliedDate',flat=True).get(id = val))).replace("leavereason",str( LeaveDetails.objects.values_list('Reason',flat=True).get(id = val))).replace("leaveshortname",str( LeaveDetails.objects.values_list('leave_type__shortname',flat=True).get(id = val))).replace("fromdate",str( LeaveDetails.objects.values_list('Fromdate',flat=True).get(id = val))).replace("todate",str( LeaveDetails.objects.values_list('Todate',flat=True).get(id = val)))
+
             emailid =  LeaveDetails.objects.values_list('employee__companyemailid',flat=True).get(id = val)
             sendemail(request,emailid,approvetemplate,rejecttemplate,lst)
         return redirect('/leaves/leaverequested/')

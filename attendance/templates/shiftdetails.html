@@ -256,25 +256,26 @@ function shortnamevalidate(element) {
     }
     });
 }
-function somefunction(){  
+function somefunction(){ 
     var shiftname = document.getElementById('shiftname').value
     if (shiftname == ""){
-        document.getElementById("save").disabled = true;
+         document.getElementById("save").disabled = true;
     }else{
         document.getElementById("save").disabled = false;
     }
     var shortname = document.getElementById('shortname').value
     if (shortname == ""){
-        document.getElementById("save").disabled = true;
+         document.getElementById("save").disabled = true;
     }else{
         document.getElementById("save").disabled = false;
     }
     var flexibleshift = document.getElementById('flexibleshift').value
     if (flexibleshift == ""){
-        document.getElementById("save").disabled = true;
+         document.getElementById("save").disabled = true;
     }else{
         document.getElementById("save").disabled = false;
     }
 }
 </script>
 {% endblock %}
+        
