@@ -37,4 +37,21 @@ class EmployeeAttendance(models.Model):
     updated_date_time = models.DateTimeField(blank = False)
 
 
+class ShiftDetails(models.Model):
+    shiftname = models.CharField(max_length=150,blank = False)
+    shortname = models.CharField(max_length=150,blank = False)
+    shiftdescription = models.CharField(max_length=150,blank = False)
+    flexibleshift = models.SmallIntegerField(default=1,blank=False)
+    
+    def __str__(self):
+        return self.shiftname
+    
+class ShiftTimings(models.Model):
+    shift_name = models.ForeignKey(ShiftDetails,on_delete=models.CASCADE)
+    workdays = models.SmallIntegerField(default=0,blank=False)
+    shift_in_time = models.TimeField()
+    shift_out_time = models.TimeField()
+    from_time = models.TimeField()
+    to_time = models.TimeField()
+    weekoff = models.SmallIntegerField(default=2)
 
