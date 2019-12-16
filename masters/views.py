@@ -7,37 +7,48 @@ from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatu
 
 def jobtitles(request):
     if request.method == 'POST':
-        response_data = {}
-        job = None
-        job = Job.objects.filter(jobtitle = request.POST['jobtitle'])
-        if not job:
-            response_data["is_success"] = True
-            job = Job(jobtitle=request.POST['jobtitle'],jobdescription=request.POST['jobdescription'])
-            job.save()
-            return redirect('jobtitle')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        job = Job(jobtitle=request.POST['jobtitle'],jobdescription=request.POST['jobdescription'])
+        job.save()
+        return redirect('jobtitle')
     else:
         jobs = Job.objects.all().order_by('jobtitle')
         return render(request,'jobtitles.html',{'title':'Jobtitles List','jobs':jobs})
 
-def editjobtitles(request, id):
+def jobtitlesajax(request):
     if request.method == 'POST':
         response_data = {}
-        job = None
-        job = Job.objects.filter(jobtitle = request.POST['jobtitle'])
-        if not job:
-            jobs = Job.objects.get(id=id)
-            jobs.jobtitle = request.POST['jobtitle']
-            jobs.jobdescription = request.POST['jobdescription']
-            jobs.save()
-            return redirect('jobtitle')
+        grade = None
+        grade = Job.objects.filter(jobtitle = request.POST['jobtitle'])
+        if not grade:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def editjobtitles(request, id):
+    if request.method == 'POST':
+        jobs = Job.objects.get(id=id)
+        jobs.jobtitle = request.POST['jobtitle']
+        jobs.jobdescription = request.POST['jobdescription']
+        jobs.save()
+        return redirect('jobtitle')
     else:
         return redirect('jobtitle')
+
+def editjobtitlesajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        grade = None
+        grade = Job.objects.filter(jobtitle = request.POST['jobtitle'])
+        deptid = Job.objects.get(id = id)
+        if deptid in grade:
+            response_data["is_success"] = True
+        else:
+            if not grade:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)
 
 def jobcategories(request):
     if request.method == 'POST':
@@ -74,35 +85,47 @@ def editjobcategories(request, id):
 
 def jobgrade(request):
     if request.method == 'POST':
-        response_data = {}
-        grade = None
-        grade = Jobgrade.objects.filter(jobgrade = request.POST['jobgrade'])
-        if not grade:
-            grade = Jobgrade(jobgrade = request.POST['jobgrade'])
-            grade.save()
-            return redirect('jobgrade')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        grade = Jobgrade(jobgrade = request.POST['jobgrade'])
+        grade.save()
+        return redirect('jobgrade')
     else:
         grades = Jobgrade.objects.all().order_by('jobgrade')
     return render(request,'jobgrades.html',{'title':'jobgrades List','grades':grades})
 
-def editjobgrade(request, id):
+def jobgradeajax(request):
     if request.method == 'POST':
         response_data = {}
-        cat = None
-        cat = Jobgrade.objects.filter(jobgrade = id)
-        if not cat:
-            cat = Jobgrade.objects.get(id=id)
-            cat.jobgrade = request.POST['jobgrade']
-            cat.save()
-            return redirect('jobgrade')
+        grade = None
+        grade = Jobgrade.objects.filter(jobgrade = request.POST['jobgrade'])
+        if not grade:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def editjobgrade(request, id):
+    if request.method == 'POST':
+        cat = Jobgrade.objects.get(id=id)
+        cat.jobgrade = request.POST['jobgrade']
+        cat.save()
+        return redirect('jobgrade')
     else:
         return redirect('jobgrade')
+
+def editjobgradeajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        grade = None
+        grade = Jobgrade.objects.filter(jobgrade = request.POST['jobgrade'])
+        deptid = Jobgrade.objects.get(id = id)
+        if deptid in grade:
+            response_data["is_success"] = True
+        else:
+            if not grade:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)
 
 def component(request):
     if request.method == 'POST':
@@ -140,92 +163,133 @@ def editcomponent(request, id):
 
 def employementstatus(request):
     if request.method == 'POST':
-        response_data = {}
-        status = None
-        status = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
-        if not status:
-            response_data["is_success"] = True
-            status = Employmentstatus(employementstatus=request.POST['employementstatus'])
-            status.save()
-            return redirect('status')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        status = Employmentstatus(employementstatus=request.POST['employementstatus'])
+        status.save()
+        return redirect('status')
     else:
         statuses = Employmentstatus.objects.all().order_by('employementstatus')
     return render(request,'employmentstatus.html',{'title':'status List','statuses':statuses})
 
-def editemployementstatus(request, id):
+def employementstatusajax(request):
     if request.method == 'POST':
         response_data = {}
-        job = None
-        job = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
-        if not job:
-            cat = Employmentstatus.objects.get(id=id)
-            cat.employementstatus = request.POST['employementstatus']
-            cat.save()
-            return redirect('status')
+        grade = None
+        grade = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
+        if not grade:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def editemployementstatus(request, id):
+    if request.method == 'POST':
+        cat = Employmentstatus.objects.get(id=id)
+        cat.employementstatus = request.POST['employementstatus']
+        cat.save()
+        return redirect('status')
     else:
         return redirect('status')
 
-def department(request):
+def editemployementstatusajax(request, id):
     if request.method == 'POST':
         response_data = {}
-        department = None
-        department = Department.objects.filter(departmentname = request.POST['departmentname'])
-        if not department:
+        grade = None
+        grade = Employmentstatus.objects.filter(employementstatus = request.POST['employementstatus'])
+        deptid = Employmentstatus.objects.get(id = id)
+        if deptid in grade:
             response_data["is_success"] = True
-            department = Department(departmentname=request.POST['departmentname'],description=request.POST['description'])
-            department.save()
-            return redirect('department')
         else:
-            response_data["is_success"] = False
+            if not grade:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def department(request):
+    if request.method == 'POST':
+        department = Department(departmentname=request.POST['departmentname'],description=request.POST['description'])
+        department.save()
+        return redirect('department')
     else:
         departments = Department.objects.all().order_by('departmentname')
     return render(request,'department.html',{'title':'Department','departments':departments})
 
-def editdepartment(request, id):
+def departmentajax(request):
     if request.method == 'POST':
         response_data = {}
-        dept = None
-        dept = Department.objects.filter(departmentname = request.POST['departmentname'])
-        if not dept:
-            depts = Department.objects.get(id=id)
-            depts.departmentname = request.POST['departmentname']
-            depts.description = request.POST['description']
-            depts.save()
-            return redirect('department')
+        grade = None
+        grade = Department.objects.filter(departmentname = request.POST['departmentname'])
+        if not grade:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def editdepartment(request, id):
+    if request.method == 'POST':
+        depts = Department.objects.get(id=id)
+        depts.departmentname = request.POST['departmentname']
+        depts.description = request.POST['description']
+        depts.save()
+        return redirect('department')
     else:
         return redirect('department')
 
+def editdepartmentajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        grade = None
+        grade = Department.objects.filter(departmentname = request.POST['departmentname'])
+        deptid = Department.objects.get(id = id)
+        if deptid in grade:
+            response_data["is_success"] = True
+        else:
+            if not grade:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)
+
 def worklocation(request):
     if request.method == 'POST':
-        loctn = Location(location=request.POST['location'])
+        loctn = Location(location=request.POST['joblocation'])
         loctn.save()
         return redirect('worklocation')
     else:
         locations = Location.objects.all().order_by('location')
     return render(request,'location.html',{'title':'Location','locations':locations})   
 
-def editlocation(request, id):
+def locationajax(request):
     if request.method == 'POST':
         response_data = {}
         dept = None
-        dept = Location.objects.filter(location = request.POST['location'])
+        dept = Location.objects.filter(location = request.POST['joblocation'])
         if not dept:
-            loc = Location.objects.get(id=id)
-            loc.location = request.POST['location']
-            loc.save()
-            return redirect('worklocation')
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
+
+def editlocation(request, id):
+    if request.method == 'POST':
+        loc = Location.objects.get(id=id)
+        loc.location = request.POST['joblocation']
+        loc.save()
+        return redirect('worklocation')
     else:
         return redirect('worklocation')
+    
+def editlocationajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        grade = None
+        grade = Location.objects.filter(location = request.POST['joblocation'])
+        locid = Location.objects.get(id = id)
+        if locid in grade:
+            response_data["is_success"] = True
+        else:
+            if not grade:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)

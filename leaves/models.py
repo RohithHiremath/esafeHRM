@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from pim.models import Personal_details
+# from esafehrm import settings  
 # Create your models here.
 
 class Leavestructure(models.Model):

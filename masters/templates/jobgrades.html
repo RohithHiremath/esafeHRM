@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <label for="jobgrade">Job Grade</label><span>*</span>
-                            <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" onblur="gradevalidate(this);return false;" data-url="{% url 'jobgrade' %}" required>
+                            <input type="text" class="form-control" id="jobgrade" name="jobgrade" value="" onblur="gradevalidate(this);return false;" data-url="{% url 'jobgradeajax' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -82,9 +82,12 @@
                             <label for="jobgrade">Job Grade</label><span>*</span>
                             <input type="text" class="form-control" id="jobgrade" name="jobgrade"
                                 value="{{ grade.jobgrade }}" onblur="gradeedit(this,{{ grade.id }});
-                                " data-url="{% url 'jobgrade' %}" required>
+                                " data-url="{% url 'editjobgradeajax' grade.id  %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ grade.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ grade.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                     </div>
@@ -127,11 +130,11 @@ function gradeedit(element,id) {
     $("#edit_ok"+id).hide();
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
-	jobgradevalue = $(element).val();
+	jobgrade = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
-            "jobgrade":jobgradevalue,
+            "jobgrade":jobgrade,
 			"csrfmiddlewaretoken" : '{{ csrf_token }}',
 		},
 		method: "POST",

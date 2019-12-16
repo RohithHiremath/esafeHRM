@@ -47,10 +47,13 @@
                         <div class="col-md-5">
                             <label for="jobtitle">Job Title</label><span>*</span>
                             <input type="text" class="form-control" id="jobtitle" name="jobtitle" value=""
-                                onblur="jobvalidate(this);" data-url="{% url 'jobtitle' %}" required />
+                                onblur="jobvalidate(this);" data-url="{% url 'jobtitlesajax' %}" required />
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
                                 id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -83,7 +86,7 @@
                             <label for="jobtitle">Job Title</label><span>*</span>
                             <input type="text" class="form-control" id="jobtitle" name="jobtitle"
                                 value="{{ job.jobtitle }}" onblur="jobedit(this,{{ job.id }});"
-                                data-url="{% url 'editjobtitle'  job.id  %}" required>
+                                data-url="{% url 'editjobtitlesajax'  job.id  %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
                                 id="edit_not{{ job.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
@@ -136,8 +139,8 @@
             dataType: "json",
             success: function (data) {
                 if (data.is_success) {
-                    // $("#login_ok").show(); 
-                    // document.getElementById("save").disabled = false; 
+                    $("#login_ok").show(); 
+                    document.getElementById("save").disabled = false; 
                 } else {
                     $("#login_not").show();
                     document.getElementById("save").disabled = true;
@@ -149,19 +152,19 @@
         $("#edit_ok" + id).hide();
         $("#edit_not" + id).hide();
         document.getElementById("editsave" + id).disabled = false;
-        jobtitlevalue = $(element).val();
+        jobtitle = $(element).val();
         $.ajax({
             url: $(element).attr("data-url"),
             data: {
-                "jobtitle": jobtitlevalue,
+                "jobtitle": jobtitle,
                 "csrfmiddlewaretoken": '{{ csrf_token }}',
             },
             method: "POST",
             dataType: "json",
             success: function (data) {
                 if (data.is_success) {
-                    // $("#edit_ok"+id).show();
-                    document.getElementById("editsave" + id).disabled = true;
+                    $("#edit_ok"+id).show();
+                    document.getElementById("editsave" + id).disabled = false;
                 } else {
                     $("#edit_not" + id).show();
                     document.getElementById("editsave" + id).disabled = true;

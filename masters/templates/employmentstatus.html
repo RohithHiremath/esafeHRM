@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <label for="employementstatus">Employment Type</label><span>*</span>
-                            <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" onblur="statusvalidate(this);" data-url="{% url 'status' %}" required>
+                            <input type="text" class="form-control" id="employementstatus" name="employementstatus" value="" onblur="statusvalidate(this);" data-url="{% url 'employementstatusajax' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -75,9 +75,12 @@
                         <div class="col-md-9">
                             <label for="employementstatus">Employment Type</label><span>*</span>
                             <input type="text" class="form-control" id="employementstatus" name="employementstatus"
-                                value="{{ status.employementstatus }}" onblur="statusedit(this,{{ status.id }});" data-url="{% url 'status' %}" required>
+                                value="{{ status.employementstatus }}" onblur="statusedit(this,{{ status.id }});" data-url="{% url 'editemployementstatusajax' status.id %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ status.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok{{ status.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                     </div>
@@ -120,11 +123,11 @@ function statusedit(element,id) {
     $("#edit_ok"+id).hide();
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
-	employementstatusvalue = $(element).val();
+	employementstatus = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
-            "employementstatus":employementstatusvalue,
+            "employementstatus":employementstatus,
 			"csrfmiddlewaretoken" : '{{ csrf_token }}',
 		},
 		method: "POST",

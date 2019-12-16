@@ -138,6 +138,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+
 # EMAIL
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -155,3 +157,4 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets') 
 # SESSION_COOKIE_SECURE = True
+

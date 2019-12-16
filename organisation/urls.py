@@ -5,6 +5,7 @@ app_name ='organisation'
 
 urlpatterns = [
     path('levels', views.addlevel, name='addlevel'),
+    path('levelslist', views.levelslist, name='levelslist'),
     path('orgchart', views.orgchart, name='orgchart'),
     path('orgchartdata', views.orgchartdata, name='orgchartdata')
 ]

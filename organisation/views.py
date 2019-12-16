@@ -28,12 +28,26 @@ def addlevel(request):
                 grades_id = gradeval
             )
             gradeleveldata.save()
-        return  redirect('login:dashboard')
+        return  redirect('/organisation/levelslist')
     else:
         levels = Leveldefinition.objects.all().order_by('levelName')
         grades = Jobgrade.objects.all().order_by('jobgrade')
         alldesignations = Job.objects.all()
         return render(request,'levels.html',{'levels':levels, 'allgrades': grades,'alldesignations': alldesignations,'title':'Add Level'})
+
+def levelslist(request):
+    levels = Leveldefinition.objects.all()
+    for level in levels:
+        leveldesignation = LevelDesignation.objects.filter(levelid_id = level.id).select_related('designations')
+        if level.parentlevel == 0:
+            parentlevel = 'Top Level'
+        else:
+            parentlevel = Leveldefinition.objects.get(id = level.parentlevel)
+        level.parent = parentlevel
+        level.assigneddesignations = leveldesignation
+        grades = LevelGrades.objects.filter(levelid_id = level.id).select_related('grades')
+        level.assignedgrades = grades
+    return render(request,'levelslist.html',{'title':'Organisation Chart','leveldetails':levels})
 
 def orgchart(request):
     return render(request,'orgchart.html',{'title':'Organisation Chart'})

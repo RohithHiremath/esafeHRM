@@ -22,7 +22,7 @@
                 <td>{{ location.location }}</td>
                 <td  data-toggle="tooltip" title="Click to edit">
                     <a href="#" data-toggle="modal" data-target="#editjoblocation{{ location.id }}"><i
-                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                        class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                 </td>
             </tr>
             {% endfor %}
@@ -41,10 +41,13 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="location">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="location" name="location" value="" onblur="locationvalidate(this);" data-url="{% url 'worklocation' %}" required>
+                            <label for="joblocation">Location</label><span>*</span>
+                            <input type="text" class="form-control" id="joblocation" name="joblocation" value="" onblur="locationvalidate(this);" data-url="{% url 'locationajax' %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                     </div>
@@ -71,8 +74,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="location">Location</label><span>*</span>
-                            <input type="text" class="form-control" id="location" name="location" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'worklocation' %}" required>
+                            <label for="joblocation">Location</label><span>*</span>
+                            <input type="text" class="form-control" id="joblocation" name="joblocation" value="{{ location.location }}" onblur="locationedit(this,{{ location.id }});" data-url="{% url 'editlocationajax' location.id %}" required>
                             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="edit_not{{ location.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
@@ -96,12 +99,12 @@ function locationvalidate(element) {
 	$("#login_ok").hide();
 	$("#login_not").hide();
     document.getElementById("save").disabled = false;
-	location = $(element).val();
+	joblocation = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
-			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-            "location":location,
+            "joblocation":joblocation,
+            "csrfmiddlewaretoken" : '{{ csrf_token }}',
 		},
 		method: "POST",
 		dataType : "json",
@@ -120,11 +123,11 @@ function locationedit(element,id) {
     $("#edit_ok"+id).hide();
 	$("#edit_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
-	location = $(element).val();
+	joblocation = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
 		data : {
-            "locationname":location,
+            "joblocation":joblocation,
 			"csrfmiddlewaretoken" : '{{ csrf_token }}',
 		},
 		method: "POST",
@@ -140,5 +143,5 @@ function locationedit(element,id) {
 		}
 	});
 }
-</script> 
+</script>
 {% endblock %}

@@ -19,7 +19,7 @@
                     <label for="parent">Parent Level<font color=red>*</font></label>
                     <select class="form-control" name="parent" id="parent" placeholder="Select Parent Level">
                         <option value="" disabled selected hidden>Select Parent Level</option>
-                        <option value="0">Root</option>
+                        <option value="0">Top Level</option>
                         {% for level in levels %}
                         <option value="{{level.id}}">{{level.levelName}}</option>
                         {% endfor %}
@@ -59,6 +59,11 @@
             <br/>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="save">Save</button>
+            <a href="{% url 'organisation:levelslist' %}">
+                <button type="button" class="btn btn-primary">
+                    <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
+                </button>
+            </a>
             </div>
         </div>
     </div>
