@@ -1,11 +1,9 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<form action="" name="emplist" id="emplist" method="POST" >
-{% csrf_token %}
     <div class="container-fluid text-right" style="margin:10px;float:right;">
         <h4 style="float: left;">Organisation Level List</h4>
     <a href="{% url 'organisation:addlevel' %}">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
+    <button type="button" class="btn btn-primary">
         Add
     </button>
     </a>
@@ -18,17 +16,19 @@
             <th>Level Name</th>
             <th>Parent Level</th>
             <th>Short Name</th>
-            <th>Action</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for level in leveldetails %}
+        <form action="/organisation/updatelist/{{ level.id }}/" name="levelslist" id="levelslist" method="POST">
+        {% csrf_token %}
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ level.levelName}}</td>
             <td>{{ level.parent}}</td>
             <td>{{ level.shortName }}</td>
-            <td><a data-toggle="collapse" 
+            <td title="Click to view"><a data-toggle="collapse" 
                   href="#collapseExample{{ level.id }}"
                   role="button" 
                   aria-expanded="false" 
@@ -43,15 +43,57 @@
                 {% for designationdetails in level.assigneddesignations%}
                 <input type="checkbox"> {{ designationdetails.designations.jobtitle }}
                 {% endfor %}
+            <br />
+            <br />
+                <select name="designation" id="designation" class="form-control">
+                    <option value="" disabled selected hidden>Select</option>
+                    <option value="">Select</option>
+                    {% for designations in alldesignations %}
+                    <option value="{{designations.id}}">{{designations.jobtitle}}</option>
+                    {% endfor %}
+                </select>
+                <br />
             </td>
             <td>Grade: <br/><br/>
             {% for gradedetails in level.assignedgrades%}
             <input type="checkbox" > {{ gradedetails.grades.jobgrade}}
             {% endfor %}
+            <br />
+            <br />
+                <select name="grade" class="form-control" id="grade">
+                <option value="" disabled selected hidden>Select</option>
+                    <option value="">Select</option>
+                    {% for grades in allgrades %}
+                    <option value="{{grades.id}}">{{grades.jobgrade}}</option>
+                    {% endfor %}
+                </select>
             </td> 
+            <td> <br/><br/>
+            <br/><br/>
+            <input type="submit" class="btn btn-primary" id="update" value='Update'>
+           </td> 
          </tr>
+        </form>
         {% endfor %}
     </tbody>
   </table>
-</form>
+  {% comment %} <script>
+  function somefunc() {
+    flag = false;
+    document.getElementById("update").disabled = true;
+    var grades = document.getElementById('designation').value
+        if (grades == ""){
+            document.getElementById("update").disabled = true;
+            return false; 
+        } else {
+            document.getElementById("update").disabled = false;
+        }
+        flag = true;
+        if (flag == false) {
+            document.getElementById("update").disabled = true;      
+        } else {
+            document.getElementById('levelslist').submit();
+      }
+  }
+  </script> {% endcomment %}
 {% endblock %}

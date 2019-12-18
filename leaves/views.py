@@ -256,38 +256,42 @@ def upload(request):
         return redirect('/leaves/holidays/')
 
 def applyleave(request):
-    current_user = request.user
-    personal = Personal_details.objects.get(companyemailid=current_user.email)
-    leavestructurdetails = AssignLeaveStructure.objects.filter(empid_id=personal.id).select_related('leave_structure')
-    for leavestructurdetails in leavestructurdetails:
-        leavestructurrname = leavestructurdetails.leave_structure.leavestructure
-        leavestructureid =  leavestructurdetails.leave_structure.id  
-        leavestructureshortname =  leavestructurdetails.leave_structure.shortname
-    linkedleavetypes = Linktoleavetype.objects.filter(leave_structure_id=leavestructureid).select_related('leave_type')
-    currentdate = datetime.datetime.now()
-    get_selyear = currentdate.strftime('%Y')
-    get_selmonth = currentdate.strftime('%m')
-    get_selday = currentdate.strftime('%d')
-    for linkedleavetype in linkedleavetypes:
-        leaveid = linkedleavetype.leave_type.id
-        availed = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status = 2).aggregate(totalleaves = Sum('NumberOfLeaves'))
-        requested = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__year__lte=get_selyear,Fromdate__month__lte=get_selmonth,Fromdate__day__lte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
-        cancelled = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,4,5],Fromdate__year__gte=get_selyear,Fromdate__month__gte=get_selmonth,Fromdate__day__gte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
-        linkedleavetype.leave_type.availed = availed['totalleaves']
-        linkedleavetype.leave_type.requested = requested['totalleaves']
-        linkedleavetype.leave_type.cancelled = cancelled['totalleaves']
-        if availed['totalleaves'] is not None:
-            availedval = availed['totalleaves']
-        else:
-            availedval = 0
+    per = Personal_details.objects.filter()
+    if not per:
+        return render(request,'leaves/leavemessage.html',{'title':'My Leave Entitlements'})
+    else:    
+        current_user = request.user
+        personal = Personal_details.objects.get(companyemailid=current_user.email)
+        leavestructurdetails = AssignLeaveStructure.objects.filter(empid_id=personal.id).select_related('leave_structure')
+        for leavestructurdetails in leavestructurdetails:
+            leavestructurrname = leavestructurdetails.leave_structure.leavestructure
+            leavestructureid =  leavestructurdetails.leave_structure.id  
+            leavestructureshortname =  leavestructurdetails.leave_structure.shortname
+        linkedleavetypes = Linktoleavetype.objects.filter(leave_structure_id=leavestructureid).select_related('leave_type')
+        currentdate = datetime.datetime.now()
+        get_selyear = currentdate.strftime('%Y')
+        get_selmonth = currentdate.strftime('%m')
+        get_selday = currentdate.strftime('%d')
+        for linkedleavetype in linkedleavetypes:
+            leaveid = linkedleavetype.leave_type.id
+            availed = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status = 2).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            requested = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__year__lte=get_selyear,Fromdate__month__lte=get_selmonth,Fromdate__day__lte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            cancelled = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,4,5],Fromdate__year__gte=get_selyear,Fromdate__month__gte=get_selmonth,Fromdate__day__gte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            linkedleavetype.leave_type.availed = availed['totalleaves']
+            linkedleavetype.leave_type.requested = requested['totalleaves']
+            linkedleavetype.leave_type.cancelled = cancelled['totalleaves']
+            if availed['totalleaves'] is not None:
+                availedval = availed['totalleaves']
+            else:
+                availedval = 0
 
-        if requested['totalleaves'] is not None:
-            requestedval = requested['totalleaves']
-        else:
-            requestedval = 0
-        balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
-        linkedleavetype.leave_type.balance = balance 
-    return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
+            if requested['totalleaves'] is not None:
+                requestedval = requested['totalleaves']
+            else:
+                requestedval = 0
+            balance = linkedleavetype.numberOfLeaves - (availedval+requestedval)
+            linkedleavetype.leave_type.balance = balance 
+        return render(request,'leaves/applyleave.html',{'title':'My Leave Entitlements','personid' : personal.id,'leavestructurrname':leavestructurrname,'leavestructureshortname':leavestructureshortname,'linkedleavetypes':linkedleavetypes})
                 
 def leaverequested(request):
     if request.method == "POST":

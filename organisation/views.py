@@ -37,6 +37,8 @@ def addlevel(request):
 
 def levelslist(request):
     levels = Leveldefinition.objects.all()
+    allgrades = Jobgrade.objects.all()
+    alldesignations = Job.objects.all()
     for level in levels:
         leveldesignation = LevelDesignation.objects.filter(levelid_id = level.id).select_related('designations')
         if level.parentlevel == 0:
@@ -47,7 +49,22 @@ def levelslist(request):
         level.assigneddesignations = leveldesignation
         grades = LevelGrades.objects.filter(levelid_id = level.id).select_related('grades')
         level.assignedgrades = grades
-    return render(request,'levelslist.html',{'title':'Organisation Chart','leveldetails':levels})
+    return render(request,'levelslist.html',{'title':'Organisation Chart','leveldetails':levels,'alldesignations':alldesignations,'allgrades':allgrades})
+
+def updatelist(request,id):
+    if request.method == "POST":
+        levels = LevelDesignation(levelid_id=id,designations_id=request.POST['designation'])
+        levels.save()
+        grade = LevelGrades(levelid_id=id,grades_id=request.POST['grade'])
+        grade.save()
+        return redirect('/organisation/levelslist')
+    else: 
+        return redirect('/organisation/levelslist')
+
+def delete(request, id):
+    grade = Leveldefinition.objects.get(id=id)
+    grade.delete()
+    return redirect('/organisation/levelslist')
 
 def orgchart(request):
     return render(request,'orgchart.html',{'title':'Organisation Chart'})
