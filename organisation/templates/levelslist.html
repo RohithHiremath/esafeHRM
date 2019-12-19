@@ -46,8 +46,7 @@
             <br />
             <br />
                 <select name="designation" id="designation" class="form-control">
-                    <option value="" disabled selected hidden>Select</option>
-                    <option value="">Select</option>
+                    <option value="" disabled selected hidden>Select Designations</option>
                     {% for designations in alldesignations %}
                     <option value="{{designations.id}}">{{designations.jobtitle}}</option>
                     {% endfor %}
@@ -61,8 +60,7 @@
             <br />
             <br />
                 <select name="grade" class="form-control" id="grade">
-                <option value="" disabled selected hidden>Select</option>
-                    <option value="">Select</option>
+                <option value="" disabled selected hidden>Select Grades</option>
                     {% for grades in allgrades %}
                     <option value="{{grades.id}}">{{grades.jobgrade}}</option>
                     {% endfor %}

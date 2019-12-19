@@ -6,7 +6,6 @@ import re
 from django.urls import reverse
 from masters.models import Job, Emailtemplate
 from pim.models import Personal_details
-from django.db import IntegrityError
 from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, Upload_list
 from django.contrib import messages
 import datetime

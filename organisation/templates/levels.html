@@ -92,5 +92,23 @@
         $('#grades').multiselect();
     });
 
+    function somefunction(){
+      flag = false;
+      var firstname = document.getElementById('first_name').value
+      if (firstname == "") {
+        printError("firstnameErr", "Please Enter First Name");
+        return false;
+      } else {
+        var regex = /^[a-zA-Z\s]+$/;
+        if (regex.test(firstname) === false) {
+          printError("firstnameErr", "Only Characters");
+          return false;
+        } else {
+          printError("firstnameErr", "");
+          firstnameErr = false;
+          flag = true;
+        }
+      }
+    }
 </script>
 {% endblock %}
