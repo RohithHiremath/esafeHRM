@@ -41,33 +41,49 @@
                             <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
                         </a>
                     </li>
+                    {% if perms.masters %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-cog" aria-hidden="true"> Masters <i class="fa fa-angle-down"
                                     aria-hidden="true"></i></i>
                         </a>
+                        
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if perms.masters.add_job %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
                                 Job Titles
                             </a>
-                            <!-- <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobcategory' %}">
-                                Job Categories
-                            </a> -->
+                            {% endif %}
+                            {% if perms.masters.add_jobgrade %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobgrade' %}">
                                 Job Grades
                             </a>
+                            {% endif %}
+
+                            {% if perms.masters.add_employementstatus %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'status' %}">
                                 Employment Types
                             </a>
+                            {% endif %}
+
+                            {% if perms.masters.add_department %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
                                 Departments
                             </a>
+                            {% endif %}
+
+                            {% if perms.masters.add_location %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'worklocation' %}">
                                 Work Location
                             </a>
+                            {% endif %}
                         </div>
+                        
                     </li>
+                    {% endif %}
+                    
+                    {% if perms.organisation %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
@@ -75,16 +91,23 @@
                                     aria-hidden="true"></i></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if perms.organisation.add_leveldefinition %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:levelslist' %}">
                                 Organisation Levels
                             </a>
+                            {% endif %}
+
+                            
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:orgchart' %}">
                                 Organisation Chart
                             </a>
+                            
                         </div>
                     </li>
+                    {% endif %}
+                    {% if perms.pim %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
@@ -92,41 +115,63 @@
                                     class="fa fa-angle-down" aria-hidden="true"></i></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if perms.pim.add_personal_details %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'pim:employeelist' %}">
                                 <i class="fa fa-users" aria-hidden="true"> Employee List</i>
                             </a>
+                            {% endif %}
                         </div>
                     </li>
+                    {% endif %}
+                    {% if perms.leaves %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-bars" aria-hidden="true"> Leaves <i class="fa fa-angle-down"
                                     aria-hidden="true"></i></i>
                         </a>
+                        
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if perms.leaves.add_leavetype %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:leavetype' %}">
                                 Leave Type
                             </a>
+                            {% endif %}
+
+                            {% if perms.leaves.add_leavestructure %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:leavestructure'  %}">
                                 Leave Structure
                             </a>
+                            {% endif %}
+
+                            {% if perms.leaves.add_assignleavestructure %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:assignleavestructure'  %}">
                                 Assign Leave Structure
                             </a>
+                            {% endif %}
+
+                            {% if perms.leaves.add_leavedetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:applyleave'  %}">
                                 My Leave Entitlements
                             </a>
+                            {% endif %}
+
+                            {% if perms.leaves.add_holidays %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:holidays'  %}">
                                 Holidays
                             </a>
+                            {% endif %}
                         </div>
                     </li>
+                    {% endif %}
+                    
+                    {% if perms.attendance %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
@@ -134,20 +179,29 @@
                                 aria-hidden="true"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if perms.attendance.add_tardinessdetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:policies' %}">
                                 Attendance Policies
                             </a>
+                            {% endif %}
+
+                            {% if perms.attendance.add_shiftdetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:employeeshiftlist'  %}">
                                 Employee Shifts
                             </a>
+                            {% endif %}
+
+                            {% if perms.attendance.add_employeeattendance %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:uploadattendance'  %}">
                                 Attendance Upload
                             </a>
+                            {% endif %}
                         </div>
                     </li>
+                    {% endif %}
                     <li>
                         <a class="list-group-item list-group-item-action bg-light" href="{% url 'login:logout' %}">
                             <i class="fa fa-sign-out" aria-hidden="true"> Logout</i>

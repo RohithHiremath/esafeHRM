@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.jobtitles, name='jobtitle'),
     path('jobtitle/', views.jobtitles, name='jobtitle'),
