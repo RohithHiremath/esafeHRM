@@ -353,6 +353,7 @@
         method: "POST",
         dataType: "json",
         success: function (data) {
+          $('#job_title').empty();
           $('#job_title').append(new Option('Select Job Title', ''))
           for (var i = 0; i < data.length; i++) {
             $('#job_title').append(new Option(data[i].value, data[i].id));
@@ -375,6 +376,7 @@
         method: "POST",
         dataType: "json",
         success: function (data) {
+          $('#Jobgrade').empty();
           $('#Jobgrade').append(new Option('Select Jobgrade', ''))
           for (var i = 0; i < data.length; i++) {
             $('#Jobgrade').append(new Option(data[i].value, data[i].id));
@@ -577,7 +579,6 @@
       }else {
           var emailid = document.getElementById('companyemailid').value;
           var reg = /.+@(hee-esafe)\.com$/;
-          //var regcompany = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
           if (emailid != '') {
           if (reg.test(String(emailid).toLowerCase())){
             printError("companyemailErr", "");

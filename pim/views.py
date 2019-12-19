@@ -8,10 +8,11 @@ from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
 import re
-from random import *
+import random
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
+from django.contrib.auth.models import User
 
 def Personal_details_view(request):
     if request.method =="POST":
@@ -51,9 +52,10 @@ def Personal_details_view(request):
                                     reportingtoId = request.POST['reportingmanager'],
                                     reportingdepartment = request.POST['reportingdepartment'])
             emailid = request.POST['companyemailid']
+            fname = request.POST['first_name']
+            lname = request.POST['last_name']
             personal.save()
-            characters = string.ascii_letters + string.digits 
-            password = "".join(choice(characters) for x in range(randint(6,7)))
+            password = password_generator(request)
             emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
             for temp in emailtemplate:
                 template = temp.description
@@ -61,6 +63,7 @@ def Personal_details_view(request):
             emailtemplate = re.sub(clean, '', str(template))
             mailtemplate = emailtemplate.replace("Name",(request.POST['first_name']+" "+request.POST['middle_name'] +" "+request.POST['last_name'])).replace("user",request.POST['companyemailid']).replace("pword",password).replace("&nbsp;", "")
             sendemail(request,emailid,mailtemplate)
+            register(request,emailid,fname,lname,password)
             return redirect('/pim/employeelist/')
         else:
             response_data["is_success"] = False
@@ -88,6 +91,49 @@ def sendemail(request,emailid,mailtemplate):
         message = mailtemplate
         send_mail(subject,
             message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+
+def register(request,mail,fname,lname,pword):
+    user = User.objects.create_user('xyz', 'xyz@gmail.com' , 'password')
+    user.username = mail
+    user.first_name = fname
+    user.last_name = lname
+    user.email = mail
+    user.set_password(pword) 
+    user.is_staff = True
+    user.save()
+
+def password_generator(request):
+    MAX_LEN = 8
+
+    DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    LOCASE_CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                        'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
+                        'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+                        'z']
+
+    UPCASE_CHARACTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                        'I', 'J', 'K', 'M', 'N', 'O', 'p', 'Q',
+                        'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                        'Z']
+
+    SYMBOLS = ['@', '#', '$', '%',  '?', '/','*']
+
+    COMBINED_LIST = DIGITS + UPCASE_CHARACTERS + LOCASE_CHARACTERS + SYMBOLS
+
+    rand_digit = random.choice(DIGITS)
+    rand_upper = random.choice(UPCASE_CHARACTERS)
+    rand_lower = random.choice(LOCASE_CHARACTERS)
+    rand_symbol = random.choice(SYMBOLS)
+
+    temp_pass = rand_digit + rand_upper + rand_lower + rand_symbol
+
+    for x in range(MAX_LEN - 4):
+        temp_pass = temp_pass + random.choice(COMBINED_LIST)
+
+    password = ""
+    for x in temp_pass:
+            password = password + x
+    return password
 
 def fnGetReportingId(idval):
     personals = Personal_details.objects.filter(department_id=idval, isHOD=1).values()
