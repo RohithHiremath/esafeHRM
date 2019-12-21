@@ -1,12 +1,13 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<form action="" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
+<form action="" name="levellist" id="levellist" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     <div class="card" style="margin-top: 10px;" id="perdetails">
         <div class="card-header">
             <h5 class="card-title" id="addLevel">Add Organisation Level Details</h5>
         </div>
         <div class="card-body">
+        <h5><span style="color:red;float:right;">* Fields are Mandatory</span></h5>
             <div class="row">
                 <div class="col-md-6">
                     <label for="levelname">Name<font color=red>*</font></label>
@@ -17,7 +18,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="parent">Parent Level<font color=red>*</font></label>
-                    <select class="form-control" name="parent" id="parent" placeholder="Select Parent Level">
+                    <select class="form-control" name="parent" id="parent" placeholder="Select Parent Level" required>
                         <option value="" disabled selected hidden>Select Parent Level</option>
                         <option value="0">Top Level</option>
                         {% for level in levels %}
@@ -33,7 +34,6 @@
                         placeholder="Enter Short Name" required maxlength="3">
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <label for="levelname">Job Titles at this Level<font color=red>*</font></label>
@@ -49,7 +49,7 @@
                 <div class="col-md-12">
                     <label for="shortname">Job Grades at this Level<font color=red>*</font></label>
                     <br />
-                    <select name="grades" class="form-control" id="grades" multiple="multiple">
+                    <select name="grades" class="form-control" id="grades" multiple="multiple" required>
                         {% for grades in allgrades %}
                         <option value="{{grades.id}}">{{grades.jobgrade}}</option>
                         {% endfor %}
@@ -57,8 +57,8 @@
                 </div>
             </div>
             <br/>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="save">Save</button>
+            <div class="modal-footer">               
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
             <a href="{% url 'organisation:levelslist' %}">
                 <button type="button" class="btn btn-primary">
                     <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
@@ -87,28 +87,27 @@
 </style>
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('#designations').multiselect();
-        $('#grades').multiselect();
-    });
+$(document).ready(function () {
+    $('#designations').multiselect();
+    $('#grades').multiselect();
+});
 
-    function somefunction(){
-      flag = false;
-      var firstname = document.getElementById('first_name').value
-      if (firstname == "") {
-        printError("firstnameErr", "Please Enter First Name");
-        return false;
-      } else {
-        var regex = /^[a-zA-Z\s]+$/;
-        if (regex.test(firstname) === false) {
-          printError("firstnameErr", "Only Characters");
-          return false;
-        } else {
-          printError("firstnameErr", "");
-          firstnameErr = false;
-          flag = true;
-        }
-      }
+    $(document).ready(function (){
+    validate();
+    $('#levelName, #parent, #shortname, #designations, #grades').change(validate);
+});
+
+function validate(){
+    if ($('#levelName').val().length   >   0   &&
+        $('#parent').val().length  >   0   &&
+        $('#shortname').val().length  >   0   &&
+        $('#designations').val().length  >   0   &&
+        $('#grades').val().length    >   0) {
+        $("#save").prop("disabled", false);
     }
+    else {
+        $("#save").prop("disabled", true);
+    }
+}    
 </script>
 {% endblock %}

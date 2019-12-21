@@ -45,8 +45,8 @@
                 {% endfor %}
             <br />
             <br />
-                <select name="designation" id="designation" class="form-control">
-                    <option value="" disabled selected hidden>Select Designations</option>
+                <select name="designation" id="designation{{ level.id }}" class="form-control" onchange="validate('{{ level.id }}');">
+                    <option value="" disabled selected hidden>Select Designation</option>
                     {% for designations in alldesignations %}
                     <option value="{{designations.id}}">{{designations.jobtitle}}</option>
                     {% endfor %}
@@ -59,7 +59,7 @@
             {% endfor %}
             <br />
             <br />
-                <select name="grade" class="form-control" id="grade">
+                <select name="grade" class="form-control" id="grade{{ level.id }}" onchange="validate('{{ level.id }}');">
                 <option value="" disabled selected hidden>Select Grades</option>
                     {% for grades in allgrades %}
                     <option value="{{grades.id}}">{{grades.jobgrade}}</option>
@@ -68,30 +68,21 @@
             </td> 
             <td> <br/><br/>
             <br/><br/>
-            <input type="submit" class="btn btn-primary" id="update" value='Update'>
+            <input type="submit" class="btn btn-primary" name = "update" id="update{{ level.id }}" value='Update'>
            </td> 
          </tr>
         </form>
         {% endfor %}
     </tbody>
   </table>
-  {% comment %} <script>
-  function somefunc() {
-    flag = false;
-    document.getElementById("update").disabled = true;
-    var grades = document.getElementById('designation').value
-        if (grades == ""){
-            document.getElementById("update").disabled = true;
-            return false; 
-        } else {
-            document.getElementById("update").disabled = false;
-        }
-        flag = true;
-        if (flag == false) {
-            document.getElementById("update").disabled = true;      
-        } else {
-            document.getElementById('levelslist').submit();
-      }
-  }
-  </script> {% endcomment %}
+<script>
+    $(document).ready(function (){
+    $("input[name='update']").attr("disabled", true);
+});
+function validate(id){
+    if ($('#grade'+id).val().length >> 0 && $('#designation'+id).val().length >> 0){   
+        $("#update"+id).prop("disabled", false);
+    }
+}
+</script>
 {% endblock %}

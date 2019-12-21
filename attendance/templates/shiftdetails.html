@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container-fluid text-right" style="margin:10px;float:right;">
     <h4 style="float:left;"> Employee Shift Details </h4>
+    <h5><span style="color:red;float:right;">* Fields are Mandatory</span></h5>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
 <form action="" name="shifts" id="shifts" method="POST">
@@ -13,7 +14,6 @@
             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;" id="login_not">
                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
             </div>
-            <div class="error" id="shiftnameErr"></div>
         </div>
         <div class="col-md-2">
             <label for="shortname">Short Name<span style="color:red">*</span></label>
@@ -21,7 +21,6 @@
             <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;" id="login_ok">
                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
             </div>
-            <div class="error" id="shortnameErr"></div>
         </div>
         <div class="col-md-4">
             <label for="shiftdescription">Description</label>
@@ -34,7 +33,6 @@
                 <option value="1">Yes</option>
                 <option value="2">No</option>
             </select>
-            <div class="error" id="flexibleshiftErr"></div>
         </div>
     </div>
     <table class="table" style="width:100%">
@@ -172,7 +170,7 @@
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
     <div class="row">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary pull-right" id="save" onclick="somefunction();">Save</button>
+            <button type="submit" class="btn btn-primary pull-right" id="saved" >Save</button>
         <a href="{% url 'attendance:employeeshiftlist' %}">
             <button type="button" class="btn btn-primary">
                 <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
@@ -256,26 +254,48 @@ function shortnamevalidate(element) {
     }
     });
 }
-function somefunction(){ 
-    var shiftname = document.getElementById('shiftname').value
-    if (shiftname == ""){
-         document.getElementById("save").disabled = true;
-    }else{
-        document.getElementById("save").disabled = false;
+    $(document).ready(function (){
+    validate();
+    $('#shiftname,#shortname, #flexibleshift,#mondayintime,#mondayouttime,#mondaybreaktimefrom,#mondaybreaktimeto,#tuesdayintime,#tuesdayouttime,#tuesdaybreaktimefrom,#tuesdaybreaktimeto,#wednesdayintime,#wednesdayouttime,#wednesdaybreaktimefrom,#wednesdaybreaktimeto,#thursdayintime,#thursdayouttime,#thursdaybreaktimefrom,#thursdaybreaktimeto,#fridayintime,#fridayouttime,#fridaybreaktimefrom,#fridaybreaktimeto,#saturdayintime,#saturdayouttime,#saturdaybreaktimefrom,#saturdaybreaktimeto,#sundayintime,#sundayouttime,#sundaybreaktimefrom,#sundaybreaktimeto').change(validate);
+});
+
+function validate(){
+    if ($('#shiftname').val().length   >   0   &&
+        $('#shortname').val().length  >   0   &&
+        $('#flexibleshift').val().length  >   0   &&
+        $('#mondayintime').val().length  >   0   &&
+        $('#mondayouttime').val().length  >   0   &&
+        $('#mondaybreaktimefrom').val().length  >   0   &&
+        $('#mondaybreaktimeto').val().length    >   0 &&
+        $('#tuesdayintime').val().length  >   0   &&
+        $('#tuesdayouttime').val().length  >   0   &&
+        $('#tuesdaybreaktimefrom').val().length  >   0   &&
+        $('#tuesdaybreaktimeto').val().length    >   0   &&
+        $('#wednesdayintime').val().length  >   0   &&
+        $('#wednesdayouttime').val().length  >   0   &&
+        $('#wednesdaybreaktimefrom').val().length  >   0   &&
+        $('#wednesdaybreaktimeto').val().length    >   0   &&
+        $('#thursdayintime').val().length  >   0   &&
+        $('#thursdayouttime').val().length  >   0   &&
+        $('#thursdaybreaktimefrom').val().length  >   0   &&
+        $('#thursdaybreaktimeto').val().length    >   0   &&
+        $('#fridayintime').val().length  >   0   &&
+        $('#fridayouttime').val().length  >   0   &&
+        $('#fridaybreaktimefrom').val().length  >   0   &&
+        $('#fridaybreaktimeto').val().length    >   0   &&
+        $('#saturdayintime').val().length  >   0   &&
+        $('#saturdayouttime').val().length  >   0   &&
+        $('#saturdaybreaktimefrom').val().length  >   0   &&
+        $('#saturdaybreaktimeto').val().length    >   0   &&
+        $('#sundayintime').val().length  >   0   &&
+        $('#sundayouttime').val().length  >   0   &&
+        $('#sundaybreaktimefrom').val().length  >   0   &&
+        $('#sundaybreaktimeto').val().length    >   0){
+        $("#saved").prop("disabled", false);
     }
-    var shortname = document.getElementById('shortname').value
-    if (shortname == ""){
-         document.getElementById("save").disabled = true;
-    }else{
-        document.getElementById("save").disabled = false;
+    else {
+        $("#saved").prop("disabled", true);
     }
-    var flexibleshift = document.getElementById('flexibleshift').value
-    if (flexibleshift == ""){
-         document.getElementById("save").disabled = true;
-    }else{
-        document.getElementById("save").disabled = false;
-    }
-}
+}   
 </script>
 {% endblock %}
-        

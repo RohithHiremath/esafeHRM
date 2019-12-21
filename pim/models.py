@@ -30,5 +30,6 @@ class Personal_details(models.Model):
    reportingtoId = models.SmallIntegerField(default=1,blank = False)
    reportingto = models.CharField(max_length=150,blank = False)
    reportingdepartment = models.SmallIntegerField(default=1,blank = False)
+   
    def __str__(self):
        return self.first_name
