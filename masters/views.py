@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,JsonResponse
+from django.contrib.auth.models import User, auth, Permission
 from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatus, Department, Location
 # Create your views here.
 
