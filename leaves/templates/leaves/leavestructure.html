@@ -1,10 +1,13 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;">
+{% if perms.leaves.view_leavestructure %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Leave Structure </h4>
+    {% if perms.leaves.add_leavestructure %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavestructure">
         Add
     </button>
+    {% endif %}
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
 <table id="example" class="table table-striped" style="width:100%">
@@ -28,14 +31,19 @@
             <td>{{ leave.assignedleavetypes }}</td>
 
             <td data-toggle="tooltip" title="Click to edit">
+                {% if perms.leaves.change_leavestructure %}
                 <a style="padding-left: 20px;" href="#" data-toggle="modal"
                     data-target="#editleavestructure{{ leave.id }}">
                     <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                 </a>
+                {% endif %}
+
+                {% if perms.leaves.change_leavestructure %}
                 <a style="padding-left: 20px;" data-toggle="tooltip" title="Link / Unlink Leave Types"
                     href="/leaves/relationwithleave/{{ leave.id }}">
                     <i class="fa fa-link fa-lg" aria-hidden="true"></i>
                 </a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -209,6 +217,9 @@
     </div>
 </div>
 {% endfor %}
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <script>
 
 function fngetsomething(){

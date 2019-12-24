@@ -1,13 +1,13 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;">
+{% if perms.masters.view_job %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Job Titles </h4>
-    <a href="#" data-toggle="modal" data-target="#ggg">
-        <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="float:left;padding-left:25px;margin-top:5px;"></i>
-    </a>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobtitle">
-        Add
-    </button>
+    {% if perms.masters.add_job %}
+        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addjobtitle">
+            Add
+        </button>
+    {%  endif %}
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"> </div>
 <table id="example" class="table table-striped" style="width:100%">
@@ -26,8 +26,10 @@
             <td>{{ job.jobtitle }}</td>
             <td>{{ job.jobdescription }}</td>
             <td data-toggle="tooltip" title="Click to edit">
+                {% if perms.masters.change_job %}
                 <a href="#" data-toggle="modal" data-target="#editjobtitle{{ job.id }}"><i
                         class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -52,7 +54,8 @@
                                 id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
-                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;"
+                                id="login_ok">
                                 <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
@@ -112,8 +115,8 @@
     </div>
 </div>
 {% endfor %}
-<div class="modal fade" id="ggg" tabindex="-1" role="dialog" aria-labelledby="screeninfo"
-    aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="ggg" tabindex="-1" role="dialog" aria-labelledby="screeninfo" aria-hidden="true"
+    data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -123,6 +126,9 @@
         </div>
     </div>
 </div>
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <script>
     function jobvalidate(element) {
         $("#login_ok").hide();
@@ -139,8 +145,8 @@
             dataType: "json",
             success: function (data) {
                 if (data.is_success) {
-                    $("#login_ok").show(); 
-                    document.getElementById("save").disabled = false; 
+                    $("#login_ok").show();
+                    document.getElementById("save").disabled = false;
                 } else {
                     $("#login_not").show();
                     document.getElementById("save").disabled = true;
@@ -163,7 +169,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.is_success) {
-                    $("#edit_ok"+id).show();
+                    $("#edit_ok" + id).show();
                     document.getElementById("editsave" + id).disabled = false;
                 } else {
                     $("#edit_not" + id).show();

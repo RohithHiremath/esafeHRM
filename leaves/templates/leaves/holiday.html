@@ -1,13 +1,16 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;">
+{% if perms.leaves.view_holidays %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Holiday List</h4>
+    {% if perms.leaves.add_holidays %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
         Add
     </button>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploaddocument">
         Upload
     </button>
+    {% endif %}
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
 <table id="example" class="table table-striped" style="width:100%">
@@ -88,6 +91,9 @@
         </div>
     </div>
 </div>
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <script>
     $(document).ready(function () {
         $("#holidayDate").datepicker({

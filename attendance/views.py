@@ -50,7 +50,11 @@ def policyDetails(request):
             return render(request,'policy.html',{'title':'Attendance Policy Details','tardinessvalues':tardinessvalues})
     else:
         tardinessvalues = TardinessDetails.objects.all()
-        return render(request,'policy.html',{'title':'Attendance Policy Details','tardinessvalues':tardinessvalues})
+        if not tardinessvalues:
+            dataflag = False
+        else:
+            dataflag = True
+        return render(request,'policy.html',{'title':'Attendance Policy Details','tardinessvalues':tardinessvalues,'dataflag':dataflag})
 
 def shiftDetails(request):
     if request.method == "GET":

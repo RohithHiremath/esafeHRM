@@ -1,8 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
-import datetime
 import openpyxl
-import re
 from django.urls import reverse
 from masters.models import Job, Emailtemplate
 from pim.models import Personal_details
@@ -268,14 +266,12 @@ def applyleave(request):
             leavestructureshortname =  leavestructurdetails.leave_structure.shortname
         linkedleavetypes = Linktoleavetype.objects.filter(leave_structure_id=leavestructureid).select_related('leave_type')
         currentdate = datetime.datetime.now()
-        get_selyear = currentdate.strftime('%Y')
-        get_selmonth = currentdate.strftime('%m')
-        get_selday = currentdate.strftime('%d')
+        today = date.today()
         for linkedleavetype in linkedleavetypes:
             leaveid = linkedleavetype.leave_type.id
             availed = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status = 2).aggregate(totalleaves = Sum('NumberOfLeaves'))
-            requested = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__year__lte=get_selyear,Fromdate__month__lte=get_selmonth,Fromdate__day__lte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
-            cancelled = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,4,5],Fromdate__year__gte=get_selyear,Fromdate__month__gte=get_selmonth,Fromdate__day__gte=get_selday).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            requested = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__gte=today).aggregate(totalleaves = Sum('NumberOfLeaves'))
+            cancelled = LeaveDetails.objects.filter(employee_id = personal.id,leave_type_id = leaveid,Status__in=[4,5],Fromdate__gte=today).aggregate(totalleaves = Sum('NumberOfLeaves'))
             linkedleavetype.leave_type.availed = availed['totalleaves']
             linkedleavetype.leave_type.requested = requested['totalleaves']
             linkedleavetype.leave_type.cancelled = cancelled['totalleaves']
@@ -343,18 +339,15 @@ def getleavedetails(request):
     leaveid = request.POST['leaveid']
     typeflag = request.POST['typeflag']
     empid = request.POST['empid']
-    currentdate = datetime.datetime.now()
-    get_selyear = currentdate.strftime('%Y')
-    get_selmonth = currentdate.strftime('%m')
-    get_selday = currentdate.strftime('%d')
+    today = date.today()
     if int(typeflag) == 1:
         details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status = 2)
     elif int(typeflag) == 2:
         details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status = 2)
     elif int(typeflag) == 3:
-        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__year__lte=get_selyear,Fromdate__month__lte=get_selmonth,Fromdate__day__lte=get_selday)
+        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status__in=[1,2,3],Fromdate__gte=today)
     else:
-        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status__in=[1,4,5],Fromdate__year__gte=get_selyear,Fromdate__month__gte=get_selmonth,Fromdate__day__gte=get_selday)
+        details = LeaveDetails.objects.filter(employee_id = empid,leave_type_id = leaveid,Status__in=[4,5],Fromdate__gte=today)
     llist=[]
     for detail in details:
         fromdt = datetime.datetime.strftime(detail.Fromdate, '%d-%m-%Y')
@@ -388,12 +381,10 @@ def saveleaverequest(request):
     Reason = request.POST['Reason']
     idleave = request.POST['idleave']
     employee = request.POST['employee']
-
-    if FullorHalfday==1:
+    if int(FullorHalfday) == 1:
         NumberOfLeaves = 1
     else:
         NumberOfLeaves = 0.5
-    
     dt_obj_from = datetime.datetime.strptime(Fromdate,"%d-%m-%Y")
     fromdate = dt_obj_from.date()
     dt_obj_to = datetime.datetime.strptime(Todate,"%d-%m-%Y")
