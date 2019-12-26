@@ -2,6 +2,7 @@
 {% with name=user.groups.all.0 %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -36,21 +37,43 @@
             <div> <img src="{% static 'images/esafe_logo.jpeg' %}" width="240px" height="53px" /></div>
             <div class="list-group list-group-flush">
                 <ul class="navbar-nav">
-                        {% if name == 'Admin' %}
-                        <li class="list-group-item bg-light">
-                            <a class="nav-link" href="{% url 'login:dashboard' %}">
-                                <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
+                    {% if perms.leaves.view_leavedetails %}
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-address-card-o" aria-hidden="true"> My Account <i class="fa fa-angle-down"
+                                    aria-hidden="true"></i></i>
+                        </a>
+                        
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'empprofile:changepassword' %}">
+                                Change Password
                             </a>
-                        </li>
-                        {% endif %}
+                      
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'empprofile:profiledetails' %}">
+                                My Profile
+                            </a>
+                        </div>
+                    </li>
+                    {% endif %}
 
-                        {% if request.user.is_superuser %}
-                        <li class="list-group-item bg-light">
-                            <a class="nav-link" href="{% url 'login:dashboard' %}">
-                                <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if name == 'Admin' %}
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="{% url 'login:dashboard' %}">
+                            <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if request.user.is_superuser %}
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="{% url 'login:dashboard' %}">
+                            <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
+                        </a>
+                    </li>
+                    {% endif %}
                     {% if perms.masters %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -160,7 +183,7 @@
                                 Assign Leave Structure
                             </a>
                             {% endif %}
-                            
+
                             {% if perms.leaves.view_leavedetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:applyleave'  %}">
@@ -250,13 +273,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'js/timepicker.js' %}"></script>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> -->
-    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
-    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'js/dataTables.rowReorder.min.js' %}"></script>
-    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/bpwordataTables.responsive.min.js' %}"></script>
     <!-- Menu Toggle Script -->
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             var table = $('#example').DataTable({
                 rowReorder: {
                     selector: 'td:nth-child(2)'
@@ -266,12 +286,13 @@
             });
         });
 
-        $("#menu-toggle").click(function(e){
+        $("#menu-toggle").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
 
     </script>
 </body>
+
 </html>
 {% endwith %}

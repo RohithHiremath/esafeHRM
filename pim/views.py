@@ -94,7 +94,6 @@ def sendemail(request,emailid,mailtemplate):
             message, EMAIL_HOST_USER, [recepient], fail_silently = False)
 
 def register(request,mail,fname,lname,pword):
-    print(pword)
     user = User.objects.create_user('xyz', 'xyz@gmail.com' , 'password')
     user.username = mail
     user.first_name = fname
