@@ -38,6 +38,7 @@ class EmployeeAttendance(models.Model):
 
 
 class ShiftDetails(models.Model):
+    
     shiftname = models.CharField(max_length=150,blank = False)
     shortname = models.CharField(max_length=150,blank = False)
     shiftdescription = models.CharField(max_length=150,blank = False)
