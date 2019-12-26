@@ -13,6 +13,7 @@ from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 def Personal_details_view(request):
     if request.method =="POST":
@@ -56,14 +57,14 @@ def Personal_details_view(request):
             lname = request.POST['last_name']
             personal.save()
             password = password_generator(request)
-            emailtemplate = Emailtemplate.objects.filter(title = 'welcome')
+            register(request,emailid,fname,lname,password)
+            emailtemplate = Emailtemplate.objects.filter(title = 'Welcome Email')
             for temp in emailtemplate:
                 template = temp.description
             clean = re.compile('<.*?>')
             emailtemplate = re.sub(clean, '', str(template))
             mailtemplate = emailtemplate.replace("Name",(request.POST['first_name']+" "+request.POST['middle_name'] +" "+request.POST['last_name'])).replace("user",request.POST['companyemailid']).replace("pword",password).replace("&nbsp;", "")
             sendemail(request,emailid,mailtemplate)
-            register(request,emailid,fname,lname,password)
             return redirect('/pim/employeelist/')
         else:
             response_data["is_success"] = False
@@ -103,6 +104,8 @@ def register(request,mail,fname,lname,pword):
     user.set_password(pword) 
     user.is_staff = True
     user.save()
+    my_group = Group.objects.get(name='Employee') 
+    my_group.user_set.add(user)
 
 def password_generator(request):
     MAX_LEN = 8

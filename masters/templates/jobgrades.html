@@ -1,10 +1,13 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;">
+{% if perms.masters.view_jobgrade %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
     <h4 style="float: left;margin-left: -22px;">Job Grades</h4>
+    {% if perms.masters.add_jobgrade %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addjobgrade">
         Add
     </button>
+    {% endif %}
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
         <table id="example" class="table table-striped" style="width:100%">
@@ -21,8 +24,11 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ grade.jobgrade }}</td>
                 <td data-toggle="tooltip" title="Click to edit">
+                    {% if perms.masters.change_jobgrade %}
                     <a href="#" data-toggle="modal" data-target="#editjobgrade{{ grade.id }}"><i
-                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                            class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i><
+                                /a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -35,9 +41,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addjobgradeLabel">Add Job Grade</h5>
-                {% comment %} <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-window-close" aria-hidden="true"></i>
-                </button> {% endcomment %}
             </div>
             <form action="" name="addgrade" id="addgrade" method="POST">
                 {% csrf_token %}
@@ -101,6 +104,9 @@
     </div>
 </div>
 {% endfor %}
+{% else %}
+<h4 style="float: left;">You are not Authorized to view this page </h4>
+{% endif %}
 <script>
 function gradevalidate(element) {
 	$("#login_ok").hide();

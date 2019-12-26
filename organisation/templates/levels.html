@@ -1,5 +1,6 @@
 {% extends 'login/base.html' %}
 {% block content %}
+{% if perms.organisation.add_leveldefinition %}
 <form action="" name="levellist" id="levellist" enctype="multipart/form-data" method="POST">
     {% csrf_token %}
     <div class="card" style="margin-top: 10px;" id="perdetails">
@@ -68,6 +69,9 @@
         </div>
     </div>
 </form>
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <style>
     .btn-group .btn {
         display: block;
@@ -92,7 +96,7 @@ $(document).ready(function () {
     $('#grades').multiselect();
 });
 
-    $(document).ready(function (){
+$(document).ready(function (){
     validate();
     $('#levelName, #parent, #shortname, #designations, #grades').change(validate);
 });

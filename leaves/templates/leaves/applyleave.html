@@ -1,21 +1,28 @@
 {% extends 'login/base.html' %}
-
 {% block content %}
+{% if perms.leaves.view_leavedetails %}
+<head>
+    <style>
+        .dataTables_length, .dataTables_info, .dataTables_paginate, .dataTables_filter{
+            display: none !important;
+        }
+    </style>
+</head>
 <div class="container-fluid text-right" style="margin:10px;float:right;">
     <h4 style="float: left;">My Leave Entitlements</h4>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
 <h5 style="float: left;"><b>Leave Structure : </b>{{ leavestructurrname }} ({{ leavestructureshortname }})</h5>
-<table class="table table-striped nowrap" style="width:100%">
+<table id="example" class="table table-striped nowrap" style="width:100%">
     <thead>
         <tr>
-            <th class="table-th">Leave Type</th>
-            <th class="table-th">Credits</th>
-            <th class="table-th">Availed</th>
-            <th class="table-th">Requested</th>
-            <th class="table-th">Cancelled</th>
-            <th class="table-th">Balance</th>
-            <th class="table-th">Action</th>
+            <th>Leave Type</th>
+            <th>Credits</th>
+            <th>Availed</th>
+            <th>Requested</th>
+            <th>Cancelled</th>
+            <th>Balance</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -117,6 +124,9 @@
         </div>
     </form>
 </div>
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <script>
     $(document).ready(function () {
         document.getElementById("savebutton").disabled = true;

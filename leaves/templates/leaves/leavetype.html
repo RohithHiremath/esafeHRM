@@ -1,10 +1,13 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
-<div class="container-fluid text-right" style="margin:10px;">
-        <h4 style="float: left;margin-left: -22px;">Leave Type</h4>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
+{% if perms.leaves.view_leavetype %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Leave Type</h4>
+    {% if perms.leaves.add_leavetype %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavetype">
         Add
     </button>
+    {% endif %}
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
         <table id="example" class="table table-striped" style="width:100%">
@@ -25,9 +28,11 @@
                 <td>{{ leave.shortname }}</td>
                 <td>{{ leave.leavedescription }}</td>
                 <td data-toggle="tooltip" title="Click to edit">
+                    {% if perms.leaves.add_leavetype %}
                     <a href="#" data-toggle="modal" data-target="#editleavetype{{ leave.id }}">
                         <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                     </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -130,6 +135,9 @@
     </div>
 </div>
 {% endfor %}
+{% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 <script>
 function leavevalidate(element) {
 	$("#login_ok").hide();

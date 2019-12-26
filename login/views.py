@@ -17,8 +17,13 @@ def login(request):
         if user is not None and user.is_active:
              # Correct password, and the user is marked "active"
             auth.login(request, user)
-            # Redirect to Dashboard.
-            return  redirect('login:dashboard')
+            if user.groups.filter(name = 'Admin').exists():
+                usergroup = user.groups.all()
+                groupname = usergroup[0]
+                # Redirect to Dashboard.
+                return  redirect('login:dashboard')
+            else:
+                return  redirect('leaves:applyleave')
         else:
             messages.error(request,'Invalid Username or Password')
             return redirect('login:login')

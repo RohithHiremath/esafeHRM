@@ -1,11 +1,14 @@
 {% extends 'login/dashboard.html' %}
 {% block content %}
+{% if perms.pim.view_personal_details %}
 <div class="container-fluid text-right" style="margin:10px;">
     <a href="/pim/details/">
         <h4 style="float: left;margin-left: -22px;color:black;">Employees List </h4>
+        {% if perms.pim.add_personal_details %}
         <button type="button" class="btn btn-primary">
             Add
         </button>
+        {% endif %}
     </a>
 </div>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
@@ -31,12 +34,17 @@
                 <td>{{ personal.reportingto }}</td>
                 <td>{{ personal.employment_status }}</td>
                 <td style="text-align: center;" data-toggle="tooltip" title="Click to edit">
+                    {% if perms.pim.change_personal_details %}
                     <a href="/pim/edit/{{ personal.id }}" >
                         <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                     </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+<h4>You are not Authorized to view this page </h4>
+{% endif %}
 {% endblock %}

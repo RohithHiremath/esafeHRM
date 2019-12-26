@@ -1,5 +1,6 @@
 {% extends 'login/base.html' %}
 {% block content %}
+{% if perms.attendance.view_employeeattendance %}
 <div class="container-fluid text-right" style="margin:10px;float:right;">
     <h4 style="float:left;">Process Attendance</h4>
 </div>
@@ -7,6 +8,7 @@
 <form action="/attendance/uploadattendance/" method="post" name="form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="row">
+        {% if perms.attendance.add_employeeattendance %}
         <div class="col-md-6">
             <label for="uploadattendance">Upload Attendance File</label><span style="color:red;">*</span>
             <input type="file" class="form-control" title="Upload excel file" name="uploadattendance" 
@@ -17,6 +19,7 @@
             <button type="submit" class="btn btn-primary" id="save" style="margin-top:30px;">Upload</button>
             <!-- <button type="button" class="btn btn-primary" onclick={% url 'attendance:uploadattendance'%}>Clear</button> -->
         </div>
+        {% endif %}
     </div>
 </form>
 <div class="card" style="margin: 10px 0px 10px 0px;"></div>
@@ -64,5 +67,8 @@
         </tr>
     </tbody>
 </table>
+{% endif %}
+{% else %}
+<h4>You are not Authorized to view this page </h4>
 {% endif %}
 {% endblock %}

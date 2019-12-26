@@ -1,0 +1,687 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<form action="" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
+  {% csrf_token %}
+  <div class="card" style="margin-top: 10px;" id="perdetails">
+    <div class="card-header">
+      <h5 class="card-title" id="editjobtitleLabel">Personal Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="employee_id">Employee ID<font color=red>*</font></label>
+          <input type="number" class="form-control" readonly name="employee_id" id="employee_id"
+            value="{{ personal.employee_id }}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="FirstName">First Name<font color=red>*</font></label>
+          <input type="text" class="form-control" name="first_name" id="first_name" value="{{ personal.first_name }}"
+            required>
+          <div class="error" id="firstnameErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="MiddleName">Middle Name</label>
+          <input type="text" class="form-control" name="middle_name" id="middle_name"
+            value="{{ personal.middle_name }}">
+          <div class="error" id="midnameErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="LastName">Last Name<font color=red>*</font></label>
+          <input type="text" class="form-control" name="last_name" id="last_name" value="{{ personal.last_name }}"
+            required>
+          <div class="error" id="lastnameErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="DateOfBirth">Date Of Birth<font color=red>*</font></label>
+          <input type="date" disabled class="form-control" name="date_of_birth" id="date_of_birth"
+            value="{{ personal.date_of_birth }}" required>
+          <div class="error" id="dobErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="personalemail">Personal E-mail ID<font color=red>*</font></label>
+          <input type="email" class="form-control" name="personalemailid" id="personalemailid" value="{{ personal.personalemailid }}" required>
+          <div class="error" id="personalemailidErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="mobilenumber">Mobile Number<font color=red>*</font></label>
+          <input type="text" class="form-control" name="mobilenumber" id="mobilenumber" value="{{ personal.mobilenumber }}" required>
+          <div class="error" id="mobilenumberErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="Gender">Gender<font color=red>*</font></label>
+          <select name="gender" class="form-control" id="gender">
+            <option value="" disabled>Select</option>
+            <option value="1" disabled {% if personal.gender == 1 %}selected{% endif %}>Male</option>
+            <option value="2" disabled {% if personal.gender == 2 %}selected{% endif %}>Female</option>
+          </select>
+          <div class="error" id="genderErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="MaritalStatus">Marital Status<font color=red>*</font></label>
+          <select name="marital_status" id="marital_status" class="form-control">
+            <option value="" disabled>Select</option>
+            <option value="1" disabled {% if personal.marital_status == 1 %}selected{% endif %}>Married</option>
+            <option value="2" disabled {% if personal.marital_status == 2 %}selected{% endif %}>Single</option>
+            <option value="3" disabled {% if personal.marital_status == 3 %}selected{% endif %}>Divorce</option>
+            <option value="4" disabled {% if personal.marital_status == 4 %}selected{% endif %}>Widow</option>
+          </select>
+          <div class="error" id="maritalstatusErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="nationality">Nationality<font color=red>*</font></label>
+          <select name="nationality" id="nationality" class="form-control">
+            <option value="" disabled>Select</option>
+            <option value="1" {% if personal.nationality == 1 %}selected{% endif %}>Indian</option>
+            <option value="2" {% if personal.nationality == 2 %}selected{% endif %}>US</option>
+          </select>
+          <div class="error" id="nationalityErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="MiddleName">Aadhaar Number<font color=red>*</font></label>
+          <input type="number" disabled class="form-control" name="aadhar_card_no" id="aadhar_card_no"
+            value="{{personal.aadhar_card_no}}" required>
+          <div class="error" id="aadharErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="float:right;">
+          <button type="button" class="btn btn-primary pull-right" onclick="somefunction(1);">
+            Next <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 10px;display:none;" id="empdetails">
+    <div class="card-header">
+      <h5 class="card-title" id="addjobtitleLabel">Employment Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="joined_date">Joined Date:<font color=red>*</font></label>
+          <input type="date" disabled class="form-control" name="joined_date" id="joined_date" required
+            value="{{personal.joined_date}}">
+          <div class="error" id="joineddateErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="date_of_permanency">Date Of Permanency:<font color=red>*</font></label>
+          <input type="date" disabled class="form-control" name="date_of_permanency" id="date_of_permanency"
+            value="{{personal.date_of_permanency}}" required>
+          <div class="error" id="dopErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="empllevel">Employment Level:<font color=red>*</font></label>
+          <select name="empllevel" id="empllevel" class="form-control" required onchange="fngetdropdownvalues(this)"
+            data-url="{% url 'pim:getdropdownvalues' %}">
+            <option value="" disabled selected hidden>Select Employment Level</option>
+            {% for level in levels %}
+            <option value="{{ level.id }}" disabled {% if personal.employmentLevel_id ==  level.id %} selected {% endif %}>
+              {{ level.levelName }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="JobTitle">Job Title<font color=red>*</font></label>
+          <select name="job_title_id" id="job_title" class="form-control">
+            <option value="" disabled>Select</option>
+            {% for job in jobtitles %}
+            <option value="{{ job.designations.id }}" disabled {% if personal.job_title_id ==  job.designations.id %} selected
+              {% endif %}>
+              {{ job.designations.jobtitle }}
+            </option>
+            {% endfor %}
+          </select>
+          <div class="error" id="jobtitleErr"></div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="Jobgrade">Job Grade<font color=red>*</font></label>
+          <select name="job_grade_id" id="job_grade_id" class="form-control">
+            <option value="" disabled>Select</option>
+            {% for job in jobgrades %}
+            <option value="{{ job.grades.id }}" disabled {% if personal.job_grade_id ==  job.grades.id %} selected {% endif %}>
+              {{ job.grades.jobgrade }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="jobcategoryErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="Department">Department<font color=red>*</font></label>
+          <select name="department_id" id="department" class="form-control">
+            <option value="" disabled>Select</option>
+            {% for job in departments %}
+            <option value="{{ job.id }}" disabled {% if personal.department_id ==  job.id %} selected {% endif %}>
+              {{ job.departmentname }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="departmentErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="worklocation">Location<font color=red>*</font></label>
+          <select name="worklocation_id" id="worklocation" class="form-control">
+            <option value="" disabled>Select</option>
+            {% for job in locations %}
+            <option value="{{ job.id }}" disabled {% if personal.worklocation_id ==  job.id %} selected {% endif %}>
+              {{ job.location }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="worklocationErr"></div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="EmploymentStatus">Employment Status<font color=red>*</font></label>
+          <select name="employment_status_id" id="employment_status" class="form-control">
+            <option value="" disabled>Select</option>
+            {% for job in employmentstatus %}
+            <option value="{{ job.id }}" disabled {% if personal.employment_status_id ==  job.id %} selected {% endif %}>
+              {{ job.employementstatus }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="employmentstatusErr"></div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="WorkShift">Work Shift<font color=red>*</font></label>
+          <select name="work_shifts" id="work_shifts" class="form-control">
+            <option value="" disabled >Select</option>
+            <option value="1" disabled {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
+            <option value="2" disabled {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
+          </select>
+          <div class="error" id="workshiftErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
+          <input type="email" disabled class="form-control" name="companyemailid" id="companyemailid" value="{{ personal.companyemailid }}" required>
+          <div class="error" id="companyemailErr"></div>
+        </div>
+        
+        <div class="col-md-4">
+          <label for="reportingdepartment">Reporting Department<font color=red>*</font></label>
+          <select name="reportingdepartment" id="reportingdepartment" class="form-control" onchange="fngetmanagers(this)"
+          data-url="{% url 'pim:getmanagers' %}" >
+            <option value="">Select</option>
+            {% for job in departments %}
+            <option value="{{ job.id }}" disabled {% if personal.reportingdepartment ==  job.id %} selected {% endif %}>
+              {{ job.departmentname }}</option>
+            {% endfor %}
+          </select>
+          <div class="error" id="reportingdepartmentErr"></div>
+        </div>
+        <div class=col-md-4>
+          <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
+          <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
+            <option value="">Select Reporting Manager</option>
+            {% for reportingmanager in reportingmanagers %}
+            {% if reportingmanager.reportingtoId ==  1000 %}
+                <option value="1000" disabled selected >Self</option>
+            {% endif %}
+            <option value="{{ reportingmanager.id }}" disabled {% if personal.reportingtoId ==  reportingmanager.id %} selected {% endif %}>
+                {{ reportingmanager.first_name }}  {{ reportingmanager.middle_name }}  {{ reportingmanager.last_name }}</option>
+              {% endfor %}
+          </select>
+          <input type="hidden" name="reportingname" id="reportingname" value="{{ personal.reportingto}}" >
+          <div class="error" id="reportingmanagerErr"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class=col-md-4>
+          DU Head
+          <label class="switch" title="click to Enable or Disable">
+            <input type="checkbox" disabled id="duhead" name="duhead" value='1' {% if personal.DUHead == 1 %}checked{% endif %}>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="float:right;">
+          <button type="button" class="btn btn-primary pull-right" onclick="somefunction(2);">
+            Save
+          </button>
+          <button type="button" class="btn btn-primary" onclick="somefunction(3);">
+            <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Prev
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked+.slider {
+    background-color: #2196F3;
+  }
+
+  input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+</style>
+<script>
+
+  function fnsetdiplayedvalue(){
+    const sel = document.getElementById("reportingmanager"); 
+    let seltext = sel.options[sel.selectedIndex].text;
+    document.getElementById('reportingname').value = seltext;
+  }
+
+  function fngetmanagers(element){
+    val = $(element).val();
+    idgrade = document.getElementById('job_grade_id').value;
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "deptid": val,
+          "idgrade":idgrade,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#reportingmanager').empty();
+          $('#reportingmanager').append(new Option('Select Reporting', ''))
+          $('#reportingmanager').append(new Option('Self', '1000'))
+          for (var i = 0; i < data.length; i++) {
+            $('#reportingmanager').append(new Option(data[i].value, data[i].id));
+          }
+        }
+      });
+  }
+  
+  function fngetdropdownvalues(element) {
+    val = $(element).val();
+    
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "levelid": val,
+          "reqflag": 1,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#job_title').empty();
+          $('#job_title').append(new Option('Select Job Title', ''))
+          for (var i = 0; i < data.length; i++) {
+            $('#job_title').append(new Option(data[i].value, data[i].id));
+          }
+          fngetgrades(element);
+        }
+      });
+  }
+
+  function fngetgrades(element) {
+    val = $(element).val();
+    desturl = $(element).attr("data-url"),
+      $.ajax({
+        url: desturl,
+        data: {
+          "levelid": val,
+          "reqflag": 2,
+          "csrfmiddlewaretoken": '{{ csrf_token }}',
+        },
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          $('#job_grade_id').empty();
+          $('#job_grade_id').append(new Option('Select Jobgrade', ''))
+          for (var i = 0; i < data.length; i++) {
+            $('#job_grade_id').append(new Option(data[i].value, data[i].id));
+          }
+        }
+      });
+  }
+
+  function somefunction(val) {
+    if (val == 1) {
+      flag = false;
+      var firstname = document.getElementById('first_name').value;
+      if (firstname == "") {
+        printError("firstnameErr", "First Name Cannot Be Empty");
+        return false;
+      } else {
+        var regex = /^[a-zA-Z\s]+$/;
+        if (regex.test(firstname) === false) {
+          printError("firstnameErr", "Only Characters");
+          return false;
+        } else {
+          printError("firstnameErr", "");
+          flag = true;
+        }
+      }
+      var midname = document.getElementById('middle_name').value;
+      if (midname != "") {
+        var regex = /^[a-zA-Z\s]+$/;
+        if (regex.test(midname) === false) {
+          printError("midnameErr", "Only Characters");
+          return false;
+        } else {
+          printError("midnameErr", "");
+          midnameErr = false;
+        }
+      }
+      var lastname = document.getElementById('last_name').value;
+      if (lastname == "") {
+        printError("lastnameErr", "Last Name Cannot Be Empty");
+        return false;
+      } else {
+        var regex = /^[a-zA-Z\s]+$/;
+        if (regex.test(lastname) === false) {
+          printError("lastnameErr", "Only Characters");
+          return false;
+        } else {
+          printError("lastnameErr", "");
+          lastnameErr = false;
+          flag = true;
+        }
+      }
+      var dob = document.getElementById('date_of_birth').value;
+      if (dob == "") {
+        printError("dobErr", "Please fill DOB");
+        return false;
+      } else {
+        var today = new Date();
+        var nowyear = today.getFullYear();
+        var nowmonth = today.getMonth();
+        var nowday = today.getDate();
+        var b = document.getElementById('date_of_birth').value;
+        var birth = new Date(b);
+        var birthyear = birth.getFullYear();
+        var birthmonth = birth.getMonth();
+        var birthday = birth.getDate();
+        var age = nowyear - birthyear;
+        var age_month = nowmonth - birthmonth;
+        var age_day = nowday - birthday;
+        if ((age == 18 && age_month <= 0 && age_day <= 0) || age < 18) {
+          printError("dobErr", "Age should be minimum 18 years.");
+          return false;
+        }
+        printError("dobErr", "");
+        dobErr = false;
+        flag = true;
+      }
+      var gen = document.getElementById('gender').value;
+      if (gen == "") {
+        printError("genderErr", "Please select Gender");
+        return false;
+      } else {
+        printError("genderErr", "");
+        genderErr = false;
+        flag = true;
+      }
+      var personalemailid = document.getElementById('personalemailid').value
+      if (personalemailid == "") {
+        printError("personalemailidErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('personalemailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("personalemailidErr", "");
+          } else {
+            printError("personalemailidErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var mobileno = document.getElementById('mobilenumber').value
+      if (mobileno == "") {
+        printError("mobilenumberErr", "Please Enter Mobile number");
+        return false;
+      } else {
+        var mobileno = document.getElementById('mobilenumber').value;
+        var mobiletenDigit = /^\d{10}$/;
+        if (mobileno != '') {
+          if (mobileno.match(mobiletenDigit)) {
+            printError("mobilenumberErr", "");
+          } else {
+            printError("mobilenumberErr", "Enter valid Mobile number");
+            return false;
+          }
+        }
+        flag = true;
+      }
+      var maritalstatus = document.getElementById('marital_status').value;
+      if (maritalstatus == "") {
+        printError("maritalstatusErr", "Please select Marital Status");
+        return false;
+      } else {
+        printError("maritalstatusErr", "");
+        maritalstatusErr = false;
+        flag = true;
+      }
+      var nation = document.getElementById('nationality').value;
+      if (nation == "") {
+        printError("nationalityErr", "Please select Nationality");
+        return false;
+      } else {
+        printError("nationalityErr", "");
+        nationalityErr = false;
+        flag = true;
+      }
+      var aadhar = document.getElementById('aadhar_card_no').value;
+      if (aadhar == "") {
+        printError("aadharErr", "Aadhar number Cannot Be Empty");
+        return false;
+      } else {
+        var aadhar = document.getElementById('aadhar_card_no').value;
+        var adharcardTwelveDigit = /^\d{12}$/;
+        var adharSixteenDigit = /^\d{16}$/;
+        if (aadhar != '') {
+          if (aadhar.match(adharcardTwelveDigit)) {
+            printError("aadharErr", "");
+          }
+          else if (aadhar.match(adharSixteenDigit)) {
+            printError("aadharErr", "");
+          }
+          else {
+            printError("aadharErr", "Enter valid Aadhar number");
+            return false;
+          }
+        }
+        flag = true;
+      }
+
+      if (flag == true) {
+        document.getElementById('perdetails').style.display = 'none';
+        document.getElementById('empdetails').style.display = 'block';
+      } else {
+        document.getElementById('empdetails').style.display = 'none';
+        document.getElementById('perdetails').style.display = 'block';
+      }
+    } else if (val == 3) {
+      document.getElementById('empdetails').style.display = 'none';
+      document.getElementById('perdetails').style.display = 'block';
+    } else {
+      flag = false;
+      var jd = document.getElementById('joined_date').value;
+      if (jd == "") {
+        printError("joineddateErr", "Please fill joined date");
+        return false;
+      } else {
+        printError("joineddateErr", "");
+        joineddateErr = false;
+        flag = true;
+      }
+      var dop = document.getElementById('date_of_permanency').value;
+      if (dop == "") {
+        printError("dopErr", "Please fill date of permanency");
+        return false;
+      } else {
+        printError("dopErr", "");
+        dopErr = false;
+        flag = true;
+      }
+      var jobtitle = document.getElementById('job_title').value;
+      if (jobtitle == "") {
+        printError("jobtitleErr", "Please select job title");
+        return false;
+      } else {
+        printError("jobtitleErr", "");
+        jobtitleErr = false;
+        flag = true;
+      }
+      var dept = document.getElementById('department').value;
+      if (dept == "") {
+        printError("departmentErr", "Please select department");
+        return false;
+      } else {
+        printError("departmentErr", "");
+        departmentErr = false;
+        flag = true;
+      }
+      var wrkloc = document.getElementById('worklocation').value;
+      if (wrkloc == "") {
+        printError("worklocationErr", "Please select work location");
+        return false;
+      } else {
+        printError("worklocationErr", "");
+        worklocationErr = false;
+        flag = true;
+      }
+      var companyemailid = document.getElementById('companyemailid').value
+      if (companyemailid == "") {
+        printError("companyemailErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('companyemailid').value;
+          var reg = /.+@(hee-esafe)\.com$/;
+          //var regcompany = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("companyemailErr", "");
+          }else {
+            printError("companyemailErr", "Enter Company Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var empstatus = document.getElementById('employment_status').value;
+      if (empstatus == "") {
+        printError("employmentstatusErr", "Please select employment status");
+        return false;
+      } else {
+        printError("employmentstatusErr", "");
+        employmentstatusErr = false;
+        flag = true;
+      }
+      var repdept = document.getElementById('reportingdepartment').value
+      if (repdept == "") {
+        printError("reportingdepartmentErr", "Please select Reporting Department");
+        return false;
+      } else {
+        printError("reportingdepartmentErr", "");
+        reportingdepartmentErr = false;
+        flag = true;
+      }
+      var repmanager = document.getElementById('reportingmanager').value
+      if (repmanager == "") {
+        printError("reportingmanagerErr", "Please select Reporting Manager");
+        return false;
+      } else {
+        printError("reportingmanagerErr", "");
+        reportingmanagerErr = false;
+        flag = true;
+      }
+      var jobcat = document.getElementById('job_grade_id').value;
+      if (jobcat == "") {
+        printError("jobcategoryErr", "Please select job grade");
+        return false;
+      } else {
+        printError("jobcategoryErr", "");
+        jobcategoryErr = false;
+        flag = true;
+      }
+      var wrkshift = document.getElementById('work_shifts').value;
+      if (wrkshift == "") {
+        printError("workshiftErr", "Please select work shift");
+        return false;
+      } else {
+        printError("workshiftErr", "");
+        workshiftErr = false;
+        flag = true;
+      }
+      if (flag == false) {
+        document.getElementById('empdetails').style.display = 'block';
+        document.getElementById('perdetails').style.display = 'none';
+      } else {
+        document.getElementById('emplist').submit();
+      }
+    }
+  }
+
+  function printError(elemId, hintMsg) {
+    var Msg = hintMsg.fontcolor("red");
+    document.getElementById(elemId).innerHTML = Msg;
+  }
+</script>
+{% endblock %}

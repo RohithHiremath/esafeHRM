@@ -1,15 +1,18 @@
 {% extends 'login/base.html' %}
 {% block content %}
-    <div class="container-fluid text-right" style="margin:10px;float:right;">
-        <h4 style="float: left;">Organisation Level List</h4>
+{% if perms.organisation.view_leveldefinition %}
+<div class="container-fluid text-right clearfix" style="margin:10px;float:right;">
+    <h4 style="float: left;">Organisation Level List</h4>
     <a href="{% url 'organisation:addlevel' %}">
-    <button type="button" class="btn btn-primary">
-        Add
-    </button>
+        {% if perms.organisation.add_leveldefinition %}
+        <button type="button" class="btn btn-primary">
+            Add
+        </button>
+        {% endif %}
     </a>
-    </div>
-    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
-    <table id="example" class="table table-striped nowrap" style="width:100%">
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<table id="example" class="table table-striped nowrap" style="width:100%">
     <thead>
         <tr>
             <th>#</th>
@@ -22,67 +25,73 @@
     <tbody>
         {% for level in leveldetails %}
         <form action="/organisation/updatelist/{{ level.id }}/" name="levelslist" id="levelslist" method="POST">
-        {% csrf_token %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ level.levelName}}</td>
-            <td>{{ level.parent}}</td>
-            <td>{{ level.shortName }}</td>
-            <td title="Click to view"><a data-toggle="collapse" 
-                  href="#collapseExample{{ level.id }}"
-                  role="button" 
-                  aria-expanded="false" 
-                  aria-controls="collapseExample">
-                    <i class="fa fa-angle-down" style="font-size:24px"></i>
-                </a>
-            </td>
-         </tr>
-         <tr class="collapse" id="collapseExample{{ level.id }}">
-            <td></td>
-            <td>Designation:<br/><br/> 
-                {% for designationdetails in level.assigneddesignations%}
-                <input type="checkbox"> {{ designationdetails.designations.jobtitle }}
-                {% endfor %}
-            <br />
-            <br />
-                <select name="designation" id="designation{{ level.id }}" class="form-control" onchange="validate('{{ level.id }}');">
-                    <option value="" disabled selected hidden>Select Designation</option>
-                    {% for designations in alldesignations %}
-                    <option value="{{designations.id}}">{{designations.jobtitle}}</option>
+            {% csrf_token %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ level.levelName}}</td>
+                <td>{{ level.parent}}</td>
+                <td>{{ level.shortName }}</td>
+                <td title="Click to view">
+                    {% if perms.organisation.change_leveldefinition %}
+                    <a data-toggle="collapse" href="#collapseExample{{ level.id }}" role="button" aria-expanded="false"
+                        aria-controls="collapseExample">
+                        <i class="fa fa-angle-down" style="font-size:24px"></i>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr class="collapse" id="collapseExample{{ level.id }}">
+                <td></td>
+                <td>Designation:<br /><br />
+                    {% for designationdetails in level.assigneddesignations%}
+                    <input type="checkbox"> {{ designationdetails.designations.jobtitle }}
                     {% endfor %}
-                </select>
-                <br />
-            </td>
-            <td>Grade: <br/><br/>
-            {% for gradedetails in level.assignedgrades%}
-            <input type="checkbox" > {{ gradedetails.grades.jobgrade}}
-            {% endfor %}
-            <br />
-            <br />
-                <select name="grade" class="form-control" id="grade{{ level.id }}" onchange="validate('{{ level.id }}');">
-                <option value="" disabled selected hidden>Select Grades</option>
-                    {% for grades in allgrades %}
-                    <option value="{{grades.id}}">{{grades.jobgrade}}</option>
+                    <br />
+                    <br />
+                    <select name="designation" id="designation{{ level.id }}" class="form-control"
+                        onchange="validate('{{ level.id }}');">
+                        <option value="" disabled selected hidden>Select Designation</option>
+                        {% for designations in alldesignations %}
+                        <option value="{{designations.id}}">{{designations.jobtitle}}</option>
+                        {% endfor %}
+                    </select>
+                    <br />
+                </td>
+                <td>Grade: <br /><br />
+                    {% for gradedetails in level.assignedgrades%}
+                    <input type="checkbox"> {{ gradedetails.grades.jobgrade}}
                     {% endfor %}
-                </select>
-            </td> 
-            <td> <br/><br/>
-            <br/><br/>
-            <input type="submit" class="btn btn-primary" name = "update" id="update{{ level.id }}" value='Update'>
-           </td> 
-         </tr>
+                    <br />
+                    <br />
+                    <select name="grade" class="form-control" id="grade{{ level.id }}"
+                        onchange="validate('{{ level.id }}');">
+                        <option value="" disabled selected hidden>Select Grades</option>
+                        {% for grades in allgrades %}
+                        <option value="{{grades.id}}">{{grades.jobgrade}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td> <br /><br />
+                    <br /><br />
+                    <input type="submit" class="btn btn-primary" name="update" id="update{{ level.id }}" value='Update'>
+                </td>
+            </tr>
         </form>
         {% endfor %}
     </tbody>
-  </table>
+</table>
+{% else %}
+<h4 style="float: left;">You are not Authorized to view this page </h4>
+{% endif %}
 <script>
-    $(document).ready(function (){
-    $("input[name='update']").attr("disabled", true);
-});
-function validate(id){
-    if ($('#grade'+id).val().length >> 0 && $('#designation'+id).val().length >> 0){   
-        $("#update"+id).prop("disabled", false);
+    $(document).ready(function () {
+        $("input[name='update']").attr("disabled", true);
+    });
+
+    function validate(id) {
+        if ($('#grade' + id).val().length >> 0 && $('#designation' + id).val().length >> 0) {
+            $("#update" + id).prop("disabled", false);
+        }
     }
-}
 </script>
 {% endblock %}

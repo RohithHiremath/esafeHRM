@@ -1,4 +1,5 @@
 {% load static %}
+{% with name=user.groups.all.0 %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,48 +37,81 @@
             <div> <img src="{% static 'images/esafe_logo.jpeg' %}" width="240px" height="53px" /></div>
             <div class="list-group list-group-flush">
                 <ul class="navbar-nav">
+                    {% if perms.leaves.view_leavedetails %}
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-address-card-o" aria-hidden="true"> My Account <i class="fa fa-angle-down"
+                                    aria-hidden="true"></i></i>
+                        </a>
+                        
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'empprofile:changepassword' %}">
+                                Change Password
+                            </a>
+                      
+                            <a class="list-group-item list-group-item-action bg-light"
+                                href="{% url 'empprofile:profiledetails' %}">
+                                My Profile
+                            </a>
+                        </div>
+                    </li>
+                    {% endif %}
+
+                    {% if name == 'Admin' %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link" href="{% url 'login:dashboard' %}">
                             <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
                         </a>
                     </li>
+                    {% endif %}
+
+                    {% if request.user.is_superuser %}
+                    <li class="list-group-item bg-light">
+                        <a class="nav-link" href="{% url 'login:dashboard' %}">
+                            <i class="fa fa-tachometer" aria-hidden="true"> Dashboard</i>
+                        </a>
+                    </li>
+                    {% endif %}
                     {% if perms.masters %}
                     <li class="list-group-item bg-light">
-                        <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-cog" aria-hidden="true"> Masters <i class="fa fa-angle-down"
                                     aria-hidden="true"></i></i>
                         </a>
-                        
+
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            {% if perms.masters.add_job %}
+                            {% if perms.masters.view_job %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobtitle' %}">
                                 Job Titles
                             </a>
                             {% endif %}
-                            {% if perms.masters.add_jobgrade %}
+                            {% if perms.masters.view_jobgrade %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'jobgrade' %}">
                                 Job Grades
                             </a>
                             {% endif %}
 
-                            {% if perms.masters.add_employementstatus %}
+                            {% if perms.masters.view_employmentstatus %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'status' %}">
                                 Employment Types
                             </a>
                             {% endif %}
 
-                            {% if perms.masters.add_department %}
+                            {% if perms.masters.view_department %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'department' %}">
                                 Departments
                             </a>
                             {% endif %}
 
-                            {% if perms.masters.add_location %}
+                            {% if perms.masters.view_location %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'worklocation' %}">
                                 Work Location
                             </a>
                             {% endif %}
+<<<<<<< HEAD
 
                             {% if perms.masters.add_shiftdetails %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'employeeshiftlist' %}">
@@ -85,9 +119,13 @@
                             </a>
                             {% endif %}
                          </div>
+=======
+                        </div>
+
+>>>>>>> ff01c78a937557097cddcd12d976ae9e9e97e39d
                     </li>
                     {% endif %}
-                    
+
                     {% if perms.organisation %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -96,18 +134,20 @@
                                     aria-hidden="true"></i></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            {% if perms.organisation.add_leveldefinition %}
+                            {% if perms.organisation.view_leveldefinition %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:levelslist' %}">
                                 Organisation Levels
                             </a>
                             {% endif %}
+<<<<<<< HEAD
 
+=======
+>>>>>>> ff01c78a937557097cddcd12d976ae9e9e97e39d
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:orgchart' %}">
                                 Organisation Chart
                             </a>
-                            
                         </div>
                     </li>
                     {% endif %}
@@ -119,7 +159,7 @@
                                     class="fa fa-angle-down" aria-hidden="true"></i></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            {% if perms.pim.add_personal_details %}
+                            {% if perms.pim.view_personal_details %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'pim:employeelist' %}">
                                 <i class="fa fa-users" aria-hidden="true"> Employee List</i>
@@ -135,37 +175,37 @@
                             <i class="fa fa-bars" aria-hidden="true"> Leaves <i class="fa fa-angle-down"
                                     aria-hidden="true"></i></i>
                         </a>
-                        
+
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            {% if perms.leaves.add_leavetype %}
+                            {% if perms.leaves.view_leavetype %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:leavetype' %}">
                                 Leave Type
                             </a>
                             {% endif %}
 
-                            {% if perms.leaves.add_leavestructure %}
+                            {% if perms.leaves.view_leavestructure %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:leavestructure'  %}">
                                 Leave Structure
                             </a>
                             {% endif %}
 
-                            {% if perms.leaves.add_assignleavestructure %}
+                            {% if perms.leaves.view_assignleavestructure %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:assignleavestructure'  %}">
                                 Assign Leave Structure
                             </a>
                             {% endif %}
 
-                            {% if perms.leaves.add_leavedetails %}
+                            {% if perms.leaves.view_leavedetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:applyleave'  %}">
                                 My Leave Entitlements
                             </a>
                             {% endif %}
 
-                            {% if perms.leaves.add_holidays %}
+                            {% if perms.leaves.view_holidays %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'leaves:holidays'  %}">
                                 Holidays
@@ -174,7 +214,7 @@
                         </div>
                     </li>
                     {% endif %}
-                    
+
                     {% if perms.attendance %}
                     <li class="list-group-item bg-light">
                         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -183,21 +223,21 @@
                                 aria-hidden="true"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            {% if perms.attendance.add_tardinessdetails %}
+                            {% if perms.attendance.view_tardinessdetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:policies' %}">
                                 Attendance Policies
                             </a>
                             {% endif %}
 
-                            {% comment %} {% if perms.attendance.add_shiftdetails %}
-                                <a class="list-group-item list-group-item-action bg-light"
+                            {% if perms.attendance.view_shiftdetails %}
+                            <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:employeeshiftlist'  %}">
                                 Employee Shifts
                             </a>
-                            {% endif %} {% endcomment %}
+                            {% endif %}
 
-                            {% if perms.attendance.add_employeeattendance %}
+                            {% if perms.attendance.view_employeeattendance %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:uploadattendance'  %}">
                                 Attendance Upload
@@ -247,10 +287,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'js/timepicker.js' %}"></script>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> -->
-    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
-    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'js/dataTables.rowReorder.min.js' %}"></script>
-    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/bpwordataTables.responsive.min.js' %}"></script>
     <!-- Menu Toggle Script -->
     <script>
         $(document).ready(function () {
@@ -267,8 +304,9 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
-    </script>
 
+    </script>
 </body>
 
 </html>
+{% endwith %}
