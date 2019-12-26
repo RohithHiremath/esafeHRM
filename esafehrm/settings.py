@@ -19,8 +19,7 @@ TEMPLATE_DIR_MASTERS = os.path.join(BASE_DIR,'masters/templates')
 TEMPLATE_DIR_PIM = os.path.join(BASE_DIR,'pim/templates')
 TEMPLATE_DIR_LEAVES = os.path.join(BASE_DIR,'leaves/templates')
 TEMPLATE_DIR_ORGANISATION = os.path.join(BASE_DIR,'organisation/templates')
-TEMPLATE_DIR_ATTENDANCE = os.path.join(BASE_DIR,'attendance/templates')
-TEMPLATE_DIR_EMPPROFILE = os.path.join(BASE_DIR,'empprofile/templates')
+TEMPLATE_DIR_ORGANISATION = os.path.join(BASE_DIR,'attendance/templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -44,7 +43,6 @@ INSTALLED_APPS = [
     'pim',
     'leaves',
     'attendance.apps.AttendanceConfig',
-    'empprofile.apps.EmpprofileConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,7 +68,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR_LOGIN,TEMPLATE_DIR_MASTERS,TEMPLATE_DIR_PIM,TEMPLATE_DIR_LEAVES,
-        TEMPLATE_DIR_ORGANISATION,TEMPLATE_DIR_ATTENDANCE,TEMPLATE_DIR_EMPPROFILE],
+        TEMPLATE_DIR_ORGANISATION],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,11 +141,11 @@ USE_TZ = True
 
 # EMAIL
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hee-esafe.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'hr@hee-esafe.com'
-EMAIL_HOST_PASSWORD = 'Esafe18@'
+EMAIL_HOST_USER = 'vaishnavirpk@gmail.com'
+EMAIL_HOST_PASSWORD = 'vadi2001'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

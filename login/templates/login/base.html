@@ -111,7 +111,6 @@
                                 Work Location
                             </a>
                             {% endif %}
-<<<<<<< HEAD
 
                             {% if perms.masters.add_shiftdetails %}
                             <a class="list-group-item list-group-item-action bg-light" href="{% url 'employeeshiftlist' %}">
@@ -119,10 +118,6 @@
                             </a>
                             {% endif %}
                          </div>
-=======
-                        </div>
-
->>>>>>> ff01c78a937557097cddcd12d976ae9e9e97e39d
                     </li>
                     {% endif %}
 
@@ -140,10 +135,6 @@
                                 Organisation Levels
                             </a>
                             {% endif %}
-<<<<<<< HEAD
-
-=======
->>>>>>> ff01c78a937557097cddcd12d976ae9e9e97e39d
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:orgchart' %}">
                                 Organisation Chart
@@ -230,12 +221,12 @@
                             </a>
                             {% endif %}
 
-                            {% if perms.attendance.view_shiftdetails %}
+                            {% comment %} {% if perms.attendance.view_shiftdetails %}
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:employeeshiftlist'  %}">
                                 Employee Shifts
                             </a>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
 
                             {% if perms.attendance.view_employeeattendance %}
                             <a class="list-group-item list-group-item-action bg-light"
