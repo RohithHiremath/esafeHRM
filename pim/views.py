@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
 from datetime import datetime
-from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate
+from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate, ShiftDetails
 from organisation.models import Leveldefinition
 from django.shortcuts import render
 from esafehrm.settings import EMAIL_HOST_USER
@@ -43,7 +43,7 @@ def Personal_details_view(request):
                                     job_title_id =request.POST['job_title'],
                                     job_grade_id=request.POST['Jobgrade'],
                                     employment_status_id=request.POST['employment_status'],
-                                    work_shifts=request.POST['work_shifts'],
+                                    work_shifts_id=request.POST['work_shifts'],
                                     worklocation_id=request.POST['worklocation'],
                                     department_id=request.POST['department'],
                                     DUHead=duhead,
@@ -76,13 +76,15 @@ def Personal_details_view(request):
         employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')
         locations = Location.objects.all().order_by('location')
         departments = Department.objects.all().order_by('departmentname')
+        Shiftdetails = ShiftDetails.objects.all()
         return render(request,'pim/personaldetails.html',{'personals':personals,
                                                     'jobtitles':jobtitles,
                                                     'jobgrades':jobgrades,
                                                     'employmentstatus':employmentstatus,
                                                     'locations':locations,
                                                     'departments':departments,
-                                                    'levels': levels})
+                                                    'levels': levels,
+                                                    'Shiftdetails':Shiftdetails})
 
 def sendemail(request,emailid,mailtemplate):
     if request.method == 'POST':
@@ -106,6 +108,7 @@ def password_generator(request):
     MAX_LEN = 8
 
     DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    
     LOCASE_CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
                         'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',
                         'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
@@ -155,6 +158,7 @@ def edit(request, id):
     departments = Department.objects.all().order_by('departmentname')
     reportingmanagers = Personal_details.objects.filter(department_id=personal.reportingdepartment, job_grade_id__gte = personal.job_grade_id)
     levels = Leveldefinition.objects.all().order_by('levelName')
+    Shiftdetails = ShiftDetails.objects.all()
     return render(request,'pim/editdetails.html',{'title':'Edit Employee List','personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobgrades':jobgrades,
@@ -162,7 +166,8 @@ def edit(request, id):
                                                 'locations':locations,
                                                 'departments':departments,
                                                 'levels':levels,
-                                                "reportingmanagers":reportingmanagers})                                              
+                                                'Shiftdetails':Shiftdetails,
+                                                'reportingmanagers':reportingmanagers})                                              
 
 def update(request, id):
     duhead = request.POST.get('duhead', False)
@@ -192,7 +197,7 @@ def update(request, id):
     personal.companyemailid = request.POST['companyemailid']
     personal.employment_status_id = request.POST['employment_status_id']
     personal.worklocation_id = request.POST['worklocation_id']
-    personal.work_shifts = request.POST['work_shifts']
+    personal.work_shifts_id = request.POST['work_shifts_id']
     personal.duhead = duhead
     personal.reportingtoId = request.POST['reportingmanager']
     personal.reportingto = request.POST['reportingname']

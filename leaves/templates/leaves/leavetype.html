@@ -47,16 +47,22 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label for="leavetype">Leave Type</label><span>*</span>
-                            <input type="text" class="form-control" id="leavetype" name="leavetype" value="" onblur="leavevalidate(this);return false;" data-url="{% url 'leaves:leavetype' %}" required>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                            <input type="text" class="form-control" id="leavetype" name="leavetype" value="" onblur="leavevalidate(this);return false;" data-url="{% url 'leaves:leavetypeajax' %}" required>
+                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <label for="leavetype">Short Name</label><span>*</span>
-                            <input type="text" class="form-control" id="shortname" name="shortname" value="" maxlength='3' onblur="shortvalidate(this);" data-url="{% url 'leaves:validateleavetype' %}" required>
-                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login">
+                            <input type="text" class="form-control" id="shortname" name="shortname" value="" maxlength='3' onblur="shortvalidate(this);" data-url="{% url 'leaves:typeshortnameajax' %}" required>
+                            <div class="col-md-10 col-sm-10" style="color:red;display:none;margin-top: 4px;"  id="log_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="log_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -89,17 +95,23 @@
                         <div class="col-md-5">
                             <label for="leavetype">Leave Type</label><span>*</span>
                             <input type="text" class="form-control" id="leavetype" name="leavetype"
-                                value="{{ leave.leavetype }}" onblur="editleavevalidate(this,{{ leave.id }});" data-url="{% url 'leaves:editleavetype' leave.id %}" required>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="log_not{{ leave.id }}">
+                                value="{{ leave.leavetype }}" onblur="editleavevalidate(this,{{ leave.id }});" data-url="{% url 'leaves:editleavetypeajax' leave.id %}" required>
+                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="editin_not{{ leave.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="editin_ok{{ leave.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <label for="leavetype">Short Name</label><span>*</span>
                             <input type="text" class="form-control" id="shortname" name="shortname" value="{{ leave.shortname }}" maxlength='3'
-                               onblur="editshortvalidate(this,{{ leave.id }});" data-url="{% url 'leaves:editvalidateleavetype' leave.id %}" required>
-                            <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"  id="log{{ leave.id }}">
+                               onblur="editshortvalidate(this,{{ leave.id }});" data-url="{% url 'leaves:edittypeshortnameajax' leave.id %}" required>
+                            <div class="col-md-10 col-sm-10" style="color:red;display:none;margin-top: 4px;"  id="editin{{ leave.id }}">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="editout{{ leave.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -143,33 +155,9 @@ function leavevalidate(element) {
 		}
 	});
 }
-function shortvalidate(element) {
-	$("#login_ok").hide();
-	$("#login").hide();
-    document.getElementById("save").disabled = false;
-	shortname = $(element).val();
-	$.ajax({
-		url : $(element).attr("data-url"),
-		data : {
-            "shortname":shortname,
-			"csrfmiddlewaretoken" : '{{ csrf_token }}',
-		},
-		method: "POST",
-		dataType : "json",
-		success : function (data) {
-			if (data.is_success) {
-				 $("#login_ok").show(); 
-                 document.getElementById("save").disabled = false; 
-			}else {
-				$("#login").show();
-                document.getElementById("save").disabled = true;
-			}
-		}
-	});
-}
 function editleavevalidate(element,id) {
-	$("#login_ok").hide();
-	$("#log_not"+id).hide();
+	$("#editin_ok"+id).hide();
+	$("#editin_not"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
 	leavetype = $(element).val();
 	$.ajax({
@@ -182,18 +170,42 @@ function editleavevalidate(element,id) {
 		dataType : "json",
 		success : function (data) {
 			if (data.is_success) {
-				 $("#login_ok"+id).show(); 
+				 $("#editin_ok"+id).show(); 
                  document.getElementById("editsave"+id).disabled = false; 
 			}else {
-				$("#log_not"+id).show();
+				$("#editin_not"+id).show();
                 document.getElementById("editsave"+id).disabled = true;
 			}
 		}
 	});
 }
+function shortvalidate(element) {
+	$("#log_ok").hide();
+	$("#log_not").hide();
+    document.getElementById("save").disabled = false;
+	shortname = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "shortname":shortname,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#log_ok").show(); 
+                 document.getElementById("save").disabled = false; 
+			}else {
+				$("#log_not").show();
+                document.getElementById("save").disabled = true;
+			}
+		}
+	});
+}
 function editshortvalidate(element,id) {
-	$("#login_ok").hide();
-	$("#log"+id).hide();
+	$("#editout"+id).hide();
+	$("#editin"+id).hide();
     document.getElementById("editsave"+id).disabled = false;
 	shortname = $(element).val();
 	$.ajax({
@@ -206,10 +218,10 @@ function editshortvalidate(element,id) {
 		dataType : "json",
 		success : function (data) {
 			if (data.is_success) {
-				 $("#login_ok"+id).show(); 
+				 $("#editout"+id).show(); 
                  document.getElementById("editsave"+id).disabled = false; 
 			}else {
-				$("#log"+id).show();
+				$("#editin"+id).show();
                 document.getElementById("editsave"+id).disabled = true;
 			}
 		}

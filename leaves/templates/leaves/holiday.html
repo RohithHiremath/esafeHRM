@@ -41,16 +41,19 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-5">
-                            <label for="holidayname">Holiday Name</label><span>*</span>
+                            <label for="holidayname">Holiday Name<font color=red>*</font></label>
                             <input type="text" class="form-control" id="holidayname" name="holidayname" value=""
-                                onblur="validateholiday(this);" data-url="{% url 'leaves:holidays' %}" required>
+                                onblur="validateholiday(this);" data-url="{% url 'leaves:holidayajax' %}" required>
                             <div class="col-md-6 col-sm-6" style="color:red;display:none;margin-top: 4px;"
                                 id="login_not">
                                 <i class="fa fa-times" aria-hidden="true">Already exist.</i>
                             </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
                         </div>
                         <div class="col-md-5">
-                            <label for="holidayDate">Holiday Date</label><span>*</span>
+                            <label for="holidayDate">Holiday Date<font color=red>*</font></label>
                             <input type="text" class="form-control" id="holidayDate" name="holidayDate" value="">
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from pim.models import Personal_details
+from organisation.models import Leveldefinition
 # from esafehrm import settings  
 # Create your models here.
 
@@ -42,10 +43,7 @@ class Holidays(models.Model):
 
     def __str__(self):
        return self.holidayname
-
-class Upload_list(models.Model):
-    document = models.FileField(upload_to='documents/',blank=True,null=False)
-    
+   
 class LeaveDetails(models.Model):
     employee = models.ForeignKey(Personal_details,on_delete = models.CASCADE)
     Fromdate = models.DateField(blank=False)
@@ -56,3 +54,7 @@ class LeaveDetails(models.Model):
     Status = models.SmallIntegerField(default=1,blank=False)
     Reason = models.CharField(max_length=100,blank=True)
     FullorHalfday = models.SmallIntegerField(default=1,blank=False)
+
+class AssigningLevelsToStructure(models.Model):
+    leavestructureid = models.ForeignKey(Leavestructure,on_delete = models.CASCADE)
+    levels = models.ForeignKey(Leveldefinition,on_delete = models.CASCADE)

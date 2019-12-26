@@ -78,8 +78,13 @@
                                 Work Location
                             </a>
                             {% endif %}
-                        </div>
-                        
+
+                            {% if perms.masters.add_shiftdetails %}
+                            <a class="list-group-item list-group-item-action bg-light" href="{% url 'employeeshiftlist' %}">
+                                Employee Shifts
+                            </a>
+                            {% endif %}
+                         </div>
                     </li>
                     {% endif %}
                     
@@ -98,7 +103,6 @@
                             </a>
                             {% endif %}
 
-                            
                             <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'organisation:orgchart' %}">
                                 Organisation Chart
@@ -186,12 +190,12 @@
                             </a>
                             {% endif %}
 
-                            {% if perms.attendance.add_shiftdetails %}
-                            <a class="list-group-item list-group-item-action bg-light"
+                            {% comment %} {% if perms.attendance.add_shiftdetails %}
+                                <a class="list-group-item list-group-item-action bg-light"
                                 href="{% url 'attendance:employeeshiftlist'  %}">
                                 Employee Shifts
                             </a>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
 
                             {% if perms.attendance.add_employeeattendance %}
                             <a class="list-group-item list-group-item-action bg-light"

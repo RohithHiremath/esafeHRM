@@ -1,5 +1,5 @@
 from django.db import models
-from masters.models import Job ,Jobgrade, Location ,Employmentstatus, Department
+from masters.models import Job ,Jobgrade, Location ,Employmentstatus, Department, ShiftDetails
 from organisation.models import Leveldefinition
 # Create your models here.
 
@@ -24,7 +24,7 @@ class Personal_details(models.Model):
    department = models.ForeignKey(Department,on_delete=models.CASCADE)
    worklocation = models.ForeignKey(Location,on_delete=models.CASCADE)
    employment_status = models.ForeignKey(Employmentstatus,on_delete=models.CASCADE)
-   work_shifts = models.IntegerField(default=1)
+   work_shifts = models.ForeignKey(ShiftDetails,on_delete=models.CASCADE)
    companyemailid = models.EmailField(max_length=150)
    DUHead = models.SmallIntegerField(default=0,blank = False)
    reportingtoId = models.SmallIntegerField(default=1,blank = False)

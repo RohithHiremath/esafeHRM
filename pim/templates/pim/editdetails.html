@@ -200,11 +200,13 @@
 
         <div class="col-md-4">
           <label for="WorkShift">Work Shift<font color=red>*</font></label>
-          <select name="work_shifts" id="work_shifts" class="form-control">
+          <select name="work_shifts_id" id="work_shifts_id" class="form-control">
             <option value="" disabled >Select</option>
-            <option value="1" {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
-            <option value="2" {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
-          </select>
+            {% for job in Shiftdetails %}
+            <option value="{{ job.id }}" {% if personal.work_shifts_id ==  job.id %} selected {% endif %}>
+              {{ job.shiftname }}</option>
+            {% endfor %}          
+            </select>
           <div class="error" id="workshiftErr"></div>
         </div>
       </div>
@@ -669,7 +671,7 @@
         jobcategoryErr = false;
         flag = true;
       }
-      var wrkshift = document.getElementById('work_shifts').value;
+      var wrkshift = document.getElementById('work_shifts_id').value;
       if (wrkshift == "") {
         printError("workshiftErr", "Please select work shift");
         return false;

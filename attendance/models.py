@@ -36,7 +36,6 @@ class EmployeeAttendance(models.Model):
     compoff_status  = models.SmallIntegerField(default=1,blank = False)
     updated_date_time = models.DateTimeField(blank = False)
 
-
 class ShiftDetails(models.Model):
     
     shiftname = models.CharField(max_length=150,blank = False)
@@ -55,4 +54,3 @@ class ShiftTimings(models.Model):
     from_time = models.TimeField()
     to_time = models.TimeField()
     weekoff = models.SmallIntegerField(default=2)
-

@@ -6,7 +6,7 @@ import re
 from django.urls import reverse
 from masters.models import Job, Emailtemplate
 from pim.models import Personal_details
-from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, Upload_list
+from leaves.models import Holidays,Leavestructure, Leavetype, Linktoleavetype, AssignLeaveStructure, LeaveDetails, AssigningLevelsToStructure
 from django.contrib import messages
 import datetime
 from datetime import date, timedelta
@@ -15,173 +15,186 @@ from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
 import re
+from organisation.models import Leveldefinition
 
 # Create your views here.
 def leavestructure(request):
     if request.method == 'POST':
-        response_data = {}
-        leave = None
-        leave = Leavestructure.objects.filter(leavestructure = request.POST['leavestructure'])
-        if not leave:
-            leave = Leavestructure(leavestructure=request.POST['leavestructure'],
-                            shortname=request.POST['shortname'],
-                            leavedescription=request.POST['leavedescription'],
-                            experincefrom=request.POST['experincefrom'],
-                            experienceto=request.POST['experienceto'])
-            leave.save()
-            return redirect('/leaves/leavestructure/')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)        
+        orglevels = request.POST.getlist('levels')
+        leave = Leavestructure(leavestructure=request.POST['leavestructure'],
+                        shortname=request.POST['shortname'],
+                        leavedescription=request.POST['leavedescription'],
+                        experincefrom=request.POST['experincefrom'],
+                        experienceto=request.POST['experienceto'])
+        leave.save()
+        levelid = leave.id
+        for levelval in orglevels:
+            organisationleveldata = AssigningLevelsToStructure(
+                leavestructureid_id = levelid,
+                levels_id = levelval
+            )
+            organisationleveldata.save()
+        return redirect('/leaves/leavestructure/')     
     else:
         leaves = Leavestructure.objects.all()
+        orglevel = Leveldefinition.objects.all().order_by('levelName')
         for leavesww in leaves:
             assignedleaves = ''
             linkeddetails = Linktoleavetype.objects.filter(leave_structure=leavesww.id).select_related('leave_type')
+            levels = AssigningLevelsToStructure.objects.filter(leavestructureid_id=leavesww.id).select_related('levels')
             for linkeddetailswww in linkeddetails:
                 assignedleaves = assignedleaves+' , '+linkeddetailswww.leave_type.shortname
             assignedleavetypes = assignedleaves.lstrip(' ,')
             leavesww.assignedleavetypes = assignedleavetypes
-        return render(request,'leaves/leavestructure.html',{'title':'Leavestructure List','leaves':leaves})
+            leavesww.assignedlevels = levels
+        return render(request,'leaves/leavestructure.html',{'title':'Leavestructure List','leaves':leaves,'orglevel':orglevel})
 
-def validateleavestructure(request):
+def leavestructureajax(request):
     if request.method == 'POST':
         response_data = {}
-        leave = None
-        leave = Leavestructure.objects.filter(shortname=request.POST['shortname'])
-        if not leave:
-            leave = Leavestructure(leavestructure=request.POST['leavestructure'],
-                            shortname=request.POST['shortname'],
-                            leavedescription=request.POST['leavedescription'],
-                            experincefrom=request.POST['experincefrom'],
-                            experienceto=request.POST['experienceto'])
-            leave.save()
-            return redirect('/leaves/leavestructure/')
+        structure = None
+        structure = Leavestructure.objects.filter(leavestructure = request.POST['leavestructure'])
+        if not structure:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
-        return JsonResponse(response_data)        
-    else:
-        leaves = Leavestructure.objects.all()
-        for leavesww in leaves:
-            assignedleaves = ''
-            linkeddetails = Linktoleavetype.objects.filter(leave_structure=leavesww.id).select_related('leave_type')
-            for linkeddetailswww in linkeddetails:
-                assignedleaves = assignedleaves+' , '+linkeddetailswww.leave_type.shortname
-            assignedleavetypes = assignedleaves.lstrip(' ,')
-            leavesww.assignedleavetypes = assignedleavetypes
-        return render(request,'leaves/leavestructure.html',{'title':'Leavestructure List','leaves':leaves})
+        return JsonResponse(response_data)
+
+def shortnameajax(request):
+    if request.method == 'POST':
+        response_data = {}
+        struc = None
+        struc = Leavestructure.objects.filter(shortname = request.POST['shortname'])
+        if not struc:
+            response_data["is_success"] = True
+        else:
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
 
 def editleavestructure(request, id):
     if request.method == 'POST':
-        response_data = {}
-        job = None
-        job = Leavestructure.objects.filter(leavestructure = request.POST['leavestructure'])
-        if not job:
-            leave = Leavestructure.objects.get(id=id)
-            leave.leavestructure = request.POST['leavestructure']
-            leave.shortname = request.POST['shortname']
-            leave.leavedescription = request.POST['leavedescription']
-            leave.experincefrom=request.POST['experincefrom']
-            leave.experienceto=request.POST['experienceto']
-            leave.save()
-            return redirect('/leaves/leavestructure/')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        leave = Leavestructure.objects.get(id=id)
+        leave.leavestructure = request.POST['leavestructure']
+        leave.shortname = request.POST['shortname']
+        leave.leavedescription = request.POST['leavedescription']
+        leave.experincefrom=request.POST['experincefrom']
+        leave.experienceto=request.POST['experienceto']
+        leave.save() 
+        levelid = leave.id
+        orglevels = request.POST.getlist('levels')
+        for levelval in orglevels:
+            organisationleveldata = AssigningLevelsToStructure(
+                leavestructureid_id = levelid,
+                levels_id = levelval
+            )
+            organisationleveldata.save()
+        return redirect('/leaves/leavestructure/')
     else:
         return redirect('/leaves/leavestructure/')
 
-def validateeditleavestructure(request, id):
+def editleavestructureajax(request, id):
     if request.method == 'POST':
         response_data = {}
-        job = None
-        job = Leavestructure.objects.filter(shortname = request.POST['shortname'])
-        if not job:
-            leave = Leavestructure.objects.get(id=id)
-            leave.leavestructure = request.POST['leavestructure']
-            leave.shortname = request.POST['shortname']
-            leave.leavedescription = request.POST['leavedescription']
-            leave.experincefrom=request.POST['experincefrom']
-            leave.experienceto=request.POST['experienceto']
-            leave.save()
-            return redirect('/leaves/leavestructure/')
+        structure = None
+        structure = Leavestructure.objects.filter(leavestructure = request.POST['leavestructure'])
+        structureid = Leavestructure.objects.get(id = id)
+        if structureid in structure:
+            response_data["is_success"] = True
         else:
-            response_data["is_success"] = False
+            if not structure:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
         return JsonResponse(response_data)
-    else:
-        return redirect('/leaves/leavestructure/')
+
+def editshortnameajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        struc = None
+        struc = Leavestructure.objects.filter(shortname = request.POST['shortname'])
+        strucid = Leavestructure.objects.get(id = id)
+        if strucid in struc:
+            response_data["is_success"] = True
+        else:
+            if not struc:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)
 
 def leavetype(request):
     if request.method == 'POST':
-        response_data = {}
-        leavetypes =None
-        leavetypes =Leavetype.objects.filter(leavetype=request.POST['leavetype'])
-        if not leavetypes:
-            leave = Leavetype(leavetype=request.POST['leavetype'],
-                                shortname=request.POST['shortname'],
-                                leavedescription=request.POST['leavedescription'])
-            leave.save()
-            return redirect('/leaves/leavetype/')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        leave = Leavetype(leavetype=request.POST['leavetype'],
+                            shortname=request.POST['shortname'],
+                            leavedescription=request.POST['leavedescription'])
+        leave.save()
+        return redirect('/leaves/leavetype/')
     else:
         leavetype = Leavetype.objects.all()
         return render(request,'leaves/leavetype.html',{'title':'Leave Type List','leavetype':leavetype})
 
-def validateleavetype(request):
+def leavetypeajax(request):
     if request.method == 'POST':
         response_data = {}
-        shortnames =None
-        shortnames =Leavetype.objects.filter(shortname=request.POST['shortname'])
-        if not shortnames:
-            leave = Leavetype(leavetype=request.POST['leavetype'],
-                                shortname=request.POST['shortname'],
-                                leavedescription=request.POST['leavedescription'])
-            leave.save()
-            return redirect('/leaves/leavetype/')
+        struc = None
+        struc = Leavetype.objects.filter(leavetype = request.POST['leavetype'])
+        if not struc:
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
-    else:
-        leavetype = Leavetype.objects.all()
-        return render(request,'leaves/leavetype.html',{'title':'Leave Type List','leavetype':leavetype})
+
+def typeshortnameajax(request):
+    if request.method == 'POST':
+        response_data = {}
+        struc = None
+        struc = Leavetype.objects.filter(shortname = request.POST['shortname'])
+        if not struc:
+            response_data["is_success"] = True
+        else:
+            response_data["is_success"] = False
+        return JsonResponse(response_data)
 
 def editleavetype(request, id):
     if request.method == 'POST':
-        response_data = {}
-        job = None
-        job = Leavetype.objects.filter(leavetype = request.POST['leavetype'])
-        if not job:
-            leave = Leavetype.objects.get(id=id)
-            leave.leavetype = request.POST['leavetype']
-            leave.shortname = request.POST['shortname']
-            leave.leavedescription = request.POST['leavedescription']
-            leave.save()
-            return redirect('/leaves/leavetype/')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
+        leave = Leavetype.objects.get(id=id)
+        leave.leavetype = request.POST['leavetype']
+        leave.shortname = request.POST['shortname']
+        leave.leavedescription = request.POST['leavedescription']
+        leave.save()
+        return redirect('/leaves/leavetype/')
     else:
         return redirect('/leaves/leavetype/')
 
-def editvalidateleavetype(request, id):
+def editleavetypeajax(request, id):
     if request.method == 'POST':
         response_data = {}
-        job = None
-        job = Leavetype.objects.filter(shortname = request.POST['shortname'])
-        if not job:
-            leave = Leavetype.objects.get(id=id)
-            leave.leavetype = request.POST['leavetype']
-            leave.shortname = request.POST['shortname']
-            leave.leavedescription = request.POST['leavedescription']
-            leave.save()
-            return redirect('/leaves/leavetype/')
+        struc = None
+        struc = Leavetype.objects.filter(leavetype = request.POST['leavetype'])
+        strucid = Leavetype.objects.get(id = id)
+        if strucid in struc:
+            response_data["is_success"] = True
         else:
-            response_data["is_success"] = False
+            if not struc:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
         return JsonResponse(response_data)
-    else:
-        return redirect('/leaves/leavetype/')
+
+def edittypeshortnameajax(request, id):
+    if request.method == 'POST':
+        response_data = {}
+        struc = None
+        struc = Leavetype.objects.filter(shortname = request.POST['shortname'])
+        strucid = Leavetype.objects.get(id = id)
+        if strucid in struc:
+            response_data["is_success"] = True
+        else:
+            if not struc:
+                response_data["is_success"] = True
+            else:
+                response_data["is_success"] = False
+        return JsonResponse(response_data)
                                                                                                        
 def relationwithleave(request, id):
     if request.method =="POST":
@@ -222,19 +235,23 @@ def assignleavestructure(request):
 
 def holidays(request):
     if request.method == 'POST':
+        holy = Holidays(holidayname=request.POST['holidayname'],holidayDate=request.POST['holidayDate'])
+        holy.save()
+        return redirect('/leaves/holidays/')
+    else:   
+        holiday = Holidays.objects.all()
+        return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})
+
+def holidayajax(request):
+    if request.method == "POST":
         response_data = {}
         holyname =None
         holyname =Holidays.objects.filter(holidayname=request.POST['holidayname'])
         if not holyname:
-            holy = Holidays(holidayname=request.POST['holidayname'],holidayDate=request.POST['holidayDate'])
-            holy.save()
-            return redirect('/leaves/holidays/')
+            response_data["is_success"] = True
         else:
             response_data["is_success"] = False
         return JsonResponse(response_data)
-    else:   
-        holiday = Holidays.objects.all()
-        return render(request,'leaves/holiday.html',{'title':'Holiday List','holiday':holiday})
 
 def upload(request):
     if "GET" == request.method:
@@ -248,9 +265,9 @@ def upload(request):
         for c1, c2 in sheet[sheet.dimensions]:
             holidayname = c1.value
             holidaydate = c2.value
-            holyname =Holidays.objects.filter(holidayname=holidayname)
+            holyname = Holidays.objects.filter(holidayname = holidayname)
             if not holyname:
-                holy = Holidays(holidayname=holidayname,holidayDate=holidaydate)
+                holy = Holidays(holidayname = holidayname,holidayDate = holidaydate)
                 holy.save()
         return redirect('/leaves/holidays/')
 

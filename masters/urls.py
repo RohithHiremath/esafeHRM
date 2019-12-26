@@ -28,4 +28,8 @@ urlpatterns = [
     path('locationajax/', views.locationajax, name = 'locationajax'),
     path('editlocation/<int:id>/', views.editlocation, name='editlocation'),
     path('editlocationajax/<int:id>/', views.editlocationajax, name='editlocationajax'),
+    path('shiftdetails', views.shiftDetails, name='shiftdetails'),
+    path('shiftdetailsajax', views.shiftdetailsajax, name='shiftdetailsajax'),
+    path('shortnameajax', views.shortnameajax, name='shortnameajax'),
+    path('employeeshiftlist', views.employeeshiftlist, name='employeeshiftlist'),
 ]

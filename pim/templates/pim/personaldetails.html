@@ -183,8 +183,9 @@
           <select name="work_shifts" id="work_shifts" class="form-control" placeholder="Select Work Shift" required>
             <option value="" disabled selected hidden>Select Work Shift</option>
             <option value="">Select</option>
-            <option value="1">General</option>
-            <option value="2">Twilight</option>
+            {% for job in Shiftdetails %}
+            <option value="{{ job.id }}">{{ job.shiftname }}</option>
+            {% endfor %}
           </select>
           <div class="error" id="workshiftErr"></div>
         </div>

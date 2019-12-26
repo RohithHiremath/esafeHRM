@@ -273,8 +273,3 @@ def uploadattendance(request):
         return render(request,'processattendance.html',{'title':'Upload Attendance', 'saved_details':saved_details})
     else:
         return render(request,'processattendance.html',{'title':'Upload Attendance', 'saved_details':saved_details})
-
-
-
-        
-

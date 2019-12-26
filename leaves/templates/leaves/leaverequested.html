@@ -30,7 +30,7 @@
             <td>{{ detail.Fromdate }}</td>
             <td>{{ detail.AppliedDate }}</td>
             <td class = "select" > 
-                <select name="status"> 
+                <select name="status" id="status"> 
                 <option value="">-Select-</option>
                 <option value="2">Approve</option>
                 <option value="3">Reject</option>
@@ -42,9 +42,23 @@
     </table>
     <div class="card" style="margin: 10px 0px 10px 0px;"></div>
         <div class="col-md-12" style="float:right;">
-        <button type="submit" class="btn btn-primary pull-right">
+        <button type="submit" class="btn btn-primary pull-right" id="saved">
         Save
         </button>
     </div>
 </form>
+<script>
+$(document).ready(function (){
+    validate();
+    $('#status').change(validate);
+});
+function validate(){
+    if ($('#status').val().length   >   0){
+        $("#saved").prop("disabled", false);
+    }
+    else {
+        $("#saved").prop("disabled", true);
+    }
+}   
+</script>
 {% endblock %}
