@@ -5,7 +5,6 @@ from pim.models import Personal_details
 from attendance.models import EmployeeAttendance
 import calendar
 import datetime
-# import xlrd
 import openpyxl
 from django.shortcuts import render,redirect
 from .models import TardinessDetails,ShiftDetails,ShiftTimings

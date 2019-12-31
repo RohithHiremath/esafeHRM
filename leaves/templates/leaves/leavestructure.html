@@ -228,18 +228,23 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="levelname">Level<font color=red>*</font></label>
+                            <label for="levelname">Assigned Levels<font color=red>*</font></label>
                             <br />
                                 {% for level in leave.assignedlevels%}
-                                {{ level.levels.levelName }} &nbsp;
+                                {{ level.levels.levelName }}, &nbsp;
                                 {% endfor %}
-                            <select name="levels" id="levels" multiple="multiple" class="form-control">
-                                {% for orgs in orglevel %}
-                                <option value="{{orgs.id}}">{{orgs.levelName}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                        </div>                       
                     </div>
+                    <div class="row">
+                    <div class="col-md-4">
+                        <label for="levelname">Levels<font color=red>*</font></label>
+                        <select name="levels" id="levels" multiple="multiple" class="form-control">
+                            {% for orgs in orglevel %}
+                            <option value="{{orgs.id}}">{{orgs.levelName}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>    
+                </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" id="editsave{{ leave.id }}">Save</button>

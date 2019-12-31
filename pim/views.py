@@ -8,12 +8,16 @@ from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
 import re
+import pyautogui as pg
 import random
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+import datetime
+from datetime import timedelta
+from leaves.models import AssignLeaveStructure,AssigningLevelsToStructure
 
 def Personal_details_view(request):
     if request.method =="POST":
@@ -55,7 +59,11 @@ def Personal_details_view(request):
             emailid = request.POST['companyemailid']
             fname = request.POST['first_name']
             lname = request.POST['last_name']
+            emplevel = request.POST['empllevel']
+            fromdate = request.POST['joined_date']
             personal.save()
+            empid = personal.id
+            assigning_leave_structure(request,emplevel,fromdate,empid)
             password = password_generator(request)
             register(request,emailid,fname,lname,password)
             emailtemplate = Emailtemplate.objects.filter(title = 'Welcome Email')
@@ -107,6 +115,18 @@ def register(request,mail,fname,lname,pword):
     my_group = Group.objects.get(name='Employee') 
     my_group.user_set.add(user)
 
+def assigning_leave_structure(request,emplevel,fromdate,empid):
+    asslevel = AssigningLevelsToStructure.objects.filter(levels_id = emplevel).values_list('leavestructureid_id',flat=True).first()
+    assignedleavedata = AssignLeaveStructure(
+        fromDate = fromdate,
+        toDate = '2099-12-31',
+        updatedDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        status = True,
+        empid_id = empid,
+        leave_structure_id = asslevel
+    )
+    assignedleavedata.save()
+
 def password_generator(request):
     MAX_LEN = 8
 
@@ -151,9 +171,9 @@ def employeelist(request):
 
 def edit(request, id):
     personal = Personal_details.objects.get(id=id)
-    personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
-    personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
-    personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
+    personal.date_of_birth = datetime.datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
+    personal.joined_date = datetime.datetime.strftime(personal.joined_date, "%Y-%m-%d")
+    personal.date_of_permanency = datetime.datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
     jobtitles = LevelDesignation.objects.filter(levelid_id=personal.employmentLevel_id).select_related('designations')
     jobgrades = LevelGrades.objects.filter(levelid_id=personal.employmentLevel_id).select_related('grades')
     employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')

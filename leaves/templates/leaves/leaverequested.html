@@ -45,20 +45,11 @@
         <button type="submit" class="btn btn-primary pull-right" id="saved">
         Save
         </button>
+        <a href="{% url 'login:dashboard' %}">
+            <button type="button" class="btn btn-primary">
+                <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
+            </button>
+        </a>
     </div>
 </form>
-<script>
-$(document).ready(function (){
-    validate();
-    $('#status').change(validate);
-});
-function validate(){
-    if ($('#status').val().length   >   0){
-        $("#saved").prop("disabled", false);
-    }
-    else {
-        $("#saved").prop("disabled", true);
-    }
-}   
-</script>
 {% endblock %}

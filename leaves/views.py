@@ -77,7 +77,7 @@ def editleavestructure(request, id):
         leave.leavedescription = request.POST['leavedescription']
         leave.experincefrom=request.POST['experincefrom']
         leave.experienceto=request.POST['experienceto']
-        leave.save() 
+        leave.save()
         levelid = leave.id
         orglevels = request.POST.getlist('levels')
         for levelval in orglevels:
@@ -85,7 +85,9 @@ def editleavestructure(request, id):
                 leavestructureid_id = levelid,
                 levels_id = levelval
             )
-            organisationleveldata.save()
+            assign = AssigningLevelsToStructure.objects.filter(leavestructureid_id = levelid, levels_id = levelval).distinct()
+            if not assign:
+                organisationleveldata.save()
         return redirect('/leaves/leavestructure/')
     else:
         return redirect('/leaves/leavestructure/')
