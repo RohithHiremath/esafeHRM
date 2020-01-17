@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from .models import Personal_details
-from datetime import datetime
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate, ShiftDetails
 from organisation.models import Leveldefinition
 from django.shortcuts import render
@@ -8,16 +7,16 @@ from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
 import re
-import pyautogui as pg
 import random
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
 import json
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
-import datetime
 from datetime import timedelta
-from leaves.models import AssignLeaveStructure,AssigningLevelsToStructure
+from datetime import datetime, date
+from dateutil import relativedelta
+from leaves.models import AssignLeaveStructure,AssigningLevelsToStructure, Leavestructure
 
 def Personal_details_view(request):
     if request.method =="POST":
@@ -127,6 +126,43 @@ def assigning_leave_structure(request,emplevel,fromdate,empid):
     )
     assignedleavedata.save()
 
+def change_leave_structure(request):
+    leaves = AssignLeaveStructure.objects.all().select_related('leave_structure')
+    for leave in leaves:
+        lid = leave.id
+        start_date = leave.fromDate
+        end_date = date.today() 
+        delta = relativedelta.relativedelta(end_date,start_date)
+        months = delta.years * 12 + delta.months
+        expfrom = leave.leave_structure.experienceto
+        if months >= leave.leave_structure.experienceto:
+            todate = date.today()
+            updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            empid = leave.empid.id
+            leavestructure = leave.leave_structure.id
+            create_new_leave_structure(request,empid,leavestructure,expfrom,lid)
+            replaceddata = AssignLeaveStructure.objects.filter(id = lid)
+            replaceddata.update(fromDate = start_date,toDate = todate,updatedDate = updated_at,status = False,empid_id = leave.empid.id,leave_structure_id = leave.leave_structure.id)
+            for i in replaceddata:
+                i.save()
+        else:
+            pass
+
+def create_new_leave_structure(request,empid,leavestructure,expfrom,lid):
+    fromdate = date.today()
+    experiences = Leavestructure.objects.filter(experincefrom = expfrom).get().id
+    assigningdata = AssignLeaveStructure(
+        fromDate = fromdate,
+        toDate = '2099-12-31',
+        updatedDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        status = True,
+        empid_id = empid,
+        leave_structure_id = experiences
+    )
+    updatedata = AssignLeaveStructure.objects.filter(id = lid)
+    updatedata.update(leave_structure = experiences)
+    assigningdata.save()
+
 def password_generator(request):
     MAX_LEN = 8
 
@@ -171,9 +207,9 @@ def employeelist(request):
 
 def edit(request, id):
     personal = Personal_details.objects.get(id=id)
-    personal.date_of_birth = datetime.datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
-    personal.joined_date = datetime.datetime.strftime(personal.joined_date, "%Y-%m-%d")
-    personal.date_of_permanency = datetime.datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
+    personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
+    personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
+    personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
     jobtitles = LevelDesignation.objects.filter(levelid_id=personal.employmentLevel_id).select_related('designations')
     jobgrades = LevelGrades.objects.filter(levelid_id=personal.employmentLevel_id).select_related('grades')
     employmentstatus = Employmentstatus.objects.all().order_by('employementstatus')

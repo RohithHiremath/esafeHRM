@@ -57,7 +57,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="addleavestructureLabel">Add Leave Structure</h5>
             </div>
-            <form action="" name="addstructure" id="addstructure" method="POST">
+            <form action="" name="addstructure" id="addstructure" method="POST" onsubmit="return addlevel();">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
@@ -130,16 +130,17 @@
                         <div class="col-md-4">
                             <label for="levelname">Level<font color=red>*</font></label>
                             <br />
-                            <select name="levels" id="levels" multiple="multiple" class="form-control">
+                            <select name="addlevels" id="addlevels" multiple="multiple" class="form-control">
                                 {% for orgs in orglevel %}
                                 <option value="{{orgs.id}}">{{orgs.levelName}}</option>
                                 {% endfor %}
                             </select>
+                            <div class="error" id="levelsErr"></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="save">Save</button>
+                    <button type="submit" class="btn btn-primary" id="saves">Save</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -156,7 +157,7 @@
                 <h5 class="modal-title" id="editleavestructureLabel">Edit Leave Structure</h5>
             </div>
             <form action="/leaves/editleavestructure/{{ leave.id }}/" name="editstructure" id="editstructure"
-                method="POST">
+                method="POST" onsubmit="return editlevel('{{ leave.id }}');">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="row">
@@ -231,18 +232,20 @@
                             <label for="levelname">Assigned Levels<font color=red>*</font></label>
                             <br />
                                 {% for level in leave.assignedlevels%}
-                                {{ level.levels.levelName }}, &nbsp;
+                                {{ level.levels.levelName }} &nbsp;
                                 {% endfor %}
                         </div>                       
                     </div>
                     <div class="row">
                     <div class="col-md-4">
                         <label for="levelname">Levels<font color=red>*</font></label>
-                        <select name="levels" id="levels" multiple="multiple" class="form-control">
+                        <select name="editlevels" id="editlevels{{ leave.id }}" multiple="multiple" class="form-control">
+                            <option value="0">Select Level</option>
                             {% for orgs in orglevel %}
                             <option value="{{orgs.id}}">{{orgs.levelName}}</option>
                             {% endfor %}
                         </select>
+                        <div class="error" id="editlevelErr{{ leave.id }}"></div>
                     </div>    
                 </div>
                 </div>
@@ -259,18 +262,40 @@
 <h4>You are not Authorized to view this page </h4>
 {% endif %}
 <script>
-$(document).ready(function () {
-    $('#levels').multiselect();
-});
+
+function addlevel(){
+    var addoptions = $('#addlevels option:selected');
+    if(addoptions.length == 0){
+        printError("levelsErr", "Please Select Levels");
+        return false;
+    }
+}
+
+function editlevel(id){
+    var idsel = 'editlevels'+id;
+    var selval = document.getElementById(idsel).value
+    if(selval != 0 && selval !=''){
+        printError("editlevelErr"+id, "");
+        return true;
+    }else{
+         printError("editlevelErr"+id, "Please Select Levels");
+        return false;
+    }
+} 
+
+function printError(elemId, hintMsg) {
+    var Msg = hintMsg.fontcolor("red");
+    document.getElementById(elemId).innerHTML = Msg;
+  }
 
 function fngetsomething(){
     var val = document.getElementById("experincefrom").value;
     alert(val);
 }
+
 function structurevalidate(element) {
 	$("#login_ok").hide();
 	$("#login_not").hide();
-    document.getElementById("save").disabled = false;
 	leavestructure = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
@@ -283,10 +308,8 @@ function structurevalidate(element) {
 		success : function (data) {
 			if (data.is_success) {
 				$("#login_ok").show();
-                document.getElementById("save").disabled = false;
 			}else {
 				$("#login_not").show();
-                document.getElementById("save").disabled = true;
 			}
 		}
 	});
@@ -319,7 +342,6 @@ function editstructurevalidate(element,id) {
  function shortvalidate(element) {
 	$("#edit_ok").hide();
 	$("#edit_not").hide();
-    document.getElementById("save").disabled = false;
 	shortname = $(element).val();
 	$.ajax({
 		url : $(element).attr("data-url"),
@@ -332,10 +354,8 @@ function editstructurevalidate(element,id) {
 		success : function (data) {
 			if (data.is_success) {
 				 $("#edit_ok").show();
-                document.getElementById("save").disabled = false;
 			}else {
 				$("#edit_not").show();
-                document.getElementById("save").disabled = true;
 			}
 		}
 	});
@@ -364,5 +384,23 @@ function editshortvalidate(element,id) {
 		}
 	});
 } 
+
 </script>
 {% endblock %}
+
+
+{% comment %} $(function(){
+    $('addstructure').submit(function(){
+         var options = $('#addlevels  option:selected');
+         var selectedValues = $("#addlevels").val();
+         if(options.length == 0){
+             printError("levelsErr", "Please Select Levels");
+             return false;
+         }
+    });
+});  
+
+    $(document).ready(function (){
+    validate();
+    $('#levels').change(validate);
+});   {% endcomment %}
