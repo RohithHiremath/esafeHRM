@@ -24,12 +24,12 @@ class Jobgrade(models.Model):
     def __str__(self):
        return self.jobgrade
 
-class Salarycomponent(models.Model):
-    componentname = models.CharField(max_length=50)
-    types = models.CharField(max_length=50)
+# class Salarycomponent(models.Model):
+#     componentname = models.CharField(max_length=50)
+#     types = models.CharField(max_length=50)
 
-    def __str__(self):
-       return self.componentname
+#     def __str__(self):
+#        return self.componentname
 
 class Employmentstatus(models.Model):
     employementstatus = models.CharField(max_length=50)
