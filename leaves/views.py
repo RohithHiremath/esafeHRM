@@ -18,7 +18,7 @@ from organisation.models import Leveldefinition
 # Create your views here.
 def leavestructure(request):
     if request.method == 'POST':
-        orglevels = request.POST.getlist('levels')
+        orglevels = request.POST.getlist('addlevels')
         leave = Leavestructure(leavestructure=request.POST['leavestructure'],
                         shortname=request.POST['shortname'],
                         leavedescription=request.POST['leavedescription'],
@@ -39,7 +39,7 @@ def leavestructure(request):
         for leavesww in leaves:
             assignedleaves = ''
             linkeddetails = Linktoleavetype.objects.filter(leave_structure=leavesww.id).select_related('leave_type')
-            levels = AssigningLevelsToStructure.objects.filter(leavestructureid_id=leavesww.id).select_related('levels')
+            levels = AssigningLevelsToStructure.objects.filter(leavestructureid_id=leavesww.id).select_related('levels').order_by('levels__levelName')
             for linkeddetailswww in linkeddetails:
                 assignedleaves = assignedleaves+' , '+linkeddetailswww.leave_type.shortname
             assignedleavetypes = assignedleaves.lstrip(' ,')
@@ -79,7 +79,9 @@ def editleavestructure(request, id):
         leave.experienceto=request.POST['experienceto']
         leave.save()
         levelid = leave.id
-        orglevels = request.POST.getlist('levels')
+        orglevels = request.POST.getlist('editlevels')
+        dell = AssigningLevelsToStructure.objects.filter(leavestructureid_id = levelid).all()
+        dell.delete()
         for levelval in orglevels:
             organisationleveldata = AssigningLevelsToStructure(
                 leavestructureid_id = levelid,
