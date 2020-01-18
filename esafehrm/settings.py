@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'esafehrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'esafedatabase',
+        'NAME': 'esafenewdatabase',
         'USER': 'root',
         'PASSWORD':'Esafeadmin@123',
         'HOST':'127.0.0.1',
