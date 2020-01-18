@@ -8,7 +8,6 @@ from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
 import re
-import pyautogui as pg
 import random
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from django.http import HttpResponse,Http404,JsonResponse
