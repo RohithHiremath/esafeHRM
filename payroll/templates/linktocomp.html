@@ -1,0 +1,60 @@
+{% extends 'login/dashboard.html' %}
+{% block content %}
+<div class="container-fluid text-right" style="margin:10px;float:right;">
+    <h4 style="float:left;"> Link Components to {{pscale.payscalename}}</h4>
+    <br/>
+</div>
+  
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<form action="" name="linkleave" id="linkleave" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+            <label for="component_name">Salary Component<font color=red>*</font></label>
+            <select name="component_name" id="component_name" class="form-control" value="{{ link.id }}" required>
+                <option value="" disabled selected hidden>Select Salary Component </option>
+                {% for link in components %}
+                <option value="{{ link.id }}">{{ link.componentname }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4" style="margin-top:30px;">
+            <button type="Submit" class="btn btn-primary" data-toggle="modal" data-target="#addlinkleave">
+                Add
+            </button>
+        </div>
+    </div>
+    <table class="table table-striped nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th class="table-th">#</th>
+                <th class="table-th">Component Name</th>
+                <th class="table-th">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in linkeddetails %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ link.component_name.componentname }}</td>
+                <td style="padding-left: 30px;" data-toggle="tooltip" title="Delete">
+                    <a href="/payroll/delete/{{ link.id }}/{{ pscale.id }}">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="card" style="margin: 10px 0px 10px 0px;"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/payroll/payscale/">
+                <button type="button" class="btn btn-primary pull-right">
+                    <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back
+                </button>
+            </a>
+        </div>
+    </div>
+</form>
+{% endblock %}

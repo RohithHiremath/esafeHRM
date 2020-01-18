@@ -21,6 +21,7 @@ from leaves import views
 from organisation import views
 from attendance import views
 from empprofile import views
+from payroll import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('leaves/', include('leaves.urls')),
     path('organisation/', include('organisation.urls')),
     path('attendance/', include('attendance.urls')),
+    path('payroll/', include('payroll.urls')),
     path('empprofile/', include('empprofile.urls')),
     path('', include('login.urls'))
 ]

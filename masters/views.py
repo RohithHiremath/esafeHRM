@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,JsonResponse
 from django.contrib.auth.models import User, auth, Permission
-from .models import Job, Jobcategory, Jobgrade, Salarycomponent, Employmentstatus, Department, Location, ShiftDetails, ShiftTimings
+from .models import Job, Jobcategory, Jobgrade, Employmentstatus, Department, Location, ShiftDetails, ShiftTimings
 # Create your views here.
 
 def jobtitles(request):
@@ -127,40 +127,6 @@ def editjobgradeajax(request, id):
             else:
                 response_data["is_success"] = False
         return JsonResponse(response_data)
-
-def component(request):
-    if request.method == 'POST':
-        response_data = {}
-        component = None
-        component = Salarycomponent.objects.filter(componentname = request.POST['componentname'])
-        if not component:
-            response_data["is_success"] = True
-            component = Salarycomponent(componentname=request.POST['componentname'],types=request.POST['types'])
-            component.save()
-            return redirect('component')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
-    else:
-        components = Salarycomponent.objects.all().order_by('componentname','types')
-    return render(request,'salarycomponents.html',{'title':'component List','components':components})
-
-def editcomponent(request, id):
-    if request.method == 'POST':
-        response_data = {}
-        job = None
-        job = Salarycomponent.objects.filter(componentname = request.POST['componentname'])
-        if not job:
-            cat = Salarycomponent.objects.get(id=id)
-            cat.componentname = request.POST['componentname']
-            cat.types = request.POST['types']
-            cat.save()
-            return redirect('component')
-        else:
-            response_data["is_success"] = False
-        return JsonResponse(response_data)
-    else:
-        return redirect('component')
 
 def employementstatus(request):
     if request.method == 'POST':

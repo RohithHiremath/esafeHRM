@@ -1,0 +1,374 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<div class="container-fluid text-right clearfix" style="margin:10px;">
+    <h4 style="float: left;margin-left: -22px;">Pay Scale </h4>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addleavestructure">
+        Add
+    </button>
+</div>
+<div class="card" style="margin: 10px 0px 10px 0px;"></div>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Payscale Name</th>
+            <th>Description</th>
+            <th>Short Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payscale in payscales %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ payscale.payscalename }}</td>
+            <td style="width:300px;">Experience level between {{ payscale.experincefrom }} months and {{ payscale.experienceto }} months</td>
+            <td>{{ payscale.shortname }}</td>
+
+            <td data-toggle="tooltip" title="Click to edit">
+                <a style="padding-left: 20px;" href="#" data-toggle="modal"
+                    data-target="#editpayscale{{ payscale.id }}">
+                    <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                </a>
+                <a style="padding-left: 20px;" data-toggle="tooltip" title="Link / Unlink Leave Types"
+                    href="/payroll/relationwithcomp/{{ payscale.id }}">
+                    <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="modal fade" id="addleavestructure" tabindex="-1" role="dialog" aria-labelledby="addleavestructureLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addleavestructureLabel">Add Payscale</h5>
+            </div>
+            <form action="" name="addstructure" id="addstructure" method="POST" onsubmit="return addlevel();">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="payscalename">Payscale Name<font color=red>*</font></label>
+                            <input type="text" class="form-control" id="payscalename" name="payscalename" value="" 
+                            onblur="payscalevalidate(this);" data-url="{% url 'payroll:payscaleajax' %}" required>
+                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="login_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="login_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="shortname">Short Name<font color=red>*</font></label>
+                            <input type="text" class="form-control" id="shortname" name="shortname" value=""
+                                maxlength='3' onblur="payscaleshortvalidate(this);" data-url="{% url 'payroll:payshortajax' %}" required>
+                            <div class="col-md-10 col-sm-10" style="color:red;display:none;margin-top: 4px;"  id="edit_not">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="edit_ok">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="description" name="description"
+                                value="" placeholder="Enter Description">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="expfrom">Experience From<font color=red>*</font></label>
+                            <select name="experincefrom" id="experincefrom" class="form-control" value=""
+                                required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="0">0 months</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                                <option value="18">18 months</option>
+                                <option value="24">24 months</option>
+                                <option value="30">30 months</option>
+                                <option value="36">36 months</option>
+                                <option value="42">42 months</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-4">
+                            <label for="expto">Experience To<font color=red>*</font></label>
+                            <select name="experienceto" id="experienceto" class="form-control" value=""
+                                required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                                <option value="18">18 months</option>
+                                <option value="24">24 months</option>
+                                <option value="30">30 months</option>
+                                <option value="36">36 months</option>
+                                <option value="42">42 months</option>
+                                <option value="48">48 months</option>
+                                <option value="54">54 months</option>
+                                <option value="60">60 months</option>
+                                <option value="66">66 months</option>
+                                <option value="72">72 months</option>
+                                <option value="78">78 months</option>
+                                <option value="84">84 months</option>
+                                <option value="90">90 months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="levelname">Level<font color=red>*</font></label>
+                            <br />
+                            <select name="addlevels" id="addlevels" multiple="multiple" class="form-control">
+                                {% for orgs in orglevel %}
+                                <option value="{{orgs.id}}">{{orgs.levelName}}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="error" id="levelsErr"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="saves">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% for payscale in payscales %}
+<div class="modal fade" id="editpayscale{{payscale.id}}" tabindex="-1" role="dialog"
+    aria-labelledby="editleavestructureLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editleavestructureLabel">Edit Payscale</h5>
+            </div>
+            <form action="/payroll/editpayscale/{{ payscale.id }}/" name="editstructure" id="editstructure"
+                method="POST" onsubmit="return editlevel('{{ payscale.id }}');">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="payscalename">Payscale Name<font color=red>*</font></label>
+                            <input type="text" class="form-control" id="payscalename" name="payscalename"
+                                value="{{ payscale.payscalename }}" onblur="editpayscalevalidate(this,{{ payscale.id }});" data-url="{% url 'payroll:editpayscaleajax' payscale.id %}" required>
+                            <div class="col-md-8 col-sm-8" style="color:red;display:none;margin-top: 4px;"  id="log_not{{ payscale.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="log_ok{{ payscale.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="shortname">Short Name<font color=red>*</font></label>
+                            <input type="text" class="form-control" id="shortname" name="shortname"
+                                value="{{ payscale.shortname }}" maxlength='3' onblur="editpayshortvalidate(this,{{ payscale.id }});" data-url="{% url 'payroll:editpayshortajax' payscale.id %}" required>
+                            <div class="col-md-10 col-sm-10" style="color:red;display:none;margin-top: 4px;"  id="editin_not{{ payscale.id }}">
+                                <i class="fa fa-times" aria-hidden="true">Already exist.</i>
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="color: green;display: none;margin-top: 4px;" id="editin_ok{{ payscale.id }}">
+                                <i class="fa fa-check" aria-hidden="true">Available.</i>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="description" name="description"
+                                value="{{ payscale.description }}">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- <h5 class="modal-title" id="addleavestructureLabel">Applies for Employees with</h5> -->
+                            <label for="expfrom">Experience From<font color=red>*</font></label>
+                            <select name="experincefrom" id="experincefrom" class="form-control" required>
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="0" {% if payscale.experincefrom == 0 %}selected{% endif %}>0 months</option>
+                                <option value="6" {% if payscale.experincefrom == 6 %}selected{% endif %}>6 months</option>
+                                <option value="12" {% if payscale.experincefrom == 12 %}selected{% endif %}>12 months</option>
+                                <option value="18" {% if payscale.experincefrom == 18 %}selected{% endif %}>18 months</option>
+                                <option value="24" {% if payscale.experincefrom == 24 %}selected{% endif %}>24 months</option>
+                                <option value="30" {% if payscale.experincefrom == 30 %}selected{% endif %}>30 months</option>
+                                <option value="36" {% if payscale.experincefrom == 36 %}selected{% endif %}>36 months</option>
+                                <option value="42" {% if payscale.experincefrom == 42 %}selected{% endif %}>42 months</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-4">
+                            <label for="expto">Experience To {{ payscale.experienceto }}<font color=red>*</font></label>   
+                            <select name="experienceto" id="experienceto" class="form-control" required onchange="fngetsomething();">
+                                <option value="" disabled selected hidden>Select Experience Level</option>
+                                <option value="6" {% if payscale.experienceto == 6 %}selected{% endif %}>6 months</option>
+                                <option value="12" {% if payscale.experienceto == 12 %}selected{% endif %}>12 months</option>
+                                <option value="18" {% if payscale.experienceto == 18 %}selected{% endif %}>18 months</option>
+                                <option value="24" {% if payscale.experienceto == 24 %}selected{% endif %}>24 months</option>
+                                <option value="30" {% if payscale.experienceto == 30 %}selected{% endif %}>30 months</option>
+                                <option value="36" {% if payscale.experienceto == 36 %}selected{% endif %}>36 months</option>
+                                <option value="42" {% if payscale.experienceto == 42 %}selected{% endif %}>42 months</option>
+                                <option value="48" {% if payscale.experienceto == 48 %}selected{% endif %}>48 months</option>
+                                <option value="54" {% if payscale.experienceto == 54 %}selected{% endif %}>54 months</option>
+                                <option value="60" {% if payscale.experienceto == 60 %}selected{% endif %}>60 months</option>
+                                <option value="66" {% if payscale.experienceto == 66 %}selected{% endif %}>66 months</option>
+                                <option value="72" {% if payscale.experienceto == 72 %}selected{% endif %}>72 months</option>
+                                <option value="78" {% if payscale.experienceto == 78 %}selected{% endif %}>78 months</option>
+                                <option value="84" {% if payscale.experienceto == 84 %}selected{% endif %}>84 months</option>
+                                <option value="90" {% if payscale.experienceto == 90 %}selected{% endif %}>90 months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="levelname">Assigned Levels<font color=red>*</font></label>
+                            <br />
+                                {% for level in payscale.assignedlevels%}
+                                {{ level.levels.levelName }} &nbsp;
+                                {% endfor %}
+                        </div>                       
+                    </div> 
+                    <div class="row">
+                    <div class="col-md-4">
+                        <label for="levelname">Levels<font color=red>*</font></label>
+                        <select name="editlevels" id="editlevels{{ payscale.id }}" multiple="multiple" class="form-control">
+                            <option value="0">Select Level</option>
+                            {% for orgs in orglevel %}
+                            <option value="{{orgs.id}}">{{orgs.levelName}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="error" id="editlevelErr{{ payscale.id }}"></div>
+                    </div> 
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="editsave{{ payscale.id }}">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script>
+function fngetsomething(){
+    var val = document.getElementById("experincefrom").value;
+    alert(val);
+}
+
+function addlevel(){
+    var addoptions = $('#addlevels option:selected');
+    if(addoptions.length == 0){
+        printError("levelsErr", "Please Select Levels");
+        return false;
+    }
+}
+
+function editlevel(id){
+    var idsel = 'editlevels'+id;
+    var selval = document.getElementById(idsel).value
+    if(selval != 0 && selval !=''){
+        printError("editlevelErr"+id, "");
+        return true;
+    }else{
+         printError("editlevelErr"+id, "Please Select Levels");
+        return false;
+    }
+} 
+
+function printError(elemId, hintMsg) {
+    var Msg = hintMsg.fontcolor("red");
+    document.getElementById(elemId).innerHTML = Msg;
+  }
+
+  function payscalevalidate(element) {
+	$("#login_ok").hide();
+	$("#login_not").hide();
+	payscalename = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "payscalename":payscalename,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				$("#login_ok").show();
+			}else {
+				$("#login_not").show();
+			}
+		}
+	});
+}
+function editpayscalevalidate(element,id) {
+	$("#log_ok"+id).hide();
+	$("#log_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	payscalename = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "payscalename":payscalename,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#log_ok"+id).show(); 
+                 document.getElementById("editsave"+id).disabled = false; 
+			}else {
+				$("#log_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+}
+ function payscaleshortvalidate(element) {
+	$("#edit_ok").hide();
+	$("#edit_not").hide();
+	shortname = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "shortname":shortname,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#edit_ok").show();
+			}else {
+				$("#edit_not").show();
+			}
+		}
+	});
+}
+function editpayshortvalidate(element,id) {
+	$("#editin_ok"+id).hide();
+	$("#editin_not"+id).hide();
+    document.getElementById("editsave"+id).disabled = false;
+	shortname = $(element).val();
+	$.ajax({
+		url : $(element).attr("data-url"),
+		data : {
+            "shortname":shortname,
+			"csrfmiddlewaretoken" : '{{ csrf_token }}',
+		},
+		method: "POST",
+		dataType : "json",
+		success : function (data) {
+			if (data.is_success) {
+				 $("#editin_ok"+id).show(); 
+                 document.getElementById("editsave"+id).disabled = false; 
+			}else {
+				$("#editin_not"+id).show();
+                document.getElementById("editsave"+id).disabled = true;
+			}
+		}
+	});
+} 
+
+</script>
+{% endblock %}
