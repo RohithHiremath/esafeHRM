@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib.auth.hashers import check_password
 from pim.models import Personal_details
-from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate
+from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate, ShiftDetails
 from organisation.models import Leveldefinition, LevelDesignation,LevelGrades
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -37,8 +37,8 @@ def checkoldpassword(request):
     return JsonResponse(passwordstatus, safe=False)
     
 def profiledetails(request):
-    currentid= request.user.id
-    personal = Personal_details.objects.get(id=currentid)
+    currentid= request.user.email
+    personal = Personal_details.objects.get(companyemailid=currentid)
     personal.date_of_birth = datetime.strftime(personal.date_of_birth, "%Y-%m-%d")
     personal.joined_date = datetime.strftime(personal.joined_date, "%Y-%m-%d")
     personal.date_of_permanency = datetime.strftime(personal.date_of_permanency, "%Y-%m-%d")
@@ -49,6 +49,7 @@ def profiledetails(request):
     departments = Department.objects.all().order_by('departmentname')
     reportingmanagers = Personal_details.objects.filter(department_id=personal.reportingdepartment, job_grade_id__gte = personal.job_grade_id)
     levels = Leveldefinition.objects.all().order_by('levelName')
+    Shiftdetails = ShiftDetails.objects.all()
     return render(request,'myprofile.html',{'title':'My Profile','personal':personal,
                                                 'jobtitles':jobtitles,
                                                 'jobgrades':jobgrades,
@@ -56,6 +57,13 @@ def profiledetails(request):
                                                 'locations':locations,
                                                 'departments':departments,
                                                 'levels':levels,
-                                                "reportingmanagers":reportingmanagers}) 
+                                                "reportingmanagers":reportingmanagers,
+                                                'Shiftdetails':Shiftdetails}) 
 
-
+def editprofile(request,id):
+    if request.method == "POST":
+        personal = Personal_details.objects.get(id=id)
+        personal.alternate_emailid = request.POST['alternate_emailid']
+        personal.alternate_mobileno = request.POST['alternate_mobileno']
+        personal.save()
+        return redirect('/empprofile/myprofile/')

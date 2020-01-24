@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from organisation.models import Leveldefinition
+from pim.models import Personal_details
 # Create your models here.
 
 class Salarycomponent(models.Model):
@@ -28,3 +29,11 @@ class Linktocomponent(models.Model):
 class AssigningLevelsToPayscale(models.Model):
     payscalenameid = models.ForeignKey(PayScale,on_delete = models.CASCADE)
     levels = models.ForeignKey(Leveldefinition,on_delete = models.CASCADE)
+
+class AssignPayscale(models.Model):
+    empid = models.ForeignKey(Personal_details,on_delete = models.CASCADE)
+    pay_scale = models.ForeignKey(PayScale,on_delete = models.CASCADE)
+    fromDate = models.DateField(blank = False)
+    toDate = models.DateField(blank = False)
+    updatedDate = models.DateTimeField(blank = False)
+    status = models.BooleanField(default=True)

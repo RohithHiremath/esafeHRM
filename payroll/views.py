@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-from payroll.models import Salarycomponent, PayScale, Linktocomponent, AssigningLevelsToPayscale
+from payroll.models import Salarycomponent, PayScale, Linktocomponent, AssigningLevelsToPayscale, AssignPayscale
 from organisation.models import Leveldefinition
+from pim.models import Personal_details
+import datetime
 
 # Create your views here.
 def component(request):
@@ -166,3 +168,24 @@ def delete(request, id, idpay):
     job = Linktocomponent.objects.get(id=id)
     job.delete()
     return redirect('/payroll/relationwithcomp/'+str(idpay)+'/')
+
+def assignpayscale(request):
+    if request.method == 'POST':
+        selList = request.POST.getlist('empids')
+        for val in range(len(selList)):
+            dt_obj = datetime.datetime.strptime(request.POST['effectivedate'],"%d-%m-%Y")
+            effectivedate = datetime.datetime.strftime(dt_obj, "%Y-%m-%d")
+            assigneddata = AssignPayscale(
+                fromDate = effectivedate,
+                toDate = '2099-12-31',
+                updatedDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                status = True,
+                empid_id = selList[val],
+                pay_scale_id = request.POST['payscalename']
+            )
+            assigneddata.save()
+        return redirect('/payroll/assignpayscale/')
+    else:
+        personals = Personal_details.objects.all()
+        payscales = PayScale.objects.all()
+        return render(request,'assignpayscale.html',{'personals':personals,'payscales':payscales})

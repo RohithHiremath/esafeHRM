@@ -1,6 +1,6 @@
 {% extends 'login/base.html' %}
 {% block content %}
-<form action="" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
+<form action="/empprofile/proupdate/{{ personal.id }}/" name="emplist" id="emplist" enctype="multipart/form-data" method="POST" novalidate>
   {% csrf_token %}
   <div class="card" style="margin-top: 10px;" id="perdetails">
     <div class="card-header">
@@ -37,7 +37,7 @@
       <div class="row">
         <div class="col-md-4">
           <label for="DateOfBirth">Date Of Birth<font color=red>*</font></label>
-          <input type="date" disabled class="form-control" name="date_of_birth" id="date_of_birth"
+          <input type="date" readonly class="form-control" name="date_of_birth" id="date_of_birth"
             value="{{ personal.date_of_birth }}" required>
           <div class="error" id="dobErr"></div>
         </div>
@@ -56,9 +56,9 @@
         <div class="col-md-4">
           <label for="Gender">Gender<font color=red>*</font></label>
           <select name="gender" class="form-control" id="gender">
-            <option value="" disabled>Select</option>
-            <option value="1" disabled {% if personal.gender == 1 %}selected{% endif %}>Male</option>
-            <option value="2" disabled {% if personal.gender == 2 %}selected{% endif %}>Female</option>
+            <option value="" readonly>Select</option>
+            <option value="1"  {% if personal.gender == 1 %}selected{% endif %}>Male</option>
+            <option value="2"  {% if personal.gender == 2 %}selected{% endif %}>Female</option>
           </select>
           <div class="error" id="genderErr"></div>
         </div>
@@ -66,10 +66,10 @@
           <label for="MaritalStatus">Marital Status<font color=red>*</font></label>
           <select name="marital_status" id="marital_status" class="form-control">
             <option value="" disabled>Select</option>
-            <option value="1" disabled {% if personal.marital_status == 1 %}selected{% endif %}>Married</option>
-            <option value="2" disabled {% if personal.marital_status == 2 %}selected{% endif %}>Single</option>
-            <option value="3" disabled {% if personal.marital_status == 3 %}selected{% endif %}>Divorce</option>
-            <option value="4" disabled {% if personal.marital_status == 4 %}selected{% endif %}>Widow</option>
+            <option value="1"  {% if personal.marital_status == 1 %}selected{% endif %}>Married</option>
+            <option value="2"  {% if personal.marital_status == 2 %}selected{% endif %}>Single</option>
+            <option value="3"  {% if personal.marital_status == 3 %}selected{% endif %}>Divorce</option>
+            <option value="4"  {% if personal.marital_status == 4 %}selected{% endif %}>Widow</option>
           </select>
           <div class="error" id="maritalstatusErr"></div>
         </div>
@@ -86,9 +86,19 @@
       <div class="row">
         <div class="col-md-4">
           <label for="MiddleName">Aadhaar Number<font color=red>*</font></label>
-          <input type="number" disabled class="form-control" name="aadhar_card_no" id="aadhar_card_no"
+          <input type="number" class="form-control" name="aadhar_card_no" id="aadhar_card_no"
             value="{{personal.aadhar_card_no}}" required>
           <div class="error" id="aadharErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="alternate_emailid">Alternate E-mail ID<font color=red>*</font></label>
+          <input type="email" class="form-control" name="alternate_emailid" id="alternate_emailid" value="{{personal.alternate_emailid}}" placeholder="Enter Alternate mail-id" required>
+          <div class="error" id="alternate_emailidErr"></div>
+        </div>
+        <div class="col-md-4">
+          <label for="alternate_mobileno">Alternate Mobile No<font color=red>*</font></label>
+          <input type="text" class="form-control" name="alternate_mobileno" id="alternate_mobileno" value="{{personal.alternate_mobileno}}" placeholder="Enter Alternate mobileno" required>
+          <div class="error" id="alternate_mobilenoErr"></div>
         </div>
       </div>
       <div class="row">
@@ -108,19 +118,19 @@
       <div class="row">
         <div class="col-md-4">
           <label for="joined_date">Joined Date:<font color=red>*</font></label>
-          <input type="date" disabled class="form-control" name="joined_date" id="joined_date" required
+          <input type="date" readonly class="form-control" name="joined_date" id="joined_date" required
             value="{{personal.joined_date}}">
           <div class="error" id="joineddateErr"></div>
         </div>
         <div class="col-md-4">
           <label for="date_of_permanency">Date Of Permanency:<font color=red>*</font></label>
-          <input type="date" disabled class="form-control" name="date_of_permanency" id="date_of_permanency"
+          <input type="date" readonly class="form-control" name="date_of_permanency" id="date_of_permanency"
             value="{{personal.date_of_permanency}}" required>
           <div class="error" id="dopErr"></div>
         </div>
         <div class="col-md-4">
           <label for="empllevel">Employment Level:<font color=red>*</font></label>
-          <select name="empllevel" id="empllevel" class="form-control" required onchange="fngetdropdownvalues(this)"
+          <select name="empllevel" disabled id="empllevel" class="form-control" required onchange="fngetdropdownvalues(this)"
             data-url="{% url 'pim:getdropdownvalues' %}">
             <option value="" disabled selected hidden>Select Employment Level</option>
             {% for level in levels %}
@@ -132,7 +142,7 @@
         </div>
         <div class="col-md-4">
           <label for="JobTitle">Job Title<font color=red>*</font></label>
-          <select name="job_title_id" id="job_title" class="form-control">
+          <select name="job_title_id" disabled id="job_title" class="form-control">
             <option value="" disabled>Select</option>
             {% for job in jobtitles %}
             <option value="{{ job.designations.id }}" disabled {% if personal.job_title_id ==  job.designations.id %} selected
@@ -146,7 +156,7 @@
 
         <div class="col-md-4">
           <label for="Jobgrade">Job Grade<font color=red>*</font></label>
-          <select name="job_grade_id" id="job_grade_id" class="form-control">
+          <select name="job_grade_id" disabled id="job_grade_id" class="form-control">
             <option value="" disabled>Select</option>
             {% for job in jobgrades %}
             <option value="{{ job.grades.id }}" disabled {% if personal.job_grade_id ==  job.grades.id %} selected {% endif %}>
@@ -157,7 +167,7 @@
         </div>
         <div class="col-md-4">
           <label for="Department">Department<font color=red>*</font></label>
-          <select name="department_id" id="department" class="form-control">
+          <select name="department_id" disabled id="department" class="form-control">
             <option value="" disabled>Select</option>
             {% for job in departments %}
             <option value="{{ job.id }}" disabled {% if personal.department_id ==  job.id %} selected {% endif %}>
@@ -170,7 +180,7 @@
       <div class="row">
         <div class="col-md-4">
           <label for="worklocation">Location<font color=red>*</font></label>
-          <select name="worklocation_id" id="worklocation" class="form-control">
+          <select name="worklocation_id" disabled  id="worklocation" class="form-control">
             <option value="" disabled>Select</option>
             {% for job in locations %}
             <option value="{{ job.id }}" disabled {% if personal.worklocation_id ==  job.id %} selected {% endif %}>
@@ -182,7 +192,7 @@
 
         <div class="col-md-4">
           <label for="EmploymentStatus">Employment Status<font color=red>*</font></label>
-          <select name="employment_status_id" id="employment_status" class="form-control">
+          <select name="employment_status_id" disabled id="employment_status" class="form-control">
             <option value="" disabled>Select</option>
             {% for job in employmentstatus %}
             <option value="{{ job.id }}" disabled {% if personal.employment_status_id ==  job.id %} selected {% endif %}>
@@ -194,10 +204,12 @@
 
         <div class="col-md-4">
           <label for="WorkShift">Work Shift<font color=red>*</font></label>
-          <select name="work_shifts" id="work_shifts" class="form-control">
+          <select name="work_shifts" disabled id="work_shifts" class="form-control">
             <option value="" disabled >Select</option>
-            <option value="1" disabled {% if personal.work_shifts == 1 %}selected{% endif %}>General</option>
-            <option value="2" disabled {% if personal.work_shifts == 2 %}selected{% endif %}>Twilight</option>
+            {% for job in Shiftdetails %}
+               <option value="{{ job.id }}" disabled {% if personal.work_shifts_id ==  job.id %} selected {% endif %}>
+              {{ job.shiftname }}</option>
+            {% endfor %}           
           </select>
           <div class="error" id="workshiftErr"></div>
         </div>
@@ -205,15 +217,15 @@
       <div class="row">
         <div class="col-md-4">
           <label for="companyemail">Company E-mail ID<font color=red>*</font></label>
-          <input type="email" disabled class="form-control" name="companyemailid" id="companyemailid" value="{{ personal.companyemailid }}" required>
+          <input type="email"  readonly class="form-control" name="companyemailid" id="companyemailid" value="{{ personal.companyemailid }}" required>
           <div class="error" id="companyemailErr"></div>
         </div>
         
         <div class="col-md-4">
           <label for="reportingdepartment">Reporting Department<font color=red>*</font></label>
-          <select name="reportingdepartment" id="reportingdepartment" class="form-control" onchange="fngetmanagers(this)"
+          <select name="reportingdepartment" disabled id="reportingdepartment" class="form-control" onchange="fngetmanagers(this)"
           data-url="{% url 'pim:getmanagers' %}" >
-            <option value="">Select</option>
+            <option value="" disabled>Select</option>
             {% for job in departments %}
             <option value="{{ job.id }}" disabled {% if personal.reportingdepartment ==  job.id %} selected {% endif %}>
               {{ job.departmentname }}</option>
@@ -223,13 +235,13 @@
         </div>
         <div class=col-md-4>
           <label for="reportingmanager">Reporting Manager<font color=red>*</font></label>
-          <select name="reportingmanager" id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
-            <option value="">Select Reporting Manager</option>
+          <select name="reportingmanager" disabled id="reportingmanager" class="form-control" onchange="fnsetdiplayedvalue()">
+            <option value="" disabled>Select Reporting Manager</option>
             {% for reportingmanager in reportingmanagers %}
             {% if reportingmanager.reportingtoId ==  1000 %}
                 <option value="1000" disabled selected >Self</option>
             {% endif %}
-            <option value="{{ reportingmanager.id }}" disabled {% if personal.reportingtoId ==  reportingmanager.id %} selected {% endif %}>
+            <option value="{{ reportingmanager.id }}" disabled  {% if personal.reportingtoId ==  reportingmanager.id %} selected {% endif %}>
                 {{ reportingmanager.first_name }}  {{ reportingmanager.middle_name }}  {{ reportingmanager.last_name }}</option>
               {% endfor %}
           </select>
@@ -238,13 +250,7 @@
         </div>
       </div>
       <div class="row">
-        <div class=col-md-4>
-          DU Head
-          <label class="switch" title="click to Enable or Disable">
-            <input type="checkbox" disabled id="duhead" name="duhead" value='1' {% if personal.DUHead == 1 %}checked{% endif %}>
-            <span class="slider round"></span>
-          </label>
-        </div>
+
       </div>
       <div class="row">
         <div class="col-md-12" style="float:right;">
@@ -321,6 +327,9 @@
   }
 </style>
 <script>
+function disable() {
+  document.getElementById("empllevel").disabled=true;
+}
 
   function fnsetdiplayedvalue(){
     const sel = document.getElementById("reportingmanager"); 
@@ -549,7 +558,40 @@
         }
         flag = true;
       }
-
+      var personalemailid = document.getElementById('alternate_emailid').value
+      if (personalemailid == "") {
+        printError("alternate_emailidErr", "Please Enter Email-id");
+        return false;
+      }else {
+          var emailid = document.getElementById('alternate_emailid').value;
+          var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          if (emailid != '') {
+          if (reg.test(String(emailid).toLowerCase())){
+            printError("alternate_emailidErr", "");
+          } else {
+            printError("alternate_emailidErr", "Enter valid Email-id");
+            return false;
+          }
+          }
+          flag = true;
+        }
+      var mobileno = document.getElementById('alternate_mobileno').value
+      if (mobileno == "") {
+        printError("alternate_mobilenoErr", "Please Enter Mobile number");
+        return false;
+      } else {
+        var mobileno = document.getElementById('alternate_mobileno').value;
+        var mobiletenDigit = /^\d{10}$/;
+        if (mobileno != '') {
+          if (mobileno.match(mobiletenDigit)) {
+            printError("alternate_mobilenoErr", "");
+          } else {
+            printError("alternate_mobilenoErr", "Enter valid Mobile number");
+            return false;
+          }
+        }
+        flag = true;
+      }
       if (flag == true) {
         document.getElementById('perdetails').style.display = 'none';
         document.getElementById('empdetails').style.display = 'block';

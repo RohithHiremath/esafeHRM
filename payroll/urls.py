@@ -11,6 +11,7 @@ urlpatterns =[
     path('payscale/',views.payscalelist, name = 'payscale'),
     path('payscaleajax/', views.payscaleajax, name='payscaleajax'),
     path('payshortajax/', views.payshortajax, name='payshortajax'),
+    path('assignpayscale/', views.assignpayscale, name = 'assignpayscale'),
     path('editpayscale/<int:id>/',views.editpayscale, name ='editpayscale'),
     path('editpayscaleajax/<int:id>/', views.editpayscaleajax, name='editpayscaleajax'),
     path('editpayshortajax/<int:id>/', views.editpayshortajax, name='editpayshortajax'),

@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect
 from .models import Personal_details
 from masters.models import Job, Jobgrade ,Employmentstatus, Location, Department, Emailtemplate, ShiftDetails
 from organisation.models import Leveldefinition
-from django.shortcuts import render
 from esafehrm.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 import string
@@ -17,6 +16,7 @@ from datetime import timedelta
 from datetime import datetime, date
 from dateutil import relativedelta
 from leaves.models import AssignLeaveStructure,AssigningLevelsToStructure, Leavestructure
+from payroll.models import AssignPayscale, AssigningLevelsToPayscale, PayScale
 
 def Personal_details_view(request):
     if request.method =="POST":
@@ -63,6 +63,7 @@ def Personal_details_view(request):
             personal.save()
             empid = personal.id
             assigning_leave_structure(request,emplevel,fromdate,empid)
+            # assigning_payscale(request,emplevel,fromdate,empid)
             password = password_generator(request)
             register(request,emailid,fname,lname,password)
             emailtemplate = Emailtemplate.objects.filter(title = 'Welcome Email')
@@ -119,10 +120,22 @@ def assigning_leave_structure(request,emplevel,fromdate,empid):
     assignedleavedata = AssignLeaveStructure(
         fromDate = fromdate,
         toDate = '2099-12-31',
-        updatedDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        updatedDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         status = True,
         empid_id = empid,
         leave_structure_id = asslevel
+    )
+    assignedleavedata.save()
+
+def assigning_payscale(request,emplevel,fromdate,empid):
+    asslevel = AssigningLevelsToPayscale.objects.filter(levels_id = emplevel).values_list('payscalenameid_id',flat=True).first()
+    assignedleavedata = AssignPayscale(
+        fromDate = fromdate,
+        toDate = '2099-12-31',
+        updatedDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        status = True,
+        empid_id = empid,
+        pay_scale_id = asslevel
     )
     assignedleavedata.save()
 
@@ -161,6 +174,43 @@ def create_new_leave_structure(request,empid,leavestructure,expfrom,lid):
     )
     updatedata = AssignLeaveStructure.objects.filter(id = lid)
     updatedata.update(leave_structure = experiences)
+    assigningdata.save()
+
+def change_pay_scale(request):
+    pays = AssignPayscale.objects.all().select_related('pay_scale')
+    for pay in pays:
+        pid = pay.id
+        start_date = pay.fromDate
+        end_date = date.today() 
+        delta = relativedelta.relativedelta(end_date,start_date)
+        months = delta.years * 12 + delta.months
+        expfrom = pay.pay_scale.experienceto
+        if months >= pay.pay_scale.experienceto:
+            todate = date.today()
+            updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            empid = pay.empid.id
+            payscale = pay.pay_scale.id
+            create_new_pay_scale(request,empid,payscale,expfrom,pid)
+            replaceddata = AssignPayscale.objects.filter(id = pid)
+            replaceddata.update(fromDate = start_date,toDate = todate,updatedDate = updated_at,status = False,empid_id = pay.empid.id,pay_scale_id = pay.pay_scale.id)
+            for i in replaceddata:
+                i.save()
+        else:
+            pass
+
+def create_new_pay_scale(request,empid,payscale,expfrom,pid):
+    fromdate = date.today()
+    experiences = PayScale.objects.filter(experincefrom = expfrom).get().id
+    assigningdata = AssignPayscale(
+        fromDate = fromdate,
+        toDate = '2099-12-31',
+        updatedDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        status = True,
+        empid_id = empid,
+        pay_scale_id = experiences
+    )
+    updatedata = AssignPayscale.objects.filter(id = pid)
+    updatedata.update(pay_scale = experiences)
     assigningdata.save()
 
 def password_generator(request):
